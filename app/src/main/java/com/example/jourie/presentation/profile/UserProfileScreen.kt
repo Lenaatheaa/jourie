@@ -51,4 +51,5 @@ fun UserProfileScreen(
                     }
                 }
             }
-        }
+}
+

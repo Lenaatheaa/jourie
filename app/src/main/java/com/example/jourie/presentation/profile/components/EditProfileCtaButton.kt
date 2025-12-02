@@ -24,7 +24,7 @@ fun EditProfileCtaButton(onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
     ) {
         Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile", tint = Color.White)

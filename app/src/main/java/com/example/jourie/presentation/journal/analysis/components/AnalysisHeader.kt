@@ -26,7 +26,7 @@ fun AnalysisHeader(onBackClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp
+            .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp
             ))
             .background(PrimaryPurple)
             .padding(horizontal = 16.dp, vertical = 20.dp),        verticalAlignment = Alignment.CenterVertically,

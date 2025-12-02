@@ -27,7 +27,7 @@ fun UserDetailsCard(email: String, phone: String, dob: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .shadow(elevation = 8.dp, shape = RoundedCornerShape(18.dp)),
+            .shadow(elevation = 8.dp, shape = RoundedCornerShape(10.dp)),
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = White)
     ) {

@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
-import com.example.jourie.navigation.* // Import semua dari package navigation
+import com.example.jourie.navigation.* // Pastikan ini mengimpor semua yang dibutuhkan
 import com.example.jourie.ui.theme.IconGray
 import com.example.jourie.ui.theme.JourieTheme
 import com.example.jourie.ui.theme.PrimaryPurple
@@ -27,14 +27,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent {            JourieTheme {
-            JourieRoot()
-        }
+        setContent {
+            JourieTheme {
+                JourieRoot()
+            }
         }
     }
 }
 
-// Data class untuk item navigasi
 data class BottomNavItem(
     val label: String,
     val route: String,
@@ -48,46 +48,45 @@ fun JourieRoot() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
-    val screensWithBottomBar = listOf(
-        Routes.DASHBOARD,        Routes.STREAK,
-        Routes.ACHIEVEMENTS,
-        Routes.HISTORY,
-        Routes.PROFILE
-    )
-    val shouldShowBottomBar = currentDestination?.hierarchy?.any { dest ->
-        dest.route in screensWithBottomBar
-    } == true
+    // --- LOGIKA YANG DIPERBAIKI TOTAL ---
+    // Tentukan rute grafik (grup) mana yang sedang aktif.
+    // "auth_graph" untuk login/register, "main_graph" untuk aplikasi utama.
+    val currentGraphRoute = currentDestination?.parent?.route
+
+    // Bottom Bar hanya akan muncul jika kita berada di dalam "main_graph"
+    val shouldShowBottomBar = currentGraphRoute == "main_graph"
 
     Scaffold(
         bottomBar = {
-            // Tampilkan Bottom Bar hanya jika shouldShowBottomBar adalah true if (shouldShowBottomBar) {
-            AppBottomNavigationBar(navController = navController)
+            if (shouldShowBottomBar) {
+                AppBottomNavigationBar(navController = navController)
+            }
         }
-
-) { innerPadding ->
-    // NavHost utama yang menjadi router
-    NavHost(
-        navController = navController,
-        startDestination = "auth_graph", // Mulai dari grafik autentikasi
-        modifier = Modifier.padding(innerPadding)
-    ) {
-        authNavGraph(navController) // Daftarkan grafik autentikasi
-        mainNavGraph(navController) // Daftarkan grafik utama
+    ) { innerPadding ->
+        // NavHost utama yang menjadi router
+        NavHost(
+            navController = navController,
+            startDestination = "auth_graph", // Mulai dari grafik autentikasi
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            authNavGraph(navController) // Daftarkan grafik autentikasi
+            mainNavGraph(navController) // Daftarkan grafik utama
+        }
     }
-}
 }
 
 @Composable
 fun AppBottomNavigationBar(navController: NavController) {
     val navItems = listOf(
         BottomNavItem("Home", Routes.DASHBOARD, Icons.Default.Home),
-        BottomNavItem("Streak", Routes.STREAK, Icons.Default.LocalFireDepartment),
         BottomNavItem("Achievements", Routes.ACHIEVEMENTS, Icons.Default.Star),
+        BottomNavItem("Streak", Routes.STREAK, Icons.Default.LocalFireDepartment),
         BottomNavItem("History", Routes.HISTORY, Icons.Default.History),
         BottomNavItem("Profile", Routes.PROFILE, Icons.Default.Person)
     )
 
-    NavigationBar(containerColor = White) {val navBackStackEntry by navController.currentBackStackEntryAsState()
+    NavigationBar(containerColor = White) {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
 
         navItems.forEach { item ->
@@ -115,18 +114,3 @@ fun AppBottomNavigationBar(navController: NavController) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

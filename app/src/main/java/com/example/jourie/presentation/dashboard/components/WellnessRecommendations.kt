@@ -40,7 +40,7 @@ fun WellnessRecommendations(recommendations: List<WellnessRecommendation>) {
 private fun RecommendationCard(recommendation: WellnessRecommendation) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White),
         border = BorderStroke(1.dp, PrimaryPurplePastel)
     ) {

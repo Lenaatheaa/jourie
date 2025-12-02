@@ -30,7 +30,7 @@ fun PrimaryAuthButton(
         modifier = modifier
             .fillMaxWidth()
             .height(50.dp),
-        shape = RoundedCornerShape(24.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = PrimaryPurple,
             contentColor = Color.White,

@@ -21,7 +21,7 @@ fun CtaUnlockCard() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(PrimaryPurplePastel)
             .padding(20.dp),
         contentAlignment = Alignment.Center

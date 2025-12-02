@@ -52,7 +52,7 @@ fun AddNewJournalScreen(
         ) {
             Card(
                 modifier = Modifier.fillMaxSize(),
-                shape = RoundedCornerShape(20.dp),
+                shape = RoundedCornerShape(10.dp),
                 colors = CardDefaults.cardColors(containerColor = White)
             ) {
                 ContentInputField(

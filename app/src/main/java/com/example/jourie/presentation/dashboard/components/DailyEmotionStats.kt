@@ -50,7 +50,7 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
 private fun EmotionStatCard(emotion: EmotionSnapshot, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
-            .clip(RoundedCornerShape(18.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(White)
             .border(1.dp, BorderGray, RoundedCornerShape(18.dp))
             .padding(16.dp),

@@ -23,7 +23,7 @@ fun EmotionMeterSection(moodScore: Int
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White),
         border = BorderStroke(1.dp, BorderGray)
     ) {

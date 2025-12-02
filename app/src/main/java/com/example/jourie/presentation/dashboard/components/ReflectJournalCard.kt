@@ -22,7 +22,7 @@ import com.example.jourie.ui.theme.White
 fun ReflectJournalCard(onWriteClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

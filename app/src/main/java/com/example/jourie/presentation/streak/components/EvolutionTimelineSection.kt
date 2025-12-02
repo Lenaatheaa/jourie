@@ -44,7 +44,7 @@ private fun EvolutionTimelineItem(stage: EvolutionStage) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(backgroundColor)
             .border(borderWidth, borderColor, RoundedCornerShape(16.dp))
             .padding(12.dp),

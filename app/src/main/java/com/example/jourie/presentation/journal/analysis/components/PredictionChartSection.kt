@@ -44,7 +44,7 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(LightPurpleBg)
             .padding(16.dp)
     ) {

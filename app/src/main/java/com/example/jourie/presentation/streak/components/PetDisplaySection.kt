@@ -22,8 +22,8 @@ fun PetDisplaySection(level: Int) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(White, RoundedCornerShape(20.dp))
-            .border(1.dp, BorderGray, RoundedCornerShape(20.dp))
+            .background(White, RoundedCornerShape(10.dp))
+            .border(1.dp, BorderGray, RoundedCornerShape(10.dp))
             .padding(vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

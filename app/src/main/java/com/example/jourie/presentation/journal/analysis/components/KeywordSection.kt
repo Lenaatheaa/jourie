@@ -24,7 +24,7 @@ import com.example.jourie.ui.theme.White
 fun KeywordSection(keywords: List<String>) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {

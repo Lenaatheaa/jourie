@@ -43,7 +43,7 @@ fun CustomAuthTextField(
             value = value,
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(10.dp),
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = Color(0xFFF0F0F0),
                 unfocusedContainerColor = Color(0xFFF0F0F0),

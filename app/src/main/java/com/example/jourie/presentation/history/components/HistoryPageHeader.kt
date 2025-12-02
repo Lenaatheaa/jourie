@@ -27,7 +27,7 @@ fun HistoryPageHeader() {
         modifier = Modifier
             .fillMaxWidth()
             .height(120.dp)
-            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+            .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
             .background(PrimaryPurple),
         contentAlignment = Alignment.Center
     ) {

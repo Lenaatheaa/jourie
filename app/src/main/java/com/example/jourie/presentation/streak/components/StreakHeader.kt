@@ -23,7 +23,7 @@ fun StreakHeader(streakDays: Int) {
         modifier = Modifier
             .fillMaxWidth()
             .height(110.dp)
-            .clip(RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(PrimaryPurple)
             .padding(16.dp),
         contentAlignment = Alignment.Center
@@ -38,7 +38,7 @@ fun StreakHeader(streakDays: Int) {
             Spacer(modifier = Modifier.height(8.dp))
             Box(
                 modifier = Modifier
-                    .clip(RoundedCornerShape(30.dp))
+                    .clip(RoundedCornerShape(10.dp))
                     .background(White.copy(alpha = 0.7f)),
                 contentAlignment = Alignment.Center
             ) {

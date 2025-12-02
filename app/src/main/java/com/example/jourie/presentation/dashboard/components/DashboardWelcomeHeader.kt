@@ -23,7 +23,7 @@ fun DashboardWelcomeHeader(username: String) {
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+            .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
             .background(PrimaryPurple)
             .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically

@@ -25,7 +25,7 @@ import com.example.jourie.ui.theme.*
 fun JournalItemCard(entry: JournalEntry) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         border = BorderStroke(1.dp, color = Color(0xFFE0C0FF))

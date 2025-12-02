@@ -23,7 +23,7 @@ fun SaveEntryButton(
         modifier = modifier
             .fillMaxWidth()
             .height(56.dp),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = PrimaryPurple,
             contentColor = Color.White

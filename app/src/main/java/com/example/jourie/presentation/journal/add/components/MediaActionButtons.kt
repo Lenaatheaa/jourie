@@ -48,7 +48,7 @@ private fun ActionButton(
     OutlinedButton(
         onClick = onClick,
         modifier = modifier.height(48.dp),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = LightPurpleBg,
             contentColor = PrimaryPurple

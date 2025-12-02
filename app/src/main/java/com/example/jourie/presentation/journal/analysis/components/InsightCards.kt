@@ -81,7 +81,7 @@ private fun InsightCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = iconColor.copy(alpha = 0.1f)),
         border = BorderStroke(1.dp, iconColor.copy(alpha = 0.3f))
     ) {

@@ -41,7 +41,7 @@ fun AnalysisActionButtons(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(10.dp),
             border = BorderStroke(1.dp, PrimaryPurple)
         ) {
             Text("Download Report", color = PrimaryPurple, fontWeight = FontWeight.SemiBold)

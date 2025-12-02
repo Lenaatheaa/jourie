@@ -39,7 +39,7 @@ fun MilestoneItemCard(badge: Badge) {
 
     Card(
         modifier = Modifier.alpha(contentAlpha),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         border = BorderStroke(1.dp, Color(0xFFE5CCFF))
     ) {

@@ -57,7 +57,7 @@ private fun EmotionSummaryCard(emotion: EmotionSnapshot) {
     Column(
         modifier = Modifier
             .width(200.dp) // Ukuran card pager
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(10.dp))
             .background(emotion.color.copy(alpha = 0.1f))
             .padding(16.dp)
     ) {

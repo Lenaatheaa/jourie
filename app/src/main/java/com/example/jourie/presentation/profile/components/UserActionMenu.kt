@@ -26,7 +26,7 @@ import com.example.jourie.ui.theme.*
 fun UserActionMenu(onLogoutClick: () -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(18.dp),
+        shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {

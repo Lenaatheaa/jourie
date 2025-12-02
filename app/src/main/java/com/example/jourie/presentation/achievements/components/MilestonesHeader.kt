@@ -26,7 +26,7 @@ fun MilestonesHeader(badgeCount: Int, progress: Float) {
         modifier = Modifier
             .fillMaxWidth()
             .height(140.dp)
-            .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
+            .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
             .background(PrimaryPurple)
             .padding(horizontal = 24.dp, vertical = 16.dp),
         verticalAlignment = Alignment.CenterVertically
