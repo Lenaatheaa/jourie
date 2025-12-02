@@ -13,8 +13,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.jourie.ui.theme.LightPurpleBg
 import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.PrimaryPurplePastel
 import com.example.jourie.ui.theme.TextDark
 
 @Composable
@@ -23,7 +23,7 @@ fun QuoteSection() {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
-            .background(LightPurpleBg)
+            .background(PrimaryPurplePastel)
             .padding(20.dp),
         contentAlignment = Alignment.Center
     ) {

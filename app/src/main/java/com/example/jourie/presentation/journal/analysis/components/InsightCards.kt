@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.ui.theme.TextDark
+import com.example.jourie.ui.theme.PrimaryBlue
 
 @Composable
 fun InsightCards(sentimentScore: Int) {
@@ -34,28 +35,30 @@ fun InsightCards(sentimentScore: Int) {
         // Recommendation
         InsightCard(
             icon = Icons.Default.Lightbulb,
-            iconColor = Color(0xFF34C759),
+            iconColor = PrimaryBlue,
             title = "Recommendation",
             content = "Continue your meditation practice. Consider journaling in the evening to reflect on daily gratitude."
         )
         // Sentiment Score
         InsightCard(
-            icon = Icons.Default.ThumbUp,            iconColor = Color(0xFF34C759),            title = "Sentiment Score",
+            icon = Icons.Default.ThumbUp,
+            iconColor = PrimaryBlue,
+            title = "Sentiment Score",
             content = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text("Overall Positivity", fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(
                         1f))
-                    Text("$sentimentScore%", color = Color(0xFF34C759), fontWeight = FontWeight.Bold)
+                    Text("$sentimentScore%", color = PrimaryBlue, fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.height(4.dp))
                 LinearProgressIndicator(
-                    progress = { sentimentScore / 100f },
+                    progress = sentimentScore / 100f,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(8.dp)
                         .clip(RoundedCornerShape(4.dp)),
-                    color = Color(0xFF34C759),
-                    trackColor = Color(0xFFE8F5E9)
+                    color = PrimaryBlue,
+                    trackColor = PrimaryBlue.copy(alpha = 0.12f)
                 )
             }
         )}

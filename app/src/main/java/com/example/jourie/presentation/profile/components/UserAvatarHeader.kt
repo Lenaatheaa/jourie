@@ -25,7 +25,8 @@ fun UserAvatarHeader(name: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp) // Sedikit lebih tinggi untuk memberi ruang
+            .height(170.dp) // dikurangi sedikit untuk menghemat tinggi
+            .padding(vertical = 12.dp)
             .clip(
                 RoundedCornerShape(
                     bottomStart = 24.dp,
@@ -33,16 +34,13 @@ fun UserAvatarHeader(name: String) {
                 )
             )
             .background(PrimaryPurple)
-    ) {
+    , contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = 16.dp),
+                .wrapContentSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "Profile", color = Color.White.copy(alpha = 0.8f), fontSize = 16.sp)
-            Spacer(modifier = Modifier.height(8.dp))
             // Ganti R.drawable.capybara_avatar dengan gambar Anda sendiri
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_background), // Placeholder

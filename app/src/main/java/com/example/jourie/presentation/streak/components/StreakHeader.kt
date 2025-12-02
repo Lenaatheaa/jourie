@@ -3,6 +3,9 @@ package com.example.jourie.presentation.streak.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,17 +39,21 @@ fun StreakHeader(streakDays: Int) {
                 color = White
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Box(
-                modifier = Modifier
-                    .clip(RoundedCornerShape(30.dp))
-                    .background(White.copy(alpha = 0.7f)),
-                contentAlignment = Alignment.Center
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+                Icon(
+                    imageVector = Icons.Default.LocalFireDepartment,
+                    contentDescription = "Streak",
+                    tint = White,
+                    modifier = Modifier.size(22.dp)
+                )
+
+                Spacer(modifier = Modifier.width(10.dp))
+
                 Text(
-                    text = "🔥 $streakDays Day Streak",
-                    color = PrimaryPurple,
+                    text = "$streakDays Day Streak",
+                    color = White,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                    fontSize = 14.sp
                 )
             }
         }

@@ -26,17 +26,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.ui.theme.LightPurpleBg
+import com.example.jourie.ui.theme.PrimaryPurplePastel
 import com.example.jourie.ui.theme.PrimaryPurple
 import com.example.jourie.ui.theme.TextDark
 
 // Palet warna untuk chart
+// Updated palette to match design attachment
 private val chartColors = listOf(
-    Color(0xFFFFC107), // Kuning (Happy)
-    Color(0xFF4A90E2), // Biru (Sad)
-    Color(0xFFC27AFF), // Ungu (Calm)
-    Color(0xFFD0021B), // Merah (Angry)
-    Color(0xFF4CAF50), // Hijau (Peaceful)
-    Color(0xFF9C27B0)  // Ungu Tua (Anxious)
+    Color(0xFFFBBF24), // Yellow (Happy)
+    Color(0xFFA78BFA), // Purple (Calm)
+    Color(0xFF60A5FA), // Blue (Sad)
+    Color(0xFFF87171), // Red (Angry)
+    Color(0xFF34D399), // Teal/Green (Peaceful)
+    Color(0xFFFB923C)  // Orange (Anxious)
 )
 
 @Composable
@@ -45,7 +47,7 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
-            .background(LightPurpleBg)
+            .background(PrimaryPurplePastel)
             .padding(16.dp)
     ) {
         // Header
@@ -82,7 +84,7 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
             DonutChart(
                 emotions = emotionDistribution,
                 colors = chartColors,
-                modifier = Modifier.size(150.dp)
+                modifier = Modifier.size(200.dp)
             )
         }
 
@@ -113,7 +115,7 @@ private fun DonutChart(
                 startAngle = startAngle,
                 sweepAngle = sweepAngle * animatedProgress.value,
                 useCenter = false,
-                style = Stroke(width = 35f, cap = StrokeCap.Butt)
+                style = Stroke(width = 48f, cap = StrokeCap.Round)
             )
             startAngle += sweepAngle
         }
@@ -150,10 +152,10 @@ private fun LegendItem(color: Color, text: String, percentage: Int) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
-                .size(10.dp)
+                .size(14.dp)
                 .background(color, CircleShape)
         )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = "$text ($percentage%)", fontSize = 12.sp, color = TextDark.copy(alpha = 0.8f))
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(text = "$text ($percentage%)", fontSize = 13.sp, color = TextDark.copy(alpha = 0.9f), fontWeight = FontWeight.Medium)
     }
 }
