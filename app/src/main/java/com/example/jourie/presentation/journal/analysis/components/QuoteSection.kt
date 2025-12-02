@@ -22,15 +22,10 @@ fun QuoteSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-<<<<<<< HEAD
+
             .clip(RoundedCornerShape(10.dp))
-            .background(LightPurpleBg)
-=======
-            .clip(RoundedCornerShape(16.dp))
             .background(PrimaryPurplePastel)
->>>>>>> 928cb41d19870e16c1c47c6263196f6997421823
-            .padding(20.dp),
-        contentAlignment = Alignment.Center
+
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(

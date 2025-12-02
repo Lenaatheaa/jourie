@@ -27,7 +27,7 @@ import com.example.jourie.presentation.history.components.JournalSearchBar
 // Header dengan nama unik
 @Composable
 fun HistoryPageHeader() {
-<<<<<<< HEAD
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -42,25 +42,7 @@ fun HistoryPageHeader() {
             fontWeight = FontWeight.Bold,
             color = Color.White
         )
-=======
-    Column(modifier = Modifier.fillMaxWidth()) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(90.dp)
-                .clip(RoundedCornerShape(bottomStart = 24.dp, bottomEnd = 24.dp))
-                .background(PrimaryPurple),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "Journal History",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-        }
-        Spacer(modifier = Modifier.height(12.dp))
->>>>>>> 928cb41d19870e16c1c47c6263196f6997421823
+
     }
 }
 

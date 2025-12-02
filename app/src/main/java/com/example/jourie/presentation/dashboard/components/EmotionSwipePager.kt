@@ -65,18 +65,12 @@ fun EmotionSwipePager(emotions: List<EmotionSnapshot>) {
 private fun EmotionSummaryCard(emotion: EmotionSnapshot) {
     Card(
         modifier = Modifier
-<<<<<<< HEAD
+
             .width(200.dp) // Ukuran card pager
             .clip(RoundedCornerShape(10.dp))
             .background(emotion.color.copy(alpha = 0.1f))
             .padding(16.dp)
-=======
-            .width(150.dp)
-            .height(150.dp),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        border = BorderStroke(1.dp, Color(0xFFEEEEEE)) // Border abu-abu tipis
->>>>>>> 928cb41d19870e16c1c47c6263196f6997421823
+
     ) {
         Column(
             modifier = Modifier

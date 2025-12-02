@@ -25,7 +25,7 @@ fun ShareMilestonesButton(onClick: () -> Unit) {
             .padding(horizontal = 16.dp)
             .height(50.dp),
         shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
+        colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
     ) {
         Icon(imageVector = Icons.Default.Share, contentDescription = "Share", tint = Color.White)
         Spacer(modifier = Modifier.width(8.dp))

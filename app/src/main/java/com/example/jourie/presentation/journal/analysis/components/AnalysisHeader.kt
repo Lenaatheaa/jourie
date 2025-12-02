@@ -24,7 +24,6 @@ import com.example.jourie.ui.theme.White
 
 @Composable
 fun AnalysisHeader(onBackClick: () -> Unit) {
-<<<<<<< HEAD
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -34,24 +33,6 @@ fun AnalysisHeader(onBackClick: () -> Unit) {
             .padding(horizontal = 16.dp, vertical = 20.dp),        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Back",
-            tint = White,
-=======
-    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
-        Row(
->>>>>>> 928cb41d19870e16c1c47c6263196f6997421823
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp)
-                .shadow(8.dp, RoundedCornerShape(16.dp))
-                .clip(RoundedCornerShape(16.dp))
-                .background(PrimaryPurple)
-                .padding(horizontal = 16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
@@ -75,8 +56,6 @@ fun AnalysisHeader(onBackClick: () -> Unit) {
             }
         }
     }
-}
-
 
 
 

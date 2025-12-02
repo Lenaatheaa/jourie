@@ -46,14 +46,10 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-<<<<<<< HEAD
+
             .clip(RoundedCornerShape(10.dp))
             .background(LightPurpleBg)
-=======
-            .clip(RoundedCornerShape(20.dp))
-            .background(PrimaryPurplePastel)
->>>>>>> 928cb41d19870e16c1c47c6263196f6997421823
-            .padding(16.dp)
+
     ) {
         // Header
         Row(verticalAlignment = Alignment.CenterVertically) {
