@@ -29,7 +29,6 @@ fun KeywordSection(keywords: List<String>) {
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("Keywords", fontWeight = FontWeight.Bold, color = TextDark)
-            Text("keyword", color = PrimaryPurple, fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
             Spacer(modifier = Modifier.height(12.dp)) // Ini sekarang di baris baru
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

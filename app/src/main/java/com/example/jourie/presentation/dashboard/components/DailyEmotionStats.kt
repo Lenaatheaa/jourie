@@ -66,7 +66,7 @@ private fun EmotionStatCard(emotion: EmotionSnapshot, modifier: Modifier = Modif
             text = "${emotion.percentage}%",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = emotion.color
+            color = Color.Black
         )
         Text(
             text = emotion.change,

@@ -18,11 +18,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.draw.shadow
 import com.example.jourie.ui.theme.PrimaryPurple
 import com.example.jourie.ui.theme.White
 
 @Composable
 fun AnalysisHeader(onBackClick: () -> Unit) {
+<<<<<<< HEAD
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,21 +38,41 @@ fun AnalysisHeader(onBackClick: () -> Unit) {
             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Back",
             tint = White,
+=======
+    Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+        Row(
+>>>>>>> 928cb41d19870e16c1c47c6263196f6997421823
             modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .clickable(onClick = onBackClick)
-                .padding(8.dp)
-        )
-        Text(
-            text = "Today",
-            color = White,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text("😊", fontSize = 24.sp)
-            Text("Calm", color = White.copy(alpha = 0.8f), fontSize = 12.sp)
+                .fillMaxWidth()
+                .height(64.dp)
+                .shadow(8.dp, RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(16.dp))
+                .background(PrimaryPurple)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "Back",
+                tint = White,
+                modifier = Modifier
+                    .size(40.dp)
+                    .clip(CircleShape)
+                    .background(White.copy(alpha = 0.18f), CircleShape)
+                    .clickable(onClick = onBackClick)
+                    .padding(8.dp)
+            )
+            Text(
+                text = "Today",
+                color = White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text("😊", fontSize = 20.sp)
+                Text("Calm", color = White.copy(alpha = 0.9f), fontSize = 12.sp)
+            }
         }
     }
 }
