@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.ui.theme.IconGray
-import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.PrimaryBlue
 import com.example.jourie.ui.theme.TextDark
 import com.example.jourie.ui.theme.White
 
@@ -49,7 +49,7 @@ fun ReflectJournalCard(onWriteClick: () -> Unit) {
             Button(
                 onClick = onWriteClick,
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
             ) {
                 Text(text = "Write Journal", color = White)
             }

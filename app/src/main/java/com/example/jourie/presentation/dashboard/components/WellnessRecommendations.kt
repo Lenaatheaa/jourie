@@ -10,6 +10,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -47,14 +48,26 @@ private fun RecommendationCard(recommendation: WellnessRecommendation) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
                 text = recommendation.category,
-                color = PrimaryPurple, // Baris ini sekarang tidak akan error
+                color = PrimaryPurple,
                 fontWeight = FontWeight.SemiBold
             )
-            Text(
-                text = recommendation.title,
-                color = TextDark,
-                fontSize = 16.sp
-            )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Inner pill/button-like card
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth(0.92f)
+                        .height(48.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = White),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                        Text(text = recommendation.title, color = TextDark)
+                    }
+                }
+            }
         }
     }
 }
@@ -69,7 +82,7 @@ private fun WellnessRecommendationsPreview() {
     )
     JourieTheme {
         Column(modifier = Modifier.padding(16.dp)) {
-            WellnessRecommendations(recommendations = sampleRecommendations)
-        }
+                WellnessRecommendations(recommendations = sampleRecommendations)
+            }
     }
 }

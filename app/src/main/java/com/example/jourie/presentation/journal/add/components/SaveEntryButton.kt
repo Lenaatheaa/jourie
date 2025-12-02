@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.PrimaryBlue
 
 @Composable
 fun SaveEntryButton(
@@ -25,7 +26,7 @@ fun SaveEntryButton(
             .height(56.dp),
         shape = RoundedCornerShape(16.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = PrimaryPurple,
+            containerColor = PrimaryBlue,
             contentColor = Color.White
         )
     ) {

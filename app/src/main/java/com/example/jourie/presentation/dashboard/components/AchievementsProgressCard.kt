@@ -26,7 +26,7 @@ fun AchievementsProgressCard(progress: Map<String, Int>) {
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
                 text = "Achievements",
@@ -34,10 +34,10 @@ fun AchievementsProgressCard(progress: Map<String, Int>) {
                 fontWeight = FontWeight.Bold,
                 color = TextDark
             )
-            ProgressItem(label = "Yesterday's Emotion Summary", progress = 0.2f, color = Color(0xFF4A90E2)) // Contoh
-            ProgressItem(label = "Streak", progress = (progress["Streak"] ?: 0) / 100f, color = Color(0xFF50E3C2))
-            ProgressItem(label = "Emotions", progress = (progress["Emotions"] ?: 0) / 100f, color = Color(0xFFD0021B))
-            ProgressItem(label = "Journals", progress = (progress["Journals"] ?: 0) / 100f, color = Color(0xFFF5A623))
+            ProgressItem(label = "Yesterday's Emotion Summary", progress = 0.2f, color = PrimaryBlue) // Contoh
+            ProgressItem(label = "Streak", progress = (progress["Streak"] ?: 0) / 100f, color = PrimaryBlue)
+            ProgressItem(label = "Emotions", progress = (progress["Emotions"] ?: 0) / 100f, color = PrimaryBlue)
+            ProgressItem(label = "Journals", progress = (progress["Journals"] ?: 0) / 100f, color = PrimaryBlue)
         }
     }
 }
@@ -56,12 +56,12 @@ private fun ProgressItem(label: String, progress: Float, color: Color) {
             fontWeight = FontWeight.SemiBold
         )
     }
-    Spacer(modifier = Modifier.height(4.dp))
+    Spacer(modifier = Modifier.height(0.dp))
     LinearProgressIndicator(
         progress = { progress },
         modifier = Modifier
             .fillMaxWidth()
-            .height(8.dp)
+            .height(6.dp)
             .clip(RoundedCornerShape(4.dp)),
         color = color,
         trackColor = Color(0xFFE8E8E8)

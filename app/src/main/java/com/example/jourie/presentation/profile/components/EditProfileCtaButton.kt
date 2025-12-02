@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.PrimaryBlue
 
 // Tombol CTA dengan nama unik
 @Composable
@@ -25,7 +25,7 @@ fun EditProfileCtaButton(onClick: () -> Unit) {
             .fillMaxWidth()
             .height(50.dp),
         shape = RoundedCornerShape(18.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
+        colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
     ) {
         Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile", tint = Color.White)
         Spacer(modifier = Modifier.width(8.dp))

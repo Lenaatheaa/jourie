@@ -6,6 +6,8 @@ import androidx.compose.ui.graphics.Color
 val PrimaryPurple = Color(0xFFC27AFF)
 val PrimaryPurpleLight = Color(0xFFEAD6FF)
 val PrimaryPurplePastel = Color(0xFFF3E4FF)
+// Primary blue untuk tombol "Write Journal"
+val PrimaryBlue = Color(0xFF51A2FF)
 
 // Warna Netral
 val TextDark = Color(0xFF333333)
