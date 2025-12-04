@@ -16,30 +16,35 @@ import com.example.jourie.ui.theme.BorderGray
 import com.example.jourie.ui.theme.JourieTheme
 import com.example.jourie.ui.theme.TextDark
 import com.example.jourie.ui.theme.White
+import com.example.jourie.ui.theme.PrimaryPurplePastel
 
 @Composable
 fun PetDisplaySection(level: Int) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .background(White, RoundedCornerShape(10.dp))
-            .border(1.dp, BorderGray, RoundedCornerShape(10.dp))
+            .height(240.dp)
+            .background(PrimaryPurplePastel, RoundedCornerShape(16.dp))
+            .border(1.dp, BorderGray, RoundedCornerShape(16.dp))
             .padding(vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "🐹", // Dummy asset
-            fontSize = 100.sp, // Disesuaikan agar gambar besar
-            modifier = Modifier.size(180.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "✨ Level $level",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = TextDark
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "🐹", // Dummy asset
+                fontSize = 100.sp // biarkan ukuran font mengatur ukuran emoji
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "✨ Level $level",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = TextDark
+            )
+        }
     }
 }
 

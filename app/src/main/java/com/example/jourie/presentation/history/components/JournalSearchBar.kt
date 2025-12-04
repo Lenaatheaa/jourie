@@ -2,6 +2,8 @@ package com.example.jourie.presentation.history.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.draw.shadow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -12,6 +14,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.example.jourie.ui.theme.IconGray
+import com.example.jourie.ui.theme.PrimaryPurple
 import androidx.compose.ui.unit.dp
 import com.example.jourie.ui.theme.White
 
@@ -26,10 +30,12 @@ fun JournalSearchBar(
         onValueChange = onQueryChange,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        placeholder = { Text("Search your journals...") },
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon") },
-        shape = RoundedCornerShape(50.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .shadow(4.dp, RoundedCornerShape(10.dp))
+            .height(52.dp),
+        placeholder = { Text("Search your journals...", color = IconGray) },
+        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon", tint = PrimaryPurple) },
+        shape = RoundedCornerShape(10.dp),
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,

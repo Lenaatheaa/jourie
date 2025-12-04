@@ -26,7 +26,7 @@ fun SaveEntryButton(
             .height(56.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = PrimaryBlue,
+            containerColor = PrimaryPurple,
             contentColor = Color.White
         )
     ) {

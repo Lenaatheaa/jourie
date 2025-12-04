@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jourie.ui.theme.PrimaryBlue
+import com.example.jourie.ui.theme.PrimaryPurple
 
 @Composable
 fun ShareMilestonesButton(onClick: () -> Unit) {
@@ -25,7 +25,7 @@ fun ShareMilestonesButton(onClick: () -> Unit) {
             .padding(horizontal = 16.dp)
             .height(50.dp),
         shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
+        colors = ButtonDefaults.buttonColors(containerColor = PrimaryPurple)
     ) {
         Icon(imageVector = Icons.Default.Share, contentDescription = "Share", tint = Color.White)
         Spacer(modifier = Modifier.width(8.dp))

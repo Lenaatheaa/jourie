@@ -46,10 +46,9 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-
             .clip(RoundedCornerShape(10.dp))
             .background(LightPurpleBg)
-
+            .padding(16.dp)
     ) {
         // Header
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -74,7 +73,7 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
             color = TextDark.copy(alpha = 0.7f),
             fontSize = 14.sp
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Donut Chart dan Legend
         Row(
@@ -89,7 +88,7 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(28.dp))
         EmotionLegend(emotions = emotionDistribution, colors = chartColors)
     }
 }
@@ -129,7 +128,7 @@ private fun EmotionLegend(emotions: Map<String, Float>, colors: List<Color>) {
     val chunkedEmotions = emotions.toList().chunked(3) // Ubah ke 3 kolom agar lebih rapi
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         chunkedEmotions.forEach { rowItems ->
             Row(
@@ -156,7 +155,7 @@ private fun LegendItem(color: Color, text: String, percentage: Int) {
                 .size(14.dp)
                 .background(color, CircleShape)
         )
-        Spacer(modifier = Modifier.width(10.dp))
+        Spacer(modifier = Modifier.width(12.dp))
         Text(text = "$text ($percentage%)", fontSize = 13.sp, color = TextDark.copy(alpha = 0.9f), fontWeight = FontWeight.Medium)
     }
 }

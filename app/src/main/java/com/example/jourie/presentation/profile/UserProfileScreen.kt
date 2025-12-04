@@ -39,13 +39,12 @@ fun UserProfileScreen(
                         .padding(bottom = 24.dp), // Padding bawah agar tidak tertutup tombol
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    UserAvatarHeader(name = state.name)
                     Spacer(modifier = Modifier.height(24.dp))
                     Column(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        UserDetailsCard(email = state.email, phone = state.phone, dob = state.dob)
+                        UserDetailsCard(name = state.name, email = state.email, phone = state.phone, dob = state.dob)
                         UserActionMenu(onLogoutClick = { viewModel.logout() })
                         EditProfileCtaButton(onClick = {})
                     }

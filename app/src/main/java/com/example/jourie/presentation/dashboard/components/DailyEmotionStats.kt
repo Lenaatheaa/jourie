@@ -2,6 +2,8 @@
 
 package com.example.jourie.presentation.dashboard.components
 
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -25,13 +27,6 @@ import com.example.jourie.ui.theme.White
 @Composable
 fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
     Column {
-        Text(
-            text = "Today's Emotions",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = TextDark,
-            modifier = Modifier.padding(bottom = 12.dp)
-        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -48,14 +43,18 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
 
 @Composable
 private fun EmotionStatCard(emotion: EmotionSnapshot, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(10.dp))
-            .background(White)
-            .border(1.dp, BorderGray, RoundedCornerShape(18.dp))
-            .padding(16.dp),
-        horizontalAlignment = Alignment.Start
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(containerColor = White),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.Start
+        ) {
         Text(
             text = emotion.name,
             fontSize = 14.sp,
@@ -73,6 +72,7 @@ private fun EmotionStatCard(emotion: EmotionSnapshot, modifier: Modifier = Modif
             fontSize = 12.sp,
             color = if ((emotion.change.firstOrNull() ?: '+') == '+') Color(0xFF28A745) else Color(0xFFFF5757)
         )
+    }
     }
 }
 

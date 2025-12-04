@@ -2,7 +2,8 @@
 
 package com.example.jourie.presentation.journal.add
 
-import androidx.compose.foundation.layout.*import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.*
@@ -43,10 +44,11 @@ fun AddNewJournalScreen(
             onBackClick = { navController.popBackStack() }
         )
 
+        Spacer(modifier = Modifier.height(24.dp))
+
         Box(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .offset(y = (-20).dp)
                 .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp))
                 .weight(1f)
         ) {
@@ -64,17 +66,17 @@ fun AddNewJournalScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             MediaActionButtons()
             // DIPERBAIKI: onClick sekarang meneruskan aksi navigasi ke ViewModel
             SaveEntryButton(onClick = { viewModel.onSubmit(onJournalSubmitted) })
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }

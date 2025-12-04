@@ -22,20 +22,34 @@ fun QuoteSection() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-
             .clip(RoundedCornerShape(10.dp))
             .background(PrimaryPurplePastel)
-
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth()
+        ) {
             Text(
                 text = "\"Peace comes from within. Do not seek it without.\"",
                 fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Center,
-                color = TextDark.copy(alpha = 0.8f)
+                color = TextDark.copy(alpha = 0.85f)
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "● ● ● ● ●", color = PrimaryPurple.copy(alpha = 0.4f))
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // indicator dots centered with spacing
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                Spacer(modifier = Modifier.weight(1f))
+                repeat(5) {
+                    Box(
+                        modifier = Modifier
+                            .size(6.dp)
+                            .background(PrimaryPurple.copy(alpha = 0.45f), shape = RoundedCornerShape(6.dp))
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+            }
         }
     }
 }

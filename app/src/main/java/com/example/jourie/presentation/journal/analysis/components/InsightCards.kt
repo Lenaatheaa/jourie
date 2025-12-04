@@ -40,28 +40,7 @@ fun InsightCards(sentimentScore: Int) {
             content = "Continue your meditation practice. Consider journaling in the evening to reflect on daily gratitude."
         )
         // Sentiment Score
-        InsightCard(
-            icon = Icons.Default.ThumbUp,
-            iconColor = PrimaryBlue,
-            title = "Sentiment Score",
-            content = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("Overall Positivity", fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(
-                        1f))
-                    Text("$sentimentScore%", color = PrimaryBlue, fontWeight = FontWeight.Bold)
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                LinearProgressIndicator(
-                    progress = sentimentScore / 100f,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(8.dp)
-                        .clip(RoundedCornerShape(4.dp)),
-                    color = PrimaryBlue,
-                    trackColor = PrimaryBlue.copy(alpha = 0.12f)
-                )
-            }
-        )}
+        }
 }
 
 @Composable

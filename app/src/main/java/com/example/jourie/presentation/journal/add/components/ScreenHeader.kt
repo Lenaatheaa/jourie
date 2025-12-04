@@ -1,6 +1,8 @@
 package com.example.jourie.presentation.journal.add.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -18,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.TextDark
 
 @Composable
 fun ScreenHeader(
@@ -28,43 +31,38 @@ fun ScreenHeader(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
-            .background(PrimaryPurple)
-            .padding(horizontal = 16.dp, vertical = 20.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
     ) {
-        // Back Button
+        // Back Button (smaller, left-aligned)
         Box(
             modifier = Modifier
-                .align(Alignment.TopStart)
-                .size(40.dp)
+                .align(Alignment.CenterStart)
+                .size(32.dp)
                 .clip(CircleShape)
-                .background(Color.White.copy(alpha = 0.15f))
+                .background(Color.White)
+                .border(BorderStroke(1.dp, Color(0xFFBDBDBD)), CircleShape)
                 .clickable(onClick = onBackClick),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
-                tint = Color.White
+                tint = Color(0xFF666666),
+                modifier = Modifier.size(14.dp)
             )
         }
 
-        // Title and Date
+        // Date as header (replaces previous title)
         Column(
             modifier = Modifier.align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "New Journal Entry",
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
                 text = currentDate,
-                color = Color.White.copy(alpha = 0.8f),
-                fontSize = 14.sp
+                color = TextDark,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
             )
         }
     }

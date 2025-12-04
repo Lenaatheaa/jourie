@@ -10,6 +10,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,15 +51,15 @@ private fun ActionButton(
         modifier = modifier.height(48.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = LightPurpleBg,
-            contentColor = PrimaryPurple
+            containerColor = Color.White,
+            contentColor = Color(0xFF666666)
         ),
-        border = BorderStroke(1.dp, PrimaryPurple)
+        border = BorderStroke(1.dp, Color(0xFFBDBDBD))
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(imageVector = icon, contentDescription = text)
+            Icon(imageVector = icon, contentDescription = text, tint = Color(0xFF666666))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = text)
+            Text(text = text, color = Color(0xFF666666))
         }
     }
 }

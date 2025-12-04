@@ -79,7 +79,7 @@ fun JourieRoot() {
 fun AppBottomNavigationBar(navController: NavController) {
     val navItems = listOf(
         BottomNavItem("Home", Routes.DASHBOARD, Icons.Default.Home),
-        BottomNavItem("Achievements", Routes.ACHIEVEMENTS, Icons.Default.Star),
+        BottomNavItem("Achieve", Routes.ACHIEVEMENTS, Icons.Default.Star),
         BottomNavItem("Streak", Routes.STREAK, Icons.Default.LocalFireDepartment),
         BottomNavItem("History", Routes.HISTORY, Icons.Default.History),
         BottomNavItem("Profile", Routes.PROFILE, Icons.Default.Person)

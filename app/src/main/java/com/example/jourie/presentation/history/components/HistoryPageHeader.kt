@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jourie.ui.theme.PrimaryPurple
+// background removed per request
 import com.example.jourie.presentation.history.components.JournalSearchBar
 
 // Header dengan nama unik
@@ -31,16 +31,15 @@ fun HistoryPageHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp)
             .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp))
-            .background(PrimaryPurple),
+            .padding(vertical = 8.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = "Journal History",
             fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = Color.Black
         )
 
     }

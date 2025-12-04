@@ -3,8 +3,12 @@ package com.example.jourie.presentation.history.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -12,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -56,9 +61,23 @@ fun JournalItemCard(entry: JournalEntry) {
                     overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(12.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    entry.tags.forEach { tag ->
-                        TagChip(text = tag)
+
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomEnd)
+                            .size(28.dp)
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Color(0xFFFF5C5C))
+                            .clickable { /* delete action */ },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete",
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
                     }
                 }
             }
@@ -70,15 +89,27 @@ fun JournalItemCard(entry: JournalEntry) {
 private fun DateBox(day: String, month: String) {
     Box(
         modifier = Modifier
-            .size(width = 50.dp, height = 50.dp)
+            .width(50.dp)
+            .fillMaxHeight()
+            .shadow(2.dp, RoundedCornerShape(14.dp))
             .clip(RoundedCornerShape(14.dp))
             .background(White)
             .border(1.dp, BorderGray, RoundedCornerShape(14.dp)),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.padding(vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = month.uppercase(),
+                fontSize = 11.sp,
+                color = IconGray,
+                modifier = Modifier.offset(y = (-2).dp)
+            )
+            Spacer(modifier = Modifier.height(0.dp))
             Text(text = day, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = TextDark)
-            Text(text = month, fontSize = 12.sp, color = IconGray)
         }
     }
 }

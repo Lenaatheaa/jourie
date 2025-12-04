@@ -78,15 +78,9 @@ fun JournalAnalysisScreen(
                     PredictionChartSection(emotionDistribution = state.emotionDistribution)
                 }
 
-                // 4. Meteran Emosi Utama
-                item {
-                    EmotionMeterSection(moodScore = state.moodScore)
-                }
+                // 4. (Emotion meter removed)
 
-                // 5. Kata Kunci
-                item {
-                    KeywordSection(keywords = state.keywords)
-                }
+                // 5. (Keyword section removed)
 
                 // 6. Kartu-kartu Insight
                 item {

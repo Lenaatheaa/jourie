@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.IconGray
 import com.example.jourie.ui.theme.White
 
 

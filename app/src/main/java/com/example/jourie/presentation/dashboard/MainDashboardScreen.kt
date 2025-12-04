@@ -56,7 +56,7 @@ fun MainDashboardScreen(
                     .fillMaxSize()
                     .padding(innerPadding), // Padding dari Scaffold agar tidak tertutup FAB
                 contentPadding = PaddingValues(bottom = 24.dp), // Beri ruang di bagian bawah
-                verticalArrangement = Arrangement.spacedBy(24.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // Item 1: Header
                 item {
@@ -67,7 +67,7 @@ fun MainDashboardScreen(
                 item {
                     Column(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(24.dp)
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         DailyStreakSection(streakCount = state.currentStreak)
                         DailyEmotionStats(emotions = state.todaysEmotions)
@@ -79,18 +79,13 @@ fun MainDashboardScreen(
                     }
                 }
 
-                // Item 3: Recent Journals
-                if (state.recentJournals.isNotEmpty()) {
-                    item {
-                        RecentJournalsList(journals = state.recentJournals)
-                    }
-                }
+                // Item 3: (Recent Journals removed)
 
                 // Item 4: Konten terakhir dengan padding horizontal
                 item {
                     Column(
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(24.dp)
+                        verticalArrangement = Arrangement.spacedBy(28.dp)
                     ) {
                         AchievementsProgressCard(progress = state.achievementsProgress)
                         WellnessRecommendations(recommendations = state.recommendations)

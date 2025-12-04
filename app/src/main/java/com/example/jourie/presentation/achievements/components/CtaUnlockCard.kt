@@ -1,8 +1,10 @@
 package com.example.jourie.presentation.achievements.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.shadow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,7 +14,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jourie.ui.theme.PrimaryPurplePastel
+import androidx.compose.foundation.BorderStroke
+import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.White
 import com.example.jourie.ui.theme.TextDark
 
 @Composable
@@ -21,8 +25,10 @@ fun CtaUnlockCard() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
+            .shadow(4.dp, RoundedCornerShape(10.dp))
             .clip(RoundedCornerShape(10.dp))
-            .background(PrimaryPurplePastel)
+            .background(White)
+            .border(BorderStroke(1.dp, PrimaryPurple), RoundedCornerShape(10.dp))
             .padding(20.dp),
         contentAlignment = Alignment.Center
     ) {

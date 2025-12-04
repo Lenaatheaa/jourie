@@ -43,7 +43,8 @@ private fun RecommendationCard(recommendation: WellnessRecommendation) {
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White),
-        border = BorderStroke(1.dp, PrimaryPurplePastel)
+        border = BorderStroke(1.dp, PrimaryPurple),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -61,7 +62,8 @@ private fun RecommendationCard(recommendation: WellnessRecommendation) {
                         .height(48.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(containerColor = White),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+                    border = BorderStroke(1.dp, PrimaryPurple),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                         Text(text = recommendation.title, color = TextDark)

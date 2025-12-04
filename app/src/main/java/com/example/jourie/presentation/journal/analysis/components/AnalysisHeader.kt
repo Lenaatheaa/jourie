@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -24,38 +25,64 @@ import com.example.jourie.ui.theme.White
 
 @Composable
 fun AnalysisHeader(onBackClick: () -> Unit) {
-    Row(
+    // Outer container provides the same horizontal inset as EntrySummaryCard
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(bottomStart = 10.dp, bottomEnd = 10.dp
-            ))
-            .background(PrimaryPurple)
-            .padding(horizontal = 16.dp, vertical = 20.dp),        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .height(64.dp)
+            .padding(horizontal = 16.dp),
+        contentAlignment = Alignment.Center
     ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = "Back",
-                tint = White,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(White.copy(alpha = 0.18f), CircleShape)
-                    .clickable(onClick = onBackClick)
-                    .padding(8.dp)
-            )
+        // Inner pill matches card width (fills available width inside outer padding)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(6.dp, RoundedCornerShape(10.dp))
+                .clip(RoundedCornerShape(10.dp))
+                .background(PrimaryPurple)
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            // Center title
             Text(
                 text = "Today",
                 color = White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("😊", fontSize = 20.sp)
+
+            // Back icon on the left
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .clip(RoundedCornerShape(50.dp))
+                    .background(White.copy(alpha = 0.12f))
+                    .border(1.dp, White.copy(alpha = 0.18f), RoundedCornerShape(50.dp))
+                    .clickable(onClick = onBackClick)
+                    .padding(8.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = White,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+
+            // Emoji + label on the right
+            Column(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(start = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("😊", fontSize = 22.sp)
                 Text("Calm", color = White.copy(alpha = 0.9f), fontSize = 12.sp)
             }
         }
     }
+}
 
 
 
