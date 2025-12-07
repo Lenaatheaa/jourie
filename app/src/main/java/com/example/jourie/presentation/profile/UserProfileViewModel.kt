@@ -1,46 +1,60 @@
+// File: .../presentation/profile/UserProfileViewModel.kt
 package com.example.jourie.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jourie.data.repository.UserProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// ViewModel dengan nama unik
-class UserProfileViewModel(
-    private val repository: UserProfileRepository = UserProfileRepository() // Inisialisasi langsung
-) : ViewModel() {
+
+
+class UserProfileViewModel : ViewModel() {
 
     private val _state = MutableStateFlow(UserProfileState())
     val state = _state.asStateFlow()
 
-    init {
-        loadProfileData()
+    // --- FUNGSI UNTUK DIALOG ---
+    fun onShowEditDialog() {
+        _state.update { it.copy(showEditProfileDialog = true) }
     }
 
-    private fun loadProfileData() {
+    fun onDismissEditDialog() {
+        _state.update { it.copy(showEditProfileDialog = false) }
+    }
+
+    // --- FUNGSI UNTUK MENYIMPAN PERUBAHAN ---
+    fun onUpdateProfile(
+        newName: String,
+        newPhone: String,
+        newEmail: String,
+        newDob: String
+    ) {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
-            try {
-                val profile = repository.getUserProfile()
-                _state.update {
-                    it.copy(
-                        isLoading = false,
-                        name = profile.name,
-                        email = profile.email,
-                        phone = profile.phone,
-                        dob = profile.dateOfBirth
-                    )
-                }
-            } catch (e: Exception) {
-                _state.update { it.copy(isLoading = false, error = "Failed to load data") }
+            // Di sini Anda akan menambahkan logika untuk menyimpan data ke database/API
+            println("Updating profile with new data...")
+            _state.update {
+                it.copy(
+                    name = newName,
+                    phone = newPhone,
+                    email = newEmail,
+                    dob = newDob,
+                    showEditProfileDialog = false // Langsung tutup dialog setelah update
+                )
             }
         }
     }
+    // ----------------------------
 
+    // --- FUNGSI UNTUK LOGOUT ---
     fun logout() {
-        // Logika untuk logout bisa ditambahkan di sini
+        viewModelScope.launch {
+            _state.update { it.copy(isLoggedOut = true) }
+        }
+    }
+
+    fun onLogoutHandled() {
+        _state.update { it.copy(isLoggedOut = false) }
     }
 }

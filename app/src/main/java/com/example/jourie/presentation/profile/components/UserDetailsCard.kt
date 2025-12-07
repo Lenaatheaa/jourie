@@ -1,12 +1,13 @@
+// File: .../presentation/profile/components/UserDetailsCard.kt
 package com.example.jourie.presentation.profile.components
 
-import androidx.compose.foundation.background
+// --- SEMUA IMPORT YANG DIPERLUKAN ---
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.border
-import androidx.compose.ui.res.painterResource
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.DateRange
@@ -16,19 +17,28 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jourie.ui.theme.*
 import com.example.jourie.R
+import com.example.jourie.ui.theme.*
 
-// Card Detail dengan nama unik
+// --- KODE LENGKAP UNTUK USER DETAILS CARD DENGAN TOMBOL EDIT ---
+
 @Composable
-fun UserDetailsCard(name: String, email: String, phone: String, dob: String) {
+fun UserDetailsCard(
+    name: String,
+    email: String,
+    phone: String,
+    dob: String,
+    onEditClick: () -> Unit // DITAMBAHKAN: Aksi untuk tombol edit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,10 +47,9 @@ fun UserDetailsCard(name: String, email: String, phone: String, dob: String) {
         colors = CardDefaults.cardColors(containerColor = White)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            // Avatar centered at top with name below
+            // Avatar dan Nama (TETAP SAMA)
             Column(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
@@ -55,6 +64,7 @@ fun UserDetailsCard(name: String, email: String, phone: String, dob: String) {
                 Text(text = name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = TextDark)
             }
             Spacer(modifier = Modifier.height(12.dp))
+            // Baris Judul "Personal Detail" dan Tombol Edit
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -66,13 +76,19 @@ fun UserDetailsCard(name: String, email: String, phone: String, dob: String) {
                     fontWeight = FontWeight.Bold,
                     color = TextDark
                 )
-                Icon(
-                    imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Details",
-                    tint = PrimaryPurple
-                )
+                // --- DIPERBAIKI: Icon sekarang menjadi IconButton ---
+                IconButton(onClick = onEditClick) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit Details",
+                        tint = PrimaryPurple
+                    )
+                }
+                // ---------------------------------------------------
             }
             Spacer(modifier = Modifier.height(20.dp))
+
+            // Detail Item (TETAP SAMA)
             DetailItem(icon = Icons.Default.Email, label = "Email", value = email)
             Spacer(modifier = Modifier.height(16.dp))
             DetailItem(icon = Icons.Default.Call, label = "Phone", value = phone)
@@ -82,6 +98,7 @@ fun UserDetailsCard(name: String, email: String, phone: String, dob: String) {
     }
 }
 
+// Composable DetailItem tetap sama
 @Composable
 private fun DetailItem(icon: ImageVector, label: String, value: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -101,3 +118,34 @@ private fun DetailItem(icon: ImageVector, label: String, value: String) {
         }
     }
 }
+
+
+@Preview(showBackground = true)
+@Composable
+private fun UserDetailsCardPreview() {
+    JourieTheme {
+        UserDetailsCard(
+            name = "Jessica",
+            email = "jessica@email.com",
+            phone = "+62 123 456 7890",
+            dob = "01 January 1995",
+            onEditClick = {} // Menyediakan aksi kosong untuk preview
+        )
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

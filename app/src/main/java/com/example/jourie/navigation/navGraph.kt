@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.jourie.presentation.achievements.MilestonesScreen
 import com.example.jourie.presentation.dashboard.MainDashboardScreen
+//import com.example.jourie.presentation.edit_profile.EditProfileScreen
 import com.example.jourie.presentation.history.JournalHistoryScreen
 import com.example.jourie.presentation.journal.add.AddNewJournalScreen
 import com.example.jourie.presentation.journal.analysis.JournalAnalysisScreen
@@ -28,6 +29,8 @@ object Routes {
     const val ADD_JOURNAL = "add_journal_screen"
     const val PET = "pet_screen"
     const val JOURNAL_ANALYSIS = "journal_analysis_screen"
+
+    const val EDIT_PROFILE = "edit_profile"
 }
 
 // Grafik utama setelah login
@@ -48,9 +51,13 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
         composable(route = Routes.HISTORY) {
             JournalHistoryScreen()
         }
-        composable(route = Routes.PROFILE) {
-            UserProfileScreen()
+        composable(Routes.PROFILE) {
+            // UserProfileScreen does not accept a NavController parameter
+            UserProfileScreen(navController = navController)
         }
+        // Di dalam NavHost
+
+
         composable(route = Routes.ADD_JOURNAL) {
             AddNewJournalScreen(
                 navController = navController,

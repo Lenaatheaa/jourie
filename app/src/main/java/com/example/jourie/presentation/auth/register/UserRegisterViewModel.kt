@@ -1,17 +1,20 @@
+// File: .../presentation/auth/register/UserRegisterViewModel.kt
 package com.example.jourie.presentation.auth.register
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// ViewModel dengan nama unik
-class UserRegisterViewModel : ViewModel() {
+// --- DIPERBAIKI: Mengimpor UserRegisterState dari filenya sendiri ---
+import com.example.jourie.presentation.auth.register.UserRegisterState
 
+// ---- TIDAK ADA LAGI DEFINISI DATA CLASS DI SINI ----
+
+class UserRegisterViewModel : ViewModel() {
+    // Baris ini sekarang tidak akan error karena UserRegisterState sudah diimpor
     private val _state = MutableStateFlow(UserRegisterState())
     val state = _state.asStateFlow()
 
@@ -27,8 +30,8 @@ class UserRegisterViewModel : ViewModel() {
         _state.update { it.copy(password = password) }
     }
 
-    fun onConfirmPasswordChange(password: String) {
-        _state.update { it.copy(confirmPassword = password) }
+    fun onConfirmPasswordChange(confirmPassword: String) {
+        _state.update { it.copy(confirmPassword = confirmPassword) }
     }
 
     fun onPasswordVisibilityToggle() {
@@ -39,17 +42,24 @@ class UserRegisterViewModel : ViewModel() {
         _state.update { it.copy(isConfirmPasswordVisible = !it.isConfirmPasswordVisible) }
     }
 
-    fun register(onRegisterSuccess: () -> Unit) {
-        if (state.value.password != state.value.confirmPassword) {
-            _state.update { it.copy(error = "Kata sandi tidak cocok") }
-            return
-        }
+    fun register() {
         viewModelScope.launch {
+            // Logika validasi dan registrasi Anda akan ada di sini
             _state.update { it.copy(isLoading = true, error = null) }
-            delay(1500) // Simulasi proses registrasi
-            Log.d("UserRegister", "Register Success for user: ${state.value.email}")
-            _state.update { it.copy(isLoading = false) }
-            onRegisterSuccess() // Panggil callback navigasi
+            // Simulasi registrasi
+            kotlinx.coroutines.delay(1500)
+
+            if (_state.value.password != _state.value.confirmPassword) {
+                _state.update { it.copy(isLoading = false, error = "Kata sandi tidak cocok.") }
+                return@launch
+            }
+            if (_state.value.fullName.isBlank() || _state.value.email.isBlank()) {
+                _state.update { it.copy(isLoading = false, error = "Semua kolom harus diisi.") }
+                return@launch
+            }
+
+            // Jika semua validasi lolos
+            _state.update { it.copy(isLoading = false, registerSuccess = true) }
         }
     }
 }

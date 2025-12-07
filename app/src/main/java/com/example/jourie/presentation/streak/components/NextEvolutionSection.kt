@@ -1,7 +1,11 @@
+// File: .../presentation/streak/components/NextEvolutionSection.kt
 package com.example.jourie.presentation.streak.components
 
+// --- IMPORT YANG DIPERLUKAN UNTUK GAMBAR PNG ---
+import androidx.compose.foundation.Image // DITAMBAHKAN
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
@@ -10,11 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.res.painterResource // DITAMBAHKAN
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jourie.R // DITAMBAHKAN
 import com.example.jourie.ui.theme.*
+
 
 @Composable
 fun NextEvolutionSection(
@@ -30,8 +37,16 @@ fun NextEvolutionSection(
             .background(White)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(text = "👑", fontSize = 28.sp, modifier = Modifier.size(40.dp))
+    ) {// --- DIPERBAIKI: Mengganti Text emoji dengan Image untuk PNG ---
+        Image(
+// GANTI NAMA FILE PNG ANDA DI SINI
+                painter = painterResource(id = R.drawable.ccp), // Contoh: ic_crown_placeholder.png
+        contentDescription = "Next Evolution Icon",
+        modifier = Modifier
+            .size(40.dp) // Sesuaikan ukuran gambar
+        )
+        // -------------------------------------------------------------
+
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Row(
@@ -41,8 +56,7 @@ fun NextEvolutionSection(
                 Text(
                     text = "Next Evolution",
                     fontWeight = FontWeight.Bold,
-                    color = TextDark,
-                    fontSize = 16.sp
+                    color = TextDark,fontSize = 16.sp
                 )
                 Text(
                     text = "$daysToEvolve days",
@@ -65,8 +79,7 @@ fun NextEvolutionSection(
                     .height(8.dp)
                     .clip(RoundedCornerShape(4.dp)),
                 color = PrimaryPurple,
-                trackColor = PrimaryPurpleLight
-            )
+                trackColor = PrimaryPurpleLight            )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "${daysToEvolve - 3} more days to evolve!", // Logika dummy
@@ -76,7 +89,6 @@ fun NextEvolutionSection(
         }
     }
 }
-
 @Preview
 @Composable
 private fun NextEvolutionSectionPreview() {
@@ -88,3 +100,16 @@ private fun NextEvolutionSectionPreview() {
         )
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
