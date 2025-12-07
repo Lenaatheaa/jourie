@@ -1,5 +1,4 @@
 // File: A:/androiddstudioo/Jourie/app/src/main/java/com/example/jourie/navigation/NavGraph.kt
-
 package com.example.jourie.navigation
 
 import androidx.compose.runtime.Composable
@@ -14,6 +13,8 @@ import com.example.jourie.presentation.journal.add.AddNewJournalScreen
 import com.example.jourie.presentation.journal.analysis.JournalAnalysisScreen
 import com.example.jourie.presentation.profile.UserProfileScreen
 import com.example.jourie.presentation.streak.StreakScreen
+
+// ---- TIDAK ADA LAGI KODE DUPLIKAT YANG DIKOMENTARI DI ATAS INI ----
 
 object Routes {
     // Rute Autentikasi
@@ -51,11 +52,13 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
         composable(route = Routes.HISTORY) {
             JournalHistoryScreen()
         }
+
+        // --- DIPERBAIKI: Memberikan NavController ke UserProfileScreen ---
         composable(Routes.PROFILE) {
-            // UserProfileScreen does not accept a NavController parameter
             UserProfileScreen(navController = navController)
         }
-        // Di dalam NavHost
+        // -----------------------------------------------------------------
+
 
 
         composable(route = Routes.ADD_JOURNAL) {
@@ -68,13 +71,10 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
             )
         }
 
-        // --- DITAMBAHKAN DAN DIPERBAIKI ---
         composable(
             route = "${Routes.JOURNAL_ANALYSIS}/{journalContent}",
             arguments = listOf(navArgument("journalContent") { type = NavType.StringType })
         ) {
-            // Pemanggilan ini sekarang benar. ViewModel di dalam JournalAnalysisScreen
-            // akan secara otomatis mengambil argumen 'journalContent'.
             JournalAnalysisScreen(navController = navController)
         }
 
