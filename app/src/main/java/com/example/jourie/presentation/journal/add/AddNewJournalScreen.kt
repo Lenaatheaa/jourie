@@ -20,10 +20,10 @@ import kotlinx.coroutines.android.awaitFrame
 
 @Composable
 fun AddNewJournalScreen(
-    navController: NavController,
-    // DIPERBAIKI: Tambahkan parameter untuk aksi submit
-    onJournalSubmitted: (String) -> Unit,
-    viewModel: AddNewJournalViewModel = viewModel()
+        navController: NavController,
+        // DIPERBAIKI: Tambahkan parameter journalId untuk aksi submit
+        onJournalSubmitted: (String, String) -> Unit,
+        viewModel: AddNewJournalViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
     val focusRequester = remember { FocusRequester() }
@@ -40,28 +40,28 @@ fun AddNewJournalScreen(
 
     Column(modifier = Modifier.fillMaxSize()) {
         ScreenHeader(
-            currentDate = state.currentDate,
-            onBackClick = { navController.popBackStack() }
+                currentDate = state.currentDate,
+                onBackClick = { navController.popBackStack() }
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Box(
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp))
-                .weight(1f)
+                modifier =
+                        Modifier.padding(horizontal = 16.dp)
+                                .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp))
+                                .weight(1f)
         ) {
             Card(
-                modifier = Modifier.fillMaxSize(),
-                shape = RoundedCornerShape(10.dp),
-                colors = CardDefaults.cardColors(containerColor = White)
+                    modifier = Modifier.fillMaxSize(),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = CardDefaults.cardColors(containerColor = White)
             ) {
                 ContentInputField(
-                    content = state.content,
-                    onContentChange = viewModel::onContentChange,
-                    focusRequester = focusRequester,
-                    modifier = Modifier.fillMaxHeight()
+                        content = state.content,
+                        onContentChange = viewModel::onContentChange,
+                        focusRequester = focusRequester,
+                        modifier = Modifier.fillMaxHeight()
                 )
             }
         }
@@ -69,8 +69,8 @@ fun AddNewJournalScreen(
         Spacer(modifier = Modifier.height(24.dp))
 
         Column(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             MediaActionButtons()
             // DIPERBAIKI: onClick sekarang meneruskan aksi navigasi ke ViewModel

@@ -7,16 +7,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jourie.data.model.NewJournal
 import com.example.jourie.data.repository.NewJournalRepository
-import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 class AddNewJournalViewModel(
-    private val repository: NewJournalRepository = NewJournalRepository()
+        private val repository: NewJournalRepository = NewJournalRepository()
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AddNewJournalState())
@@ -36,8 +35,8 @@ class AddNewJournalViewModel(
         _state.update { it.copy(content = newContent) }
     }
 
-    // --- DIPERBAIKI: Fungsi onSubmit sekarang menerima callback ---
-    fun onSubmit(onJournalSubmitted: (String) -> Unit) {
+    // --- DIPERBAIKI: Fungsi onSubmit sekarang menerima callback (String, String) -> Unit ---
+    fun onSubmit(onJournalSubmitted: (String, String) -> Unit) {
         val content = state.value.content
         if (content.isBlank()) return
 
@@ -45,21 +44,20 @@ class AddNewJournalViewModel(
             _state.update { it.copy(isLoading = true) }
 
             try {
-                val newJournal = NewJournal(
-                    content = content,
-                    dateTimestamp = System.currentTimeMillis()
-                )
+                val newJournal =
+                        NewJournal(content = content, dateTimestamp = System.currentTimeMillis())
                 // Simpan ke Firestore dan dapatkan ID jurnal yang baru dibuat
                 val journalId = repository.insertJournal(newJournal)
 
                 Log.d(
-                    "AddNewJournalVM",
-                    "Journal Submitted with id=$journalId, navigating to analysis."
+                        "AddNewJournalVM",
+                        "Journal Submitted with id=$journalId, navigating to analysis."
                 )
 
                 // Berhenti loading dan lanjut ke layar analisis hanya jika simpan berhasil
                 _state.update { it.copy(isLoading = false) }
-                onJournalSubmitted(content)
+                // KIRIM CONTENT DAN JOURNAL ID
+                onJournalSubmitted(content, journalId)
             } catch (e: Exception) {
                 Log.e("AddNewJournalVM", "Failed to submit journal", e)
                 _state.update { it.copy(isLoading = false) }

@@ -29,6 +29,7 @@ fun JournalAnalysisScreen(
         viewModel: JournalAnalysisViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val context = androidx.compose.ui.platform.LocalContext.current
 
     // Mulai analisis sekali setelah argumen diterima
     LaunchedEffect(journalContent, journalId) { viewModel.startAnalysis(journalContent, journalId) }
@@ -122,7 +123,21 @@ fun JournalAnalysisScreen(
                 item { QuoteSection(quoteText = state.quoteText) }
 
                 // 8. Tombol-tombol Aksi
-                item { AnalysisActionButtons(onShare = {}, onDownload = {}, onSave = {}) }
+                item {
+                    AnalysisActionButtons(
+                            onShare = {},
+                            onDownload = {},
+                            onSave = {
+                                viewModel.saveAnalysis()
+                                android.widget.Toast.makeText(
+                                                context,
+                                                "Analysis saved to history!",
+                                                android.widget.Toast.LENGTH_SHORT
+                                        )
+                                        .show()
+                            }
+                    )
+                }
             }
         }
     }
