@@ -44,18 +44,28 @@ class AddNewJournalViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
 
-            val newJournal = NewJournal(
-                content = content,
-                dateTimestamp = System.currentTimeMillis()
-            )
-            // Simpan ke Firestore dan dapatkan ID jurnal yang baru dibuat
-            val journalId = repository.insertJournal(newJournal)
+            try {
+                val newJournal = NewJournal(
+                    content = content,
+                    dateTimestamp = System.currentTimeMillis()
+                )
+                // Simpan ke Firestore dan dapatkan ID jurnal yang baru dibuat
+                val journalId = repository.insertJournal(newJournal)
 
-            Log.d("AddNewJournalVM", "Journal Submitted with id=$journalId, navigating to analysis.")
-            _state.update { it.copy(isLoading = false) }
+                Log.d(
+                    "AddNewJournalVM",
+                    "Journal Submitted with id=$journalId, navigating to analysis."
+                )
 
-            // Panggil callback navigasi dengan mengirim konten jurnal
-            onJournalSubmitted(content)
+                // Berhenti loading dan lanjut ke layar analisis hanya jika simpan berhasil
+                _state.update { it.copy(isLoading = false) }
+                onJournalSubmitted(content)
+            } catch (e: Exception) {
+                Log.e("AddNewJournalVM", "Failed to submit journal", e)
+                _state.update { it.copy(isLoading = false) }
+                // Untuk sekarang kita hanya menghentikan loading; UI tidak akan crash.
+                // Nanti bisa ditambah state.error untuk menampilkan pesan ke user.
+            }
         }
     }
 }

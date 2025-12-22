@@ -1,4 +1,5 @@
-// File: A:/androiddstudioo/Jourie/app/src/main/java/com/example/jourie/presentation/journal/analysis/JournalAnalysisScreen.kt
+// File:
+// A:/androiddstudioo/Jourie/app/src/main/java/com/example/jourie/presentation/journal/analysis/JournalAnalysisScreen.kt
 
 package com.example.jourie.presentation.journal.analysis
 
@@ -6,6 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,25 +23,51 @@ import com.example.jourie.ui.theme.JourieTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JournalAnalysisScreen(
-    navController: NavController,
-    // Pastikan pemanggilan viewModel ini benar dan tidak ada parameter tambahan
-    viewModel: JournalAnalysisViewModel = viewModel()
+        navController: NavController,
+        journalContent: String,
+        journalId: String?,
+        viewModel: JournalAnalysisViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
+    // Mulai analisis sekali setelah argumen diterima
+    LaunchedEffect(journalContent, journalId) { viewModel.startAnalysis(journalContent, journalId) }
+
     Scaffold(
-        topBar = {
-            // Header ditempatkan di topBar agar posisinya tetap di atas
-            AnalysisHeader(onBackClick = { navController.popBackStack() })
-        }
+            topBar = {
+                // Header ditempatkan di topBar agar posisinya tetap di atas
+                AnalysisHeader(onBackClick = { navController.popBackStack() })
+            }
     ) { innerPadding ->
-        // Tampilkan loading indicator jika data sedang dianalisis
-        if (state.isLoading) {
+        // Tampilkan error jika ada
+        if (state.error != null) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentAlignment = Alignment.Center
+                    modifier = Modifier.fillMaxSize().padding(innerPadding),
+                    contentAlignment = Alignment.Center
+            ) {
+                Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                            text = "❌ Analysis Failed",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.error
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                            text = state.error!!,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = { navController.popBackStack() }) { Text("Go Back") }
+                }
+            }
+        } else if (state.isLoading) {
+            Box(
+                    modifier = Modifier.fillMaxSize().padding(innerPadding),
+                    contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     CircularProgressIndicator()
@@ -50,34 +78,30 @@ fun JournalAnalysisScreen(
         } else {
             // Tampilkan konten utama jika loading selesai
             LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding),
-                contentPadding = PaddingValues(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                    modifier = Modifier.fillMaxSize().padding(innerPadding),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 // 1. Ringkasan Teks Jurnal
-                item {
-                    EntrySummaryCard(entryText = state.entryText)
-                }
+                item { EntrySummaryCard(entryText = state.entryText) }
 
                 // 2. Spasi kecil dengan teks "AI Analysis"
                 item {
                     Text(
-                        text = "AI Analysis",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentWidth(Alignment.CenterHorizontally)
+                            text = "AI Analysis",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier =
+                                    Modifier.fillMaxWidth()
+                                            .wrapContentWidth(Alignment.CenterHorizontally)
                     )
                 }
 
                 // 3. Grafik Prediksi
                 item {
                     PredictionChartSection(
-                        emotionDistribution = state.emotionDistribution,
-                        predictionText = state.predictionText
+                            emotionDistribution = state.emotionDistribution,
+                            predictionText = state.predictionText
                     )
                 }
 
@@ -88,25 +112,17 @@ fun JournalAnalysisScreen(
                 // 6. Kartu-kartu Insight
                 item {
                     InsightCards(
-                        sentimentScore = state.sentimentScore,
-                        rootCauseText = state.rootCauseText,
-                        recommendationText = state.recommendationText
+                            sentimentScore = state.sentimentScore,
+                            rootCauseText = state.rootCauseText,
+                            recommendationText = state.recommendationText
                     )
                 }
 
                 // 7. Kutipan
-                item {
-                    QuoteSection(quoteText = state.quoteText)
-                }
+                item { QuoteSection(quoteText = state.quoteText) }
 
                 // 8. Tombol-tombol Aksi
-                item {
-                    AnalysisActionButtons(
-                        onShare = {},
-                        onDownload = {},
-                        onSave = {}
-                    )
-                }
+                item { AnalysisActionButtons(onShare = {}, onDownload = {}, onSave = {}) }
             }
         }
     }
@@ -117,6 +133,10 @@ fun JournalAnalysisScreen(
 private fun JournalAnalysisScreenPreview() {
     val navController = rememberNavController()
     JourieTheme {
-        JournalAnalysisScreen(navController = navController)
+        JournalAnalysisScreen(
+                navController = navController,
+                journalContent = "Preview journal content",
+                journalId = null
+        )
     }
 }

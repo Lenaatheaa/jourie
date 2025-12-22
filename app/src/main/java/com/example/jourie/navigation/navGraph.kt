@@ -91,8 +91,23 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
                     defaultValue = null
                 }
             )
-        ) {
-            JournalAnalysisScreen(navController = navController)
+        ) { backStackEntry ->
+            val rawContent = backStackEntry.arguments?.getString("journalContent")
+            val decodedContent = rawContent?.let { raw ->
+                try {
+                    java.net.URLDecoder.decode(raw, "UTF-8")
+                } catch (e: Exception) {
+                    raw
+                }
+            } ?: "No content provided."
+
+            val journalId = backStackEntry.arguments?.getString("journalId")
+
+            JournalAnalysisScreen(
+                navController = navController,
+                journalContent = decodedContent,
+                journalId = journalId
+            )
         }
 
         composable(route = Routes.PET) {
