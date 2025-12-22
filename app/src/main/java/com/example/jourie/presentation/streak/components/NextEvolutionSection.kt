@@ -27,7 +27,8 @@ import com.example.jourie.ui.theme.*
 fun NextEvolutionSection(
     nextEvolutionName: String,
     daysToEvolve: Int,
-    progress: Float
+    progress: Float,
+    currentStreakDays: Int
 ) {
     Row(
         modifier = Modifier
@@ -81,8 +82,13 @@ fun NextEvolutionSection(
                 color = PrimaryPurple,
                 trackColor = PrimaryPurpleLight            )
             Spacer(modifier = Modifier.height(4.dp))
+            val remainingDays = (daysToEvolve - currentStreakDays).coerceAtLeast(0)
             Text(
-                text = "${daysToEvolve - 3} more days to evolve!", // Logika dummy
+                text = if (remainingDays > 0) {
+                    "$remainingDays more days to evolve!"
+                } else {
+                    "Ready to evolve!"
+                },
                 color = IconGray,
                 fontSize = 12.sp
             )
@@ -96,7 +102,8 @@ private fun NextEvolutionSectionPreview() {
         NextEvolutionSection(
             nextEvolutionName = "Capybara",
             daysToEvolve = 4,
-            progress = 0.25f
+            progress = 0.25f,
+            currentStreakDays = 1
         )
     }
 }

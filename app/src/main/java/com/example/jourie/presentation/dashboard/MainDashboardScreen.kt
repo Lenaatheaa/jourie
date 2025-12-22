@@ -14,8 +14,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +29,12 @@ import androidx.navigation.compose.rememberNavController
 import com.example.jourie.navigation.Routes
 import com.example.jourie.presentation.dashboard.components.*
 import com.example.jourie.ui.theme.JourieTheme
+import androidx.compose.ui.graphics.Color
+import com.example.jourie.data.model.EmotionSnapshot
+import com.example.jourie.data.model.WellnessRecommendation
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -35,6 +44,106 @@ fun MainDashboardScreen(
     viewModel: MainDashboardViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
+    // Tempat untuk rekomendasi AI berbasis jurnal terbaru.
+    // Jika belum ada analisis AI, akan tetap null dan UI memakai data dummy dari state.recommendations.
+    val aiRecommendationsState = remember { mutableStateOf<List<WellnessRecommendation>?>(null) }
+    // Tempat untuk emosi harian berbasis skor AI pada jurnal terbaru.
+    // Jika belum ada data AI, akan tetap null dan UI memakai data dummy dari state.todaysEmotions.
+    val aiEmotionsState = remember { mutableStateOf<List<EmotionSnapshot>?>(null) }
+
+    LaunchedEffect(Unit) {
+        try {
+            val auth = FirebaseAuth.getInstance()
+            val uid = auth.currentUser?.uid ?: return@LaunchedEffect
+            val firestore = FirebaseFirestore.getInstance()
+
+            // Ambil jurnal terbaru berdasarkan createdAt.
+            val latestJournalSnapshot = firestore
+                .collection("users")
+                .document(uid)
+                .collection("journals")
+                .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .await()
+
+            val latestJournalId = latestJournalSnapshot.documents.firstOrNull()?.id
+                ?: return@LaunchedEffect
+
+            // Ambil analisis AI terbaru untuk jurnal tersebut.
+            val aiSnapshot = firestore
+                .collection("users")
+                .document(uid)
+                .collection("journals")
+                .document(latestJournalId)
+                .collection("aiAnalysis")
+                .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .await()
+
+            val aiDoc = aiSnapshot.documents.firstOrNull() ?: return@LaunchedEffect
+
+            val recommendationText = aiDoc.getString("recommendation") ?: ""
+            val quoteText = aiDoc.getString("quote") ?: ""
+
+            // Jika field kosong (karena AI belum benar-benar diisi), gunakan teks default sebagai placeholder.
+            val wellnessTitle = if (recommendationText.isNotBlank()) {
+                recommendationText
+            } else {
+                "Take a mindful 5-minute break today."
+            }
+
+            val meditationTitle = if (quoteText.isNotBlank()) {
+                quoteText
+            } else {
+                "Try a short breathing meditation session."
+            }
+
+            aiRecommendationsState.value = listOf(
+                WellnessRecommendation(id = 1, category = "Wellness", title = wellnessTitle),
+                WellnessRecommendation(id = 2, category = "Meditation", title = meditationTitle)
+            )
+
+            // Ambil skor emosi untuk jurnal tersebut dari sub-koleksi emotionScores.
+            val scoresSnapshot = firestore
+                .collection("users")
+                .document(uid)
+                .collection("journals")
+                .document(latestJournalId)
+                .collection("emotionScores")
+                .get()
+                .await()
+
+            if (!scoresSnapshot.isEmpty) {
+                val aiEmotions = scoresSnapshot.documents.map { doc ->
+                    val name = doc.getString("emotionName") ?: "Emotion"
+                    val percentage = (doc.getLong("score") ?: 0L).toInt()
+                    val trend = (doc.getLong("comparisonTrend") ?: 0L).toInt()
+                    val change = if (trend >= 0) "+${trend}%" else "${trend}%"
+                    val colorHex = doc.getString("colorHex") ?: "#4A90E2"
+                    val parsedColor = try {
+                        val safeHex = if (colorHex.startsWith("#")) colorHex else "#${colorHex}"
+                        Color(android.graphics.Color.parseColor(safeHex))
+                    } catch (_: IllegalArgumentException) {
+                        Color(0xFF4A90E2)
+                    }
+
+                    EmotionSnapshot(
+                        name = name,
+                        percentage = percentage,
+                        change = change,
+                        color = parsedColor
+                    )
+                }
+
+                aiEmotionsState.value = aiEmotions
+            }
+        } catch (_: Exception) {
+            // Jika gagal (belum ada jurnal/AI atau masalah jaringan), biarkan null dan gunakan data dummy lama.
+        }
+    }
 
     Scaffold(
         floatingActionButton = {
@@ -70,12 +179,19 @@ fun MainDashboardScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         DailyStreakSection(streakCount = state.currentStreak)
-                        DailyEmotionStats(emotions = state.todaysEmotions)
+                        // Jika sudah ada data emosi dari AI, gunakan itu; jika belum, fallback ke data dummy dari state.
+                        val emotionsToShow = aiEmotionsState.value ?: state.todaysEmotions
+                        DailyEmotionStats(emotions = emotionsToShow)
                         ReflectJournalCard(onWriteClick = {
                             // DIPERBAIKI: Aksi navigasi saat tombol "Write Journal" diklik
                             navController.navigate(Routes.ADD_JOURNAL)
                         })
-                        DailyCalendarView()
+                        DailyCalendarView(
+                            journalEntries = state.recentJournals,
+                            onDateWithJournalClick = { dateQuery ->
+                                navController.navigate("${Routes.HISTORY}?dateFilter=$dateQuery")
+                            }
+                        )
                     }
                 }
 
@@ -88,7 +204,11 @@ fun MainDashboardScreen(
                         verticalArrangement = Arrangement.spacedBy(28.dp)
                     ) {
                         AchievementsProgressCard(progress = state.achievementsProgress)
-                        WellnessRecommendations(recommendations = state.recommendations)
+
+                        // Jika sudah ada rekomendasi dari AI, gunakan itu.
+                        // Jika belum, fallback ke rekomendasi dummy dari state.recommendations.
+                        val recsToShow = aiRecommendationsState.value ?: state.recommendations
+                        WellnessRecommendations(recommendations = recsToShow)
                     }
                 }
             }

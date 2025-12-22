@@ -56,6 +56,8 @@ package com.example.jourie.presentation.auth.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jourie.data.firebase.FirebaseAuthRepository
+import android.util.Patterns
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -67,6 +69,7 @@ import com.example.jourie.presentation.auth.login.UserLoginState
 class UserLoginViewModel : ViewModel() {
     private val _state = MutableStateFlow(UserLoginState())
     val state = _state.asStateFlow()
+    private val repo = FirebaseAuthRepository()
 
     fun onEmailChange(email: String) {
         _state.update { it.copy(email = email) }
@@ -82,22 +85,28 @@ class UserLoginViewModel : ViewModel() {
 
     // --- FUNGSI LOGIN YANG DIPERBAIKI ---
     fun login() {
-        // Jangan jalankan jika sudah loading
         if (_state.value.isLoading) return
-
         viewModelScope.launch {
+            val email = _state.value.email
+            val password = _state.value.password
+            if (email.isBlank() || password.isBlank()) {
+                _state.update { it.copy(error = "Email dan kata sandi tidak boleh kosong.") }
+                return@launch
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                _state.update { it.copy(error = "Format email tidak valid.") }
+                return@launch
+            }
+            if (password.length < 6) {
+                _state.update { it.copy(error = "Kata sandi minimal 6 karakter.") }
+                return@launch
+            }
             _state.update { it.copy(isLoading = true, error = null) }
-            // Simulasi proses login di server
-            kotlinx.coroutines.delay(1500)
-
-            // Logika validasi sederhana
-            if (_state.value.email.isNotBlank() && _state.value.password.isNotBlank()) {
-                // --- INI BAGIAN PENTING YANG HILANG ---
-                // Beri tahu UI bahwa login berhasil!
+            val result = repo.login(email, password)
+            if (result.isSuccess) {
                 _state.update { it.copy(isLoading = false, loginSuccess = true) }
             } else {
-                // Jika validasi gagal, tampilkan error
-                _state.update { it.copy(isLoading = false, error = "Email dan kata sandi tidak boleh kosong.") }
+                _state.update { it.copy(isLoading = false, error = result.exceptionOrNull()?.localizedMessage ?: "Login gagal") }
             }
         }
     }

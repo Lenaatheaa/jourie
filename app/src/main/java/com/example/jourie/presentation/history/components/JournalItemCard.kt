@@ -27,9 +27,15 @@ import com.example.jourie.ui.theme.*
 
 // Card Item dengan nama unik
 @Composable
-fun JournalItemCard(entry: JournalEntry) {
+fun JournalItemCard(
+    entry: JournalEntry,
+    onClick: () -> Unit,
+    onDeleteClick: () -> Unit
+) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
@@ -69,7 +75,7 @@ fun JournalItemCard(entry: JournalEntry) {
                             .size(28.dp)
                             .clip(RoundedCornerShape(6.dp))
                             .background(Color(0xFFFF5C5C))
-                            .clickable { /* delete action */ },
+                            .clickable { onDeleteClick() },
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(

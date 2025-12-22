@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.jourie.presentation.achievements.MilestonesScreen
 import com.example.jourie.presentation.dashboard.MainDashboardScreen
-//import com.example.jourie.presentation.edit_profile.EditProfileScreen
+import com.example.jourie.presentation.edit_profile.EditProfileScreen
 import com.example.jourie.presentation.history.JournalHistoryScreen
 import com.example.jourie.presentation.journal.add.AddNewJournalScreen
 import com.example.jourie.presentation.journal.analysis.JournalAnalysisScreen
@@ -49,17 +49,27 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
         composable(route = Routes.ACHIEVEMENTS) {
             MilestonesScreen()
         }
-        composable(route = Routes.HISTORY) {
-            JournalHistoryScreen()
+        composable(
+            route = "${Routes.HISTORY}?dateFilter={dateFilter}",
+            arguments = listOf(
+                navArgument("dateFilter") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { backStackEntry ->
+            val dateFilter = backStackEntry.arguments?.getString("dateFilter")
+            JournalHistoryScreen(navController = navController, initialDateFilter = dateFilter)
         }
 
-        // --- DIPERBAIKI: Memberikan NavController ke UserProfileScreen ---
         composable(Routes.PROFILE) {
             UserProfileScreen(navController = navController)
         }
-        // -----------------------------------------------------------------
 
-
+        composable(Routes.EDIT_PROFILE) {
+            EditProfileScreen(onNavigateBack = { navController.popBackStack() })
+        }
 
         composable(route = Routes.ADD_JOURNAL) {
             AddNewJournalScreen(
@@ -72,8 +82,15 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
         }
 
         composable(
-            route = "${Routes.JOURNAL_ANALYSIS}/{journalContent}",
-            arguments = listOf(navArgument("journalContent") { type = NavType.StringType })
+            route = "${Routes.JOURNAL_ANALYSIS}/{journalContent}?journalId={journalId}",
+            arguments = listOf(
+                navArgument("journalContent") { type = NavType.StringType },
+                navArgument("journalId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
         ) {
             JournalAnalysisScreen(navController = navController)
         }

@@ -75,7 +75,10 @@ fun JournalAnalysisScreen(
 
                 // 3. Grafik Prediksi
                 item {
-                    PredictionChartSection(emotionDistribution = state.emotionDistribution)
+                    PredictionChartSection(
+                        emotionDistribution = state.emotionDistribution,
+                        predictionText = state.predictionText
+                    )
                 }
 
                 // 4. (Emotion meter removed)
@@ -84,12 +87,16 @@ fun JournalAnalysisScreen(
 
                 // 6. Kartu-kartu Insight
                 item {
-                    InsightCards(sentimentScore = state.sentimentScore)
+                    InsightCards(
+                        sentimentScore = state.sentimentScore,
+                        rootCauseText = state.rootCauseText,
+                        recommendationText = state.recommendationText
+                    )
                 }
 
                 // 7. Kutipan
                 item {
-                    QuoteSection()
+                    QuoteSection(quoteText = state.quoteText)
                 }
 
                 // 8. Tombol-tombol Aksi

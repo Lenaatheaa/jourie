@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.ui.theme.*
+import java.util.Calendar
 
 @Composable
 fun DailyStreakSection(streakCount: Int) {
@@ -50,8 +51,18 @@ fun DailyStreakSection(streakCount: Int) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 val days = listOf("M", "T", "W", "T", "F", "S", "S")
-                // Highlight the second day (T) to match the image appearance
-                val activeIndex = 1 
+                // Highlight hari sesuai hari sistem saat ini (Senin = M, dst.)
+                val calendar = Calendar.getInstance()
+                val activeIndex = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+                    Calendar.MONDAY -> 0
+                    Calendar.TUESDAY -> 1
+                    Calendar.WEDNESDAY -> 2
+                    Calendar.THURSDAY -> 3
+                    Calendar.FRIDAY -> 4
+                    Calendar.SATURDAY -> 5
+                    Calendar.SUNDAY -> 6
+                    else -> 0
+                }
                 
                 days.forEachIndexed { index, day ->
                     Column(

@@ -2,9 +2,8 @@
 
 package com.example.jourie.domain.usecase
 
-import StreakRepository
 import com.example.jourie.data.model.StreakData
-//import com.example.jourie.data.repository.StreakRepository
+import com.example.jourie.data.repository.StreakRepository
 
 class GetStreakDataUseCase(
     private val repository: StreakRepository

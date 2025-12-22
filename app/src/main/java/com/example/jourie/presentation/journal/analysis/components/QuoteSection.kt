@@ -18,7 +18,7 @@ import com.example.jourie.ui.theme.PrimaryPurplePastel
 import com.example.jourie.ui.theme.TextDark
 
 @Composable
-fun QuoteSection() {
+fun QuoteSection(quoteText: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +31,7 @@ fun QuoteSection() {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "\"Peace comes from within. Do not seek it without.\"",
+                text = quoteText,
                 fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Center,
                 color = TextDark.copy(alpha = 0.85f)

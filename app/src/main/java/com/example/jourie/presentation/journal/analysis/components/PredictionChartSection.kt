@@ -42,7 +42,10 @@ private val chartColors = listOf(
 )
 
 @Composable
-fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
+fun PredictionChartSection(
+    emotionDistribution: Map<String, Float>,
+    predictionText: String
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,7 +72,7 @@ fun PredictionChartSection(emotionDistribution: Map<String, Float>) {
 
         // Body Text
         Text(
-            text = "Based on your recent patterns, you are likely to experience continued emotional stability and mindfulness in the coming days.",
+            text = predictionText,
             color = TextDark.copy(alpha = 0.7f),
             fontSize = 14.sp
         )

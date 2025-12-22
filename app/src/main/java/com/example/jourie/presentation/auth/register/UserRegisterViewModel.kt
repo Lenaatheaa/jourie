@@ -3,6 +3,8 @@ package com.example.jourie.presentation.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.jourie.data.firebase.FirebaseAuthRepository
+import android.util.Patterns
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,6 +19,7 @@ class UserRegisterViewModel : ViewModel() {
     // Baris ini sekarang tidak akan error karena UserRegisterState sudah diimpor
     private val _state = MutableStateFlow(UserRegisterState())
     val state = _state.asStateFlow()
+    private val repo = FirebaseAuthRepository()
 
     fun onFullNameChange(name: String) {
         _state.update { it.copy(fullName = name) }
@@ -44,22 +47,35 @@ class UserRegisterViewModel : ViewModel() {
 
     fun register() {
         viewModelScope.launch {
-            // Logika validasi dan registrasi Anda akan ada di sini
+            val fullName = _state.value.fullName
+            val email = _state.value.email
+            val password = _state.value.password
+            val confirmPassword = _state.value.confirmPassword
+
+            if (password != confirmPassword) {
+                _state.update { it.copy(error = "Kata sandi tidak cocok.") }
+                return@launch
+            }
+            if (fullName.isBlank() || email.isBlank() || password.isBlank()) {
+                _state.update { it.copy(error = "Semua kolom harus diisi.") }
+                return@launch
+            }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                _state.update { it.copy(error = "Format email tidak valid.") }
+                return@launch
+            }
+            if (password.length < 6) {
+                _state.update { it.copy(error = "Kata sandi minimal 6 karakter.") }
+                return@launch
+            }
+
             _state.update { it.copy(isLoading = true, error = null) }
-            // Simulasi registrasi
-            kotlinx.coroutines.delay(1500)
-
-            if (_state.value.password != _state.value.confirmPassword) {
-                _state.update { it.copy(isLoading = false, error = "Kata sandi tidak cocok.") }
-                return@launch
+            val result = repo.register(fullName, email, password)
+            if (result.isSuccess) {
+                _state.update { it.copy(isLoading = false, registerSuccess = true) }
+            } else {
+                _state.update { it.copy(isLoading = false, error = result.exceptionOrNull()?.localizedMessage ?: "Registrasi gagal") }
             }
-            if (_state.value.fullName.isBlank() || _state.value.email.isBlank()) {
-                _state.update { it.copy(isLoading = false, error = "Semua kolom harus diisi.") }
-                return@launch
-            }
-
-            // Jika semua validasi lolos
-            _state.update { it.copy(isLoading = false, registerSuccess = true) }
         }
     }
 }

@@ -48,9 +48,10 @@ class AddNewJournalViewModel(
                 content = content,
                 dateTimestamp = System.currentTimeMillis()
             )
-            repository.insertJournal(newJournal)
+            // Simpan ke Firestore dan dapatkan ID jurnal yang baru dibuat
+            val journalId = repository.insertJournal(newJournal)
 
-            Log.d("AddNewJournalVM", "Journal Submitted, navigating to analysis.")
+            Log.d("AddNewJournalVM", "Journal Submitted with id=$journalId, navigating to analysis.")
             _state.update { it.copy(isLoading = false) }
 
             // Panggil callback navigasi dengan mengirim konten jurnal

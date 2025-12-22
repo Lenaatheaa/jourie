@@ -1,6 +1,4 @@
 package com.example.jourie.presentation.streak
-
-import StreakRepository
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 //mport com.example.jourie.data.repository.StreakRepository
+import com.example.jourie.data.repository.StreakRepository
 import com.example.jourie.domain.usecase.CalculateEvolutionProgressUseCase
 import com.example.jourie.domain.usecase.GetStreakDataUseCase
 import com.example.jourie.presentation.streak.components.*
@@ -59,7 +58,8 @@ fun StreakScreen(
             NextEvolutionSection(
                 nextEvolutionName = data.nextEvolution.name,
                 daysToEvolve = data.nextEvolution.daysRequired,
-                progress = state.evolutionProgress
+                progress = state.evolutionProgress,
+                currentStreakDays = data.currentDayStreak
             )
             EvolutionTimelineSection(timeline = data.timeline)
             RecentStreakDaysSection()

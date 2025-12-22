@@ -39,8 +39,10 @@ import java.util.*
 import androidx.compose.foundation.shape.CircleShape
 
 @Composable
-fun DailyCalendarView
-            () {
+fun DailyCalendarView(
+    journalEntries: List<com.example.jourie.data.model.JournalEntry>,
+    onDateWithJournalClick: (String) -> Unit
+) {
     // DIPERBAIKI: Menggunakan Calendar sebagai ganti LocalDate
     var selectedDate by remember { mutableStateOf(Calendar.getInstance()) }
 
@@ -49,8 +51,8 @@ fun DailyCalendarView
         val cal = selectedDate.clone() as Calendar
         cal.set(Calendar.DAY_OF_MONTH, 1)
         val firstDow = cal.get(Calendar.DAY_OF_WEEK) // Sunday=1
-        // convert to Monday-start index (0..6)
-        val offset = (firstDow + 6) % 7
+        // convert to Monday-start index (0..6): Monday=0, ..., Sunday=6
+        val offset = (firstDow + 5) % 7
         val maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         val list = mutableListOf<Int?>()
@@ -60,6 +62,17 @@ fun DailyCalendarView
         // chunk into weeks
         val weeks = list.chunked(7)
         weeks
+    }
+
+    // Hitung hari-hari di bulan ini yang memiliki jurnal
+    val monthAbbrev = remember(selectedDate.timeInMillis) {
+        java.text.SimpleDateFormat("MMM", java.util.Locale.getDefault()).format(selectedDate.time)
+    }
+    val journalDaysInMonth = remember(selectedDate.timeInMillis, journalEntries) {
+        journalEntries
+            .filter { it.monthAbbreviation == monthAbbrev }
+            .map { it.dayOfMonth }
+            .toSet()
     }
 
     Column {
@@ -125,16 +138,21 @@ fun DailyCalendarView
                 Spacer(modifier = Modifier.height(8.dp))
 
                 // weeks
-                val cellOuterWidth = 64.dp
                 val circleSize = 48.dp
                 monthGrid.forEach { week ->
                     Row(modifier = Modifier.fillMaxWidth()) {
                         week.forEach { day ->
                             Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                                val hasJournal = day != null && journalDaysInMonth.contains(day)
                                 DateItem(day = day, selectedDate = selectedDate, onDayClick = { dayInt ->
                                     val newCal = selectedDate.clone() as Calendar
                                     newCal.set(Calendar.DAY_OF_MONTH, dayInt)
                                     selectedDate = newCal
+
+                                    if (hasJournal) {
+                                        val dateQuery = "$dayInt $monthAbbrev"
+                                        onDateWithJournalClick(dateQuery)
+                                    }
                                 }, circleSize = circleSize)
                             }
                         }

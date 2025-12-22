@@ -45,4 +45,23 @@ class JournalHistoryViewModel(
         val filtered = filterUseCase(query, _state.value.allJournals)
         _state.update { it.copy(filteredJournals = filtered) }
     }
+
+    fun onDeleteJournal(journalId: String) {
+        viewModelScope.launch {
+            try {
+                repository.deleteJournalEntry(journalId)
+
+                _state.update { current ->
+                    val updatedAll = current.allJournals.filterNot { it.id == journalId }
+                    val updatedFiltered = current.filteredJournals.filterNot { it.id == journalId }
+                    current.copy(
+                        allJournals = updatedAll,
+                        filteredJournals = updatedFiltered
+                    )
+                }
+            } catch (e: Exception) {
+                // Bisa ditambahkan error state spesifik jika diperlukan nanti
+            }
+        }
+    }
 }

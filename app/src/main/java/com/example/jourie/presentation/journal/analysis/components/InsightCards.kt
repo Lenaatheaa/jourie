@@ -23,21 +23,25 @@ import com.example.jourie.ui.theme.TextDark
 import com.example.jourie.ui.theme.PrimaryBlue
 
 @Composable
-fun InsightCards(sentimentScore: Int) {
+fun InsightCards(
+    sentimentScore: Int,
+    rootCauseText: String,
+    recommendationText: String
+) {
     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
         // Root Cause
         InsightCard(
             icon = Icons.Default.Search,
             iconColor = Color(0xFF4A90E2),
             title = "Root Cause",
-            content = "Consistent mindfulness practice and adequate rest have created a foundation for emotional balance."
+            content = rootCauseText
         )
         // Recommendation
         InsightCard(
             icon = Icons.Default.Lightbulb,
             iconColor = PrimaryBlue,
             title = "Recommendation",
-            content = "Continue your meditation practice. Consider journaling in the evening to reflect on daily gratitude."
+            content = recommendationText
         )
         // Sentiment Score
         }

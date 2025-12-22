@@ -398,6 +398,14 @@ fun UserLoginScreen(
             })
         )
 
+        state.error?.let {
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+        }
+
         // --- TOMBOL FORGOT PASSWORD ---
         TextButton(
             onClick = { /* TODO: Aksi lupa password */ },

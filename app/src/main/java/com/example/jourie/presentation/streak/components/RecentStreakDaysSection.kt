@@ -24,6 +24,7 @@ import com.example.jourie.ui.theme.JourieTheme
 import com.example.jourie.ui.theme.PrimaryPurple
 import com.example.jourie.ui.theme.TextDark
 import com.example.jourie.ui.theme.White
+import java.util.Calendar
 
 @Composable
 fun RecentStreakDaysSection() {
@@ -57,7 +58,17 @@ fun RecentStreakDaysSection() {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 val days = listOf("M", "T", "W", "T", "F", "S", "S")
-                val activeIndex = 1 // match dashboard look
+                val calendar = Calendar.getInstance()
+                val activeIndex = when (calendar.get(Calendar.DAY_OF_WEEK)) {
+                    Calendar.MONDAY -> 0
+                    Calendar.TUESDAY -> 1
+                    Calendar.WEDNESDAY -> 2
+                    Calendar.THURSDAY -> 3
+                    Calendar.FRIDAY -> 4
+                    Calendar.SATURDAY -> 5
+                    Calendar.SUNDAY -> 6
+                    else -> 0
+                }
 
                 days.forEachIndexed { index, day ->
                     Column(

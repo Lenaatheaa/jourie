@@ -1,4 +1,4 @@
-package com.example.jourie.data.repository
+package com.example.jourie.data.model
 
 import com.example.jourie.data.model.Badge
 import kotlinx.coroutines.delay

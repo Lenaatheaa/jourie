@@ -1,19 +1,73 @@
 package com.example.jourie.data.repository
 
 import com.example.jourie.data.model.JournalEntry
-import kotlinx.coroutines.delay
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
-// Repository dengan nama unik untuk data dummy jurnal
-class JournalRepository {
+// Repository untuk mengambil riwayat jurnal dari Firestore
+class JournalRepository(
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
+    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+) {
+    /**
+     * Mengambil semua jurnal milik user saat ini dari path:
+     * users/{uid}/journals
+     *
+     * Mapping field (disesuaikan dengan struktur koleksi yang sudah ada):
+     * - id            <- document.id
+     * - description   <- content
+     * - mood          <- mood
+     * - dayOfMonth    <- day
+     * - monthAbbreviation <- month
+     * - tags          <- tags (array of string), default empty list
+     * - dateLabel     <- "$day $month" (sederhana, bisa disempurnakan nanti)
+     */
     suspend fun getAllJournalEntries(): List<JournalEntry> {
-        delay(500) // Simulasi loading
-        return listOf(
-            JournalEntry(1, "Today", 24, "Nov", "Calm", "Had a wonderful morning meditation session. Felt incredibly calm and centered throughout the day. Grateful for the small moments of peace.", listOf("grateful", "peaceful")),
-            JournalEntry(2, "Yesterday", 23, "Nov", "Stressed", "Work was challenging today. Felt overwhelmed by deadlines but managed to push through. Need to remember to take breaks more often.", listOf("overwhelmed", "challenging")),
-            JournalEntry(3, "3 Days Ago", 22, "Nov", "Calm", "Had a wonderful morning meditation session. Felt incredibly calm and centered throughout the day. Grateful for the small moments of peace.", listOf("grateful", "peaceful")),
-            JournalEntry(4, "Nov 21", 21, "Nov", "Happy", "Spent the evening with friends. It was a much-needed break and we had a lot of fun.", listOf("friends", "fun")),
-            JournalEntry(5, "Nov 20", 20, "Nov", "Anxious", "Felt a bit anxious about the upcoming presentation. Prepared a lot to feel more confident.", listOf("work", "anxiety")),
-            JournalEntry(6, "Nov 19", 19, "Nov", "Productive", "Finished a major project ahead of schedule. The feeling of accomplishment is amazing.", listOf("productive", "work"))
-        )
+        val uid = auth.currentUser?.uid ?: return emptyList()
+
+        val snapshot = firestore
+            .collection("users")
+            .document(uid)
+            .collection("journals")
+            .get()
+            .await()
+
+        return snapshot.documents.map { doc ->
+            val id = doc.id
+            val day = (doc.getLong("day") ?: 0L).toInt()
+            val month = doc.getString("month") ?: ""
+            val mood = doc.getString("mood") ?: "Neutral"
+            val content = doc.getString("content") ?: ""
+            val tags = (doc.get("tags") as? List<*>)
+                ?.filterIsInstance<String>()
+                ?: emptyList()
+
+            JournalEntry(
+                id = id,
+                dateLabel = if (day != 0 && month.isNotEmpty()) "$day $month" else "",
+                dayOfMonth = day,
+                monthAbbreviation = month,
+                mood = mood,
+                description = content,
+                tags = tags
+            )
+        }
+    }
+
+    /**
+     * Menghapus satu jurnal milik user saat ini berdasarkan document id:
+     * users/{uid}/journals/{journalId}
+     */
+    suspend fun deleteJournalEntry(journalId: String) {
+        val uid = auth.currentUser?.uid ?: return
+
+        firestore
+            .collection("users")
+            .document(uid)
+            .collection("journals")
+            .document(journalId)
+            .delete()
+            .await()
     }
 }

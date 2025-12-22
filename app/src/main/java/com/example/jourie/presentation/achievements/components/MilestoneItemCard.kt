@@ -38,7 +38,9 @@ fun MilestoneItemCard(badge: Badge) {
     val contentAlpha = if (badge.isUnlocked) 1f else 0.4f
 
     Card(
-        modifier = Modifier.alpha(contentAlpha),
+        modifier = Modifier
+            .alpha(contentAlpha)
+            .height(132.dp),
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(containerColor = backgroundColor),
         border = BorderStroke(1.dp, Color(0xFFE5CCFF)),

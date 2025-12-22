@@ -39,10 +39,10 @@ fun MilestoneCategoryGrid(
             columns = GridCells.Fixed(3),
             // DIPERBAIKI: Memberikan tinggi yang tetap pada LazyVerticalGrid
             // Ini akan memastikan grid dirender dengan benar di dalam Column yang scrollable.
-            // Nilai 260.dp cukup untuk menampilkan 2 baris item.
+            // Nilai 320.dp cukup longgar untuk 2 baris item dengan teks multi-baris.
             modifier = Modifier
                 .fillMaxWidth()
-                .height(260.dp),
+                .height(320.dp),
             // PENTING: Nonaktifkan scroll internal grid agar tidak konflik dengan scroll utama
             userScrollEnabled = false,
             contentPadding = PaddingValues(horizontal = 16.dp),

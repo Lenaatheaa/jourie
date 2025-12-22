@@ -32,8 +32,8 @@ class MainDashboardRepository {
 
         // Data dummy untuk jurnal terbaru (menggunakan 'JournalEntry' yang sudah ada)
         val journals = listOf(
-            JournalEntry(1, "Today", 24, "Nov", "Calm", "Had a wonderful morning meditation session. Felt incredibly calm and centered.", listOf("grateful", "peaceful")),
-            JournalEntry(2, "Yesterday", 23, "Nov", "Stressed", "Work was challenging today. Felt overwhelmed by deadlines but managed to push through.", listOf("overwhelmed", "challenging"))
+            JournalEntry("1", "Today", 24, "Nov", "Calm", "Had a wonderful morning meditation session. Felt incredibly calm and centered.", listOf("grateful", "peaceful")),
+            JournalEntry("2", "Yesterday", 23, "Nov", "Stressed", "Work was challenging today. Felt overwhelmed by deadlines but managed to push through.", listOf("overwhelmed", "challenging"))
         )
 
         // Data dummy untuk rekomendasi

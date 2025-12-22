@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.jourie.presentation.history.components.HistoryPageHeader
 import com.example.jourie.presentation.history.components.JournalItemCard
 import com.example.jourie.presentation.history.components.JournalSearchBar
@@ -28,9 +29,18 @@ import com.example.jourie.ui.theme.JourieTheme
 // Layar utama dengan nama unik
 @Composable
 fun JournalHistoryScreen(
+    navController: NavController,
+    initialDateFilter: String? = null,
     viewModel: JournalHistoryViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
+    // Jika dipanggil dengan dateFilter dari Dashboard, gunakan untuk memfilter awal
+    androidx.compose.runtime.LaunchedEffect(initialDateFilter) {
+        if (!initialDateFilter.isNullOrBlank()) {
+            viewModel.onSearchQueryChange(initialDateFilter)
+        }
+    }
 
     JourieTheme {
         Scaffold(
@@ -59,7 +69,16 @@ fun JournalHistoryScreen(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(state.filteredJournals, key = { it.id }) { journal ->
-                        JournalItemCard(entry = journal)
+                        JournalItemCard(
+                            entry = journal,
+                            onClick = {
+                                val encodedContent = java.net.URLEncoder.encode(journal.description, "UTF-8")
+                                navController.navigate("journal_analysis_screen/$encodedContent?journalId=${journal.id}")
+                            },
+                            onDeleteClick = {
+                                viewModel.onDeleteJournal(journal.id)
+                            }
+                        )
                     }
                 }
             } else {
