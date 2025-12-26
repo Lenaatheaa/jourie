@@ -1,9 +1,9 @@
-// File: .../presentation/journal/add/AddNewJournalScreen.kt
-
 package com.example.jourie.presentation.journal.add
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.*
@@ -21,62 +21,69 @@ import kotlinx.coroutines.android.awaitFrame
 @Composable
 fun AddNewJournalScreen(
         navController: NavController,
-        // DIPERBAIKI: Tambahkan parameter journalId untuk aksi submit
         onJournalSubmitted: (String, String) -> Unit,
         viewModel: AddNewJournalViewModel = viewModel()
 ) {
-    val state by viewModel.state.collectAsState()
-    val focusRequester = remember { FocusRequester() }
-    val keyboardController = LocalSoftwareKeyboardController.current
+        val state by viewModel.state.collectAsState()
+        val focusRequester = remember { FocusRequester() }
+        val keyboardController = LocalSoftwareKeyboardController.current
 
-    LaunchedEffect(keyboardController) {
-        awaitFrame()
-        focusRequester.requestFocus()
-        keyboardController?.show()
-    }
+        LaunchedEffect(keyboardController) {
+                awaitFrame()
+                focusRequester.requestFocus()
+                keyboardController?.show()
+        }
 
-    // DIHAPUS: Logika 'isSaved' tidak diperlukan lagi di sini
-    // LaunchedEffect(state.isSaved) { ... }
-
-    Column(modifier = Modifier.fillMaxSize()) {
-        ScreenHeader(
-                currentDate = state.currentDate,
-                onBackClick = { navController.popBackStack() }
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Box(
-                modifier =
-                        Modifier.padding(horizontal = 16.dp)
-                                .shadow(elevation = 8.dp, shape = RoundedCornerShape(20.dp))
-                                .weight(1f)
-        ) {
-            Card(
-                    modifier = Modifier.fillMaxSize(),
-                    shape = RoundedCornerShape(10.dp),
-                    colors = CardDefaults.cardColors(containerColor = White)
-            ) {
-                ContentInputField(
-                        content = state.content,
-                        onContentChange = viewModel::onContentChange,
-                        focusRequester = focusRequester,
-                        modifier = Modifier.fillMaxHeight()
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+                // Header
+                ScreenHeader(
+                        currentDate = state.currentDate,
+                        onBackClick = { navController.popBackStack() }
                 )
-            }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Mood Selection Grid
+                MoodSelectionGrid(
+                        selectedMood = state.mood,
+                        onMoodSelected = viewModel::onMoodChange,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Content Input Field
+                Box(
+                        modifier =
+                                Modifier.padding(horizontal = 16.dp)
+                                        .shadow(elevation = 4.dp, shape = RoundedCornerShape(20.dp))
+                                        .height(280.dp)
+                ) {
+                        Card(
+                                modifier = Modifier.fillMaxSize(),
+                                shape = RoundedCornerShape(20.dp),
+                                colors = CardDefaults.cardColors(containerColor = White)
+                        ) {
+                                ContentInputField(
+                                        content = state.content,
+                                        onContentChange = viewModel::onContentChange,
+                                        focusRequester = focusRequester,
+                                        modifier = Modifier.fillMaxSize()
+                                )
+                        }
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                // Action Buttons
+                Column(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                        MediaActionButtons()
+                        SaveEntryButton(onClick = { viewModel.onSubmit(onJournalSubmitted) })
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
         }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Column(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            MediaActionButtons()
-            // DIPERBAIKI: onClick sekarang meneruskan aksi navigasi ke ViewModel
-            SaveEntryButton(onClick = { viewModel.onSubmit(onJournalSubmitted) })
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-    }
 }

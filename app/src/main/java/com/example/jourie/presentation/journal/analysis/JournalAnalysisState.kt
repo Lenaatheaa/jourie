@@ -12,5 +12,7 @@ data class JournalAnalysisState(
     val quoteText: String = "",
     val keywords: List<String> = emptyList(),
     val emotionDistribution: Map<String, Float> = emptyMap(),
+    val userSelectedMood: String? = null, // Mood yang dipilih user saat membuat journal
+    val journalTimestamp: Long? = null, // Timestamp journal untuk display tanggal
     val error: String? = null
 )

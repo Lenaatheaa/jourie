@@ -145,6 +145,33 @@ class NewJournalRepository(
     // ==================== PLACEHOLDER PEMBACAAN ANALISIS AI ====================
 
     /**
+     * Mengambil data jurnal berdasarkan ID untuk mendapatkan mood yang dipilih user
+     */
+    suspend fun getJournalById(journalId: String): NewJournal? {
+        val uid = auth.currentUser?.uid ?: return null
+        
+        try {
+            val doc = firestore
+                .collection("users")
+                .document(uid)
+                .collection("journals")
+                .document(journalId)
+                .get()
+                .await()
+            
+            if (!doc.exists()) return null
+            
+            return NewJournal(
+                content = doc.getString("content") ?: "",
+                dateTimestamp = doc.getLong("dateTimestamp") ?: System.currentTimeMillis(),
+                mood = doc.getString("mood") ?: "Neutral"  // Default "Neutral" untuk journal lama
+            )
+        } catch (e: Exception) {
+            return null
+        }
+    }
+
+    /**
      * Mengambil satu dokumen analisis AI terbaru untuk jurnal tertentu.
      * Path: users/{uid}/journals/{journalId}/aiAnalysis
      */

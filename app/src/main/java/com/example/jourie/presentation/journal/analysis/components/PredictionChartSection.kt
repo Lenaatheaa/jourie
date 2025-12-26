@@ -1,5 +1,3 @@
-// File: A:/androiddstudioo/Jourie/app/src/main/java/com/example/jourie/presentation/journal/analysis/components/PredictionChartSection.kt
-
 package com.example.jourie.presentation.journal.analysis.components
 
 import androidx.compose.animation.core.Animatable
@@ -10,7 +8,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AutoGraph
+import androidx.compose.material.icons.filled.TrendingUp
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,133 +18,186 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jourie.ui.theme.LightPurpleBg
-import com.example.jourie.ui.theme.PrimaryPurplePastel
-import com.example.jourie.ui.theme.PrimaryPurple
-import com.example.jourie.ui.theme.TextDark
+import com.example.jourie.ui.theme.Blue400
+import com.example.jourie.ui.theme.Gray900
+import com.example.jourie.ui.theme.Purple200
+import com.example.jourie.ui.theme.Purple400
+import com.example.jourie.ui.theme.Purple50
+import com.example.jourie.ui.theme.Red500
 
-// Palet warna untuk chart
-// Updated palette to match design attachment
-private val chartColors = listOf(
-    Color(0xFFFBBF24), // Yellow (Happy)
-    Color(0xFFA78BFA), // Purple (Calm)
-    Color(0xFF60A5FA), // Blue (Sad)
-    Color(0xFFF87171), // Red (Angry)
-    Color(0xFF34D399), // Teal/Green (Peaceful)
-    Color(0xFFFB923C)  // Orange (Anxious)
-)
-
-@Composable
-fun PredictionChartSection(
-    emotionDistribution: Map<String, Float>,
-    predictionText: String
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
-            .background(LightPurpleBg)
-            .padding(16.dp)
-    ) {
-        // Header
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Default.AutoGraph,
-                contentDescription = "Prediction",
-                tint = PrimaryPurple
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = "Prediction",
-                fontWeight = FontWeight.Bold,
-                color = TextDark,
-                fontSize = 16.sp
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Body Text
-        Text(
-            text = predictionText,
-            color = TextDark.copy(alpha = 0.7f),
-            fontSize = 14.sp
+// Color palette for emotions
+private val emotionColors =
+        mapOf(
+                "Cemas" to Purple400,
+                "Sedih" to Color(0xFFF87171),
+                "Tenang" to Blue400,
+                "Senang" to Color(0xFFFBBF24),
+                "Anxious" to Purple400,
+                "Sad" to Color(0xFFF87171),
+                "Calm" to Blue400,
+                "Happy" to Color(0xFFFBBF24),
+                "Anger" to Red500,
+                "Marah" to Red500
         )
-        Spacer(modifier = Modifier.height(24.dp))
 
-        // Donut Chart dan Legend
-        Row(
+@Composable
+fun PredictionChartSection(emotionDistribution: Map<String, Float>, predictionText: String) {
+    Card(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            DonutChart(
-                emotions = emotionDistribution,
-                colors = chartColors,
-                modifier = Modifier.size(200.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(28.dp))
-        EmotionLegend(emotions = emotionDistribution, colors = chartColors)
-    }
-}
-
-@Composable
-private fun DonutChart(
-    emotions: Map<String, Float>,
-    colors: List<Color>,
-    modifier: Modifier = Modifier
-) {
-    val total = emotions.values.sum()
-    var startAngle = -90f
-
-    val animatedProgress = remember { Animatable(0f) }
-    LaunchedEffect(Unit) {
-        animatedProgress.animateTo(1f, animationSpec = tween(durationMillis = 1500))
-    }
-
-    Canvas(modifier = modifier) {
-        emotions.values.forEachIndexed { index, value ->
-            val sweepAngle = (value / total) * 360f
-            drawArc(
-                color = colors[index % colors.size],
-                startAngle = startAngle,
-                sweepAngle = sweepAngle * animatedProgress.value,
-                useCenter = false,
-                style = Stroke(width = 48f, cap = StrokeCap.Round)
-            )
-            startAngle += sweepAngle
-        }
-    }
-}
-
-@Composable
-private fun EmotionLegend(emotions: Map<String, Float>, colors: List<Color>) {
-    // Tampilkan 2 kolom legend
-    val chunkedEmotions = emotions.toList().chunked(3) // Ubah ke 3 kolom agar lebih rapi
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            shape = RoundedCornerShape(20.dp),
+            colors =
+                    CardDefaults.cardColors(
+                            containerColor = Purple50
+                    ), // Very light purple background
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp) // No shadow
     ) {
-        chunkedEmotions.forEach { rowItems ->
+        Column(modifier = Modifier.padding(20.dp)) {
+            // Header with icon
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly // Ubah agar lebih merata
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
             ) {
-                rowItems.forEach { (name, value) ->
-                    LegendItem(
-                        color = colors[emotions.keys.indexOf(name) % colors.size],
-                        text = name,
-                        percentage = (value * 100).toInt()
+                Box(
+                        modifier = Modifier.size(40.dp).background(Purple200, CircleShape),
+                        contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                            imageVector = Icons.Default.TrendingUp,
+                            contentDescription = "Prediction",
+                            tint = Purple400,
+                            modifier = Modifier.size(20.dp)
                     )
                 }
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                        text = "Prediction",
+                        fontWeight = FontWeight.Bold,
+                        color = Gray900,
+                        fontSize = 18.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Prediction text
+            Text(
+                    text = predictionText,
+                    color = Gray900.copy(alpha = 0.8f),
+                    fontSize = 15.sp,
+                    lineHeight = 22.sp
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // Donut Chart
+            Box(
+                    modifier = Modifier.fillMaxWidth().height(220.dp),
+                    contentAlignment = Alignment.Center
+            ) {
+                EmotionDonutChart(
+                        emotionDistribution = emotionDistribution,
+                        modifier = Modifier.size(200.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Legend
+            EmotionLegend(emotionDistribution = emotionDistribution)
+        }
+    }
+}
+
+@Composable
+private fun EmotionDonutChart(
+        emotionDistribution: Map<String, Float>,
+        modifier: Modifier = Modifier
+) {
+    val animatedProgress = remember { Animatable(0f) }
+    LaunchedEffect(Unit) {
+        animatedProgress.animateTo(1f, animationSpec = tween(durationMillis = 1200))
+    }
+
+    val total = emotionDistribution.values.sum()
+    val dominantEmotion = emotionDistribution.maxByOrNull { it.value }
+    val dominantPercentage = ((dominantEmotion?.value ?: 0f) * 100).toInt()
+
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        // Donut chart
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            var startAngle = -90f
+            emotionDistribution.forEach { (emotion, value) ->
+                val sweepAngle = (value / total) * 360f
+                val color = emotionColors[emotion] ?: Color.Gray
+
+                drawArc(
+                        color = color,
+                        startAngle = startAngle,
+                        sweepAngle = sweepAngle * animatedProgress.value,
+                        useCenter = false,
+                        style = Stroke(width = 40f, cap = StrokeCap.Butt),
+                        size = size,
+                        topLeft = Offset.Zero
+                )
+                startAngle += sweepAngle
+            }
+        }
+
+        // Center text
+        Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                    text = "$dominantPercentage%",
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Gray900
+            )
+            Text(
+                    text = dominantEmotion?.key ?: "",
+                    fontSize = 14.sp,
+                    color = Gray900.copy(alpha = 0.7f)
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmotionLegend(emotionDistribution: Map<String, Float>) {
+    // Split into 2 columns
+    val emotions = emotionDistribution.toList()
+    val half = (emotions.size + 1) / 2
+
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+        // Left column
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            emotions.take(half).forEach { (emotion, value) ->
+                LegendItem(
+                        color = emotionColors[emotion] ?: Color.Gray,
+                        text = emotion,
+                        percentage = (value * 100).toInt()
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.width(16.dp))
+
+        // Right column
+        Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            emotions.drop(half).forEach { (emotion, value) ->
+                LegendItem(
+                        color = emotionColors[emotion] ?: Color.Gray,
+                        text = emotion,
+                        percentage = (value * 100).toInt()
+                )
             }
         }
     }
@@ -153,12 +206,8 @@ private fun EmotionLegend(emotions: Map<String, Float>, colors: List<Color>) {
 @Composable
 private fun LegendItem(color: Color, text: String, percentage: Int) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .size(14.dp)
-                .background(color, CircleShape)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(text = "$text ($percentage%)", fontSize = 13.sp, color = TextDark.copy(alpha = 0.9f), fontWeight = FontWeight.Medium)
+        Box(modifier = Modifier.size(12.dp).background(color, CircleShape))
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = "$text ($percentage%)", fontSize = 13.sp, color = Gray900.copy(alpha = 0.8f))
     }
 }

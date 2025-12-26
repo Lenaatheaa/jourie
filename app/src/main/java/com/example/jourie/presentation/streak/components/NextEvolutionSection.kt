@@ -20,103 +20,90 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.R // DITAMBAHKAN
-import com.example.jourie.ui.theme.*
-
+import com.example.jourie.ui.theme.Gray500
+import com.example.jourie.ui.theme.Gray900
+import com.example.jourie.ui.theme.JourieTheme
+import com.example.jourie.ui.theme.Purple100
+import com.example.jourie.ui.theme.Purple500
+import com.example.jourie.ui.theme.White
 
 @Composable
 fun NextEvolutionSection(
-    nextEvolutionName: String,
-    daysToEvolve: Int,
-    progress: Float,
-    currentStreakDays: Int
+        nextEvolutionName: String,
+        daysToEvolve: Int,
+        progress: Float,
+        currentStreakDays: Int
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(4.dp, RoundedCornerShape(12.dp))
-            .clip(RoundedCornerShape(12.dp))
-            .background(White)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {// --- DIPERBAIKI: Mengganti Text emoji dengan Image untuk PNG ---
+            modifier =
+                    Modifier.fillMaxWidth()
+                            .shadow(4.dp, RoundedCornerShape(12.dp))
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(White)
+                            .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+    ) { // --- DIPERBAIKI: Mengganti Text emoji dengan Image untuk PNG ---
         Image(
-// GANTI NAMA FILE PNG ANDA DI SINI
+                // GANTI NAMA FILE PNG ANDA DI SINI
                 painter = painterResource(id = R.drawable.ccp), // Contoh: ic_crown_placeholder.png
-        contentDescription = "Next Evolution Icon",
-        modifier = Modifier
-            .size(40.dp) // Sesuaikan ukuran gambar
+                contentDescription = "Next Evolution Icon",
+                modifier = Modifier.size(40.dp) // Sesuaikan ukuran gambar
         )
         // -------------------------------------------------------------
 
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Next Evolution",
-                    fontWeight = FontWeight.Bold,
-                    color = TextDark,fontSize = 16.sp
+                        text = "Next Evolution",
+                        fontWeight = FontWeight.Bold,
+                        color = Gray900,
+                        fontSize = 16.sp
                 )
                 Text(
-                    text = "$daysToEvolve days",
-                    fontWeight = FontWeight.SemiBold,
-                    color = TextDark,
-                    fontSize = 14.sp
+                        text = "$daysToEvolve days",
+                        fontWeight = FontWeight.SemiBold,
+                        color = Gray900,
+                        fontSize = 14.sp
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = nextEvolutionName,
-                color = IconGray,
-                fontSize = 14.sp
-            )
+            Text(text = nextEvolutionName, color = Gray500, fontSize = 14.sp)
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
-                progress = { progress },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-                    .clip(RoundedCornerShape(4.dp)),
-                color = PrimaryPurple,
-                trackColor = PrimaryPurpleLight            )
+                    progress = { progress },
+                    modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(4.dp)),
+                    color = Purple500,
+                    trackColor = Purple100
+            )
             Spacer(modifier = Modifier.height(4.dp))
             val remainingDays = (daysToEvolve - currentStreakDays).coerceAtLeast(0)
             Text(
-                text = if (remainingDays > 0) {
-                    "$remainingDays more days to evolve!"
-                } else {
-                    "Ready to evolve!"
-                },
-                color = IconGray,
-                fontSize = 12.sp
+                    text =
+                            if (remainingDays > 0) {
+                                "$remainingDays more days to evolve!"
+                            } else {
+                                "Ready to evolve!"
+                            },
+                    color = Gray500,
+                    fontSize = 12.sp
             )
         }
     }
 }
+
 @Preview
 @Composable
 private fun NextEvolutionSectionPreview() {
     JourieTheme {
         NextEvolutionSection(
-            nextEvolutionName = "Capybara",
-            daysToEvolve = 4,
-            progress = 0.25f,
-            currentStreakDays = 1
+                nextEvolutionName = "Capybara",
+                daysToEvolve = 4,
+                progress = 0.25f,
+                currentStreakDays = 1
         )
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

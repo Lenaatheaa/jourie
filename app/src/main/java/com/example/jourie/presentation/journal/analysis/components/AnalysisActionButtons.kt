@@ -1,74 +1,84 @@
 package com.example.jourie.presentation.journal.analysis.components
 
-
-
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.jourie.ui.theme.PrimaryPurple
-import com.example.jourie.ui.theme.IconGray
-import com.example.jourie.ui.theme.White
-
+import com.example.jourie.ui.theme.Purple500
 
 @Composable
-fun AnalysisActionButtons(
-    onShare: () -> Unit,
-    onDownload: () -> Unit,onSave: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        OutlinedButton(
-            onClick = onShare,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            shape = RoundedCornerShape(12.dp),
-            border = BorderStroke(1.dp, PrimaryPurple)
+fun AnalysisActionButtons(onShare: () -> Unit, onDownload: () -> Unit, onSave: () -> Unit) {
+        Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Share with Friends", color = PrimaryPurple, fontWeight = FontWeight.SemiBold)
-        }
-        OutlinedButton(
-            onClick = onDownload,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(1.dp, PrimaryPurple)
-        ) {
-            Text("Download Report", color = PrimaryPurple, fontWeight = FontWeight.SemiBold)
-        }
+                // Save All Insights Button (Primary)
+                Button(
+                        onClick = onSave,
+                        modifier = Modifier.fillMaxWidth().height(52.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Purple500),
+                        shape = RoundedCornerShape(16.dp)
+                ) {
+                        Icon(
+                                imageVector = Icons.Default.Save,
+                                contentDescription = "Save",
+                                modifier = Modifier.size(20.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(text = "Save All Insights", style = MaterialTheme.typography.bodyLarge)
+                }
 
-        Button(
-            onClick = onSave,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(48.dp),
-            // --- BAGIAN YANG HILANG DIMULAI DARI SINI ---
-            shape = RoundedCornerShape(16.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = PrimaryPurple,
-                contentColor = White // atau Color.White
-            )
-        ) {
-            Text("Save All Insights", fontWeight = FontWeight.Bold)
-        }
+                // Download and Share Buttons (Secondary)
+                Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                        // Download Button
+                        OutlinedButton(
+                                onClick = onDownload,
+                                modifier = Modifier.weight(1f).height(52.dp),
+                                colors =
+                                        ButtonDefaults.outlinedButtonColors(
+                                                contentColor = Purple500
+                                        ),
+                                border = BorderStroke(1.5.dp, Purple500),
+                                shape = RoundedCornerShape(16.dp)
+                        ) {
+                                Icon(
+                                        imageVector = Icons.Default.Download,
+                                        contentDescription = "Download",
+                                        modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Download")
+                        }
 
-    }
+                        // Share Button
+                        OutlinedButton(
+                                onClick = onShare,
+                                modifier = Modifier.weight(1f).height(52.dp),
+                                colors =
+                                        ButtonDefaults.outlinedButtonColors(
+                                                contentColor = Purple500
+                                        ),
+                                border = BorderStroke(1.5.dp, Purple500),
+                                shape = RoundedCornerShape(16.dp)
+                        ) {
+                                Icon(
+                                        imageVector = Icons.Default.Share,
+                                        contentDescription = "Share",
+                                        modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Share")
+                        }
+                }
+        }
 }
-
-
-
-
-
-
-

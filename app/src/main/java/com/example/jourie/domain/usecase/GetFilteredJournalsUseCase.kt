@@ -24,7 +24,11 @@ class GetFilteredJournalsUseCase {
 
         // Lakukan filter berdasarkan beberapa kriteria:
         return journals.filter { entry ->
-            entry.dateLabel.lowercase().contains(query) ||      // Cocokkan dengan label tanggal (e.g., "Today")
+            // Build dateString dari dayOfMonth + monthAbbreviation untuk match dengan format calendar
+            val dateString = "${entry.dayOfMonth} ${entry.monthAbbreviation}"
+            
+            dateString.lowercase().contains(query) ||           // Cocokkan dengan format "25 Dec"
+                    entry.dateLabel.lowercase().contains(query) ||      // Cocokkan dengan label tanggal (e.g., "Today", "Yesterday")
                     entry.description.lowercase().contains(query) ||    // Cocokkan dengan deskripsi
                     entry.mood.lowercase().contains(query) ||           // Cocokkan dengan mood
                     entry.tags.any { tag -> tag.lowercase().contains(query) } // Cocokkan dengan salah satu tag

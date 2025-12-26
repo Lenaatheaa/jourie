@@ -1,133 +1,161 @@
 package com.example.jourie.presentation.history.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.data.model.JournalEntry
-import com.example.jourie.ui.theme.*
+import com.example.jourie.ui.theme.Gray400
+import com.example.jourie.ui.theme.Gray50
+import com.example.jourie.ui.theme.Gray500
+import com.example.jourie.ui.theme.Gray900
+import com.example.jourie.ui.theme.Purple500
+import com.example.jourie.ui.theme.Red500
+import com.example.jourie.ui.theme.White
 
-// Card Item dengan nama unik
 @Composable
-fun JournalItemCard(
-    entry: JournalEntry,
-    onClick: () -> Unit,
-    onDeleteClick: () -> Unit
-) {
+fun JournalItemCard(entry: JournalEntry, onClick: () -> Unit, onDeleteClick: () -> Unit) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        shape = RoundedCornerShape(10.dp),
-        colors = CardDefaults.cardColors(containerColor = White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        border = BorderStroke(1.dp, color = Color(0xFFE0C0FF))
+            modifier =
+                    Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp).clickable {
+                        onClick()
+                    },
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.Top
-        ) {
-            DateBox(day = entry.dayOfMonth.toString(), month = entry.monthAbbreviation)
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(text = entry.dateLabel, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = TextDark)
-                    Text(text = entry.mood, color = TextDark, fontSize = 14.sp)
-                }
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = entry.description,
-                    color = Color(0xFF666666),
-                    fontSize = 14.sp,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            // Left colored border
+            Box(
+                    modifier =
+                            Modifier.width(4.dp)
+                                    .height(100.dp)
+                                    .background(getColorForMood(entry.mood))
+            )
 
-                Box(modifier = Modifier.fillMaxWidth()) {
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .size(28.dp)
-                            .clip(RoundedCornerShape(6.dp))
-                            .background(Color(0xFFFF5C5C))
-                            .clickable { onDeleteClick() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // Date badge
+            DateBadge(day = entry.dayOfMonth.toString(), month = entry.monthAbbreviation)
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            // Content area
+            Column(modifier = Modifier.weight(1f).padding(vertical = 12.dp)) {
+                // Date label
+                Text(
+                        text = entry.dateLabel,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Gray900
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                // Mood with emoji
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = getMoodEmoji(entry.mood), fontSize = 16.sp)
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(text = entry.mood, fontSize = 14.sp, color = Gray500)
+                }
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                // Journal preview text
+                Text(
+                        text = entry.description,
+                        fontSize = 13.sp,
+                        color = Gray500,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        lineHeight = 18.sp
+                )
+            }
+
+            // Right side: Delete icon and chevron
+            Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier.padding(end = 8.dp)
+            ) {
+                IconButton(onClick = onDeleteClick, modifier = Modifier.size(32.dp)) {
+                    Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete",
-                            tint = Color.White,
-                            modifier = Modifier.size(18.dp)
-                        )
-                    }
+                            tint = Red500,
+                            modifier = Modifier.size(20.dp)
+                    )
                 }
+
+                Icon(
+                        imageVector = Icons.Default.ChevronRight,
+                        contentDescription = "View Details",
+                        tint = Gray400,
+                        modifier = Modifier.size(24.dp)
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DateBox(day: String, month: String) {
-    Box(
-        modifier = Modifier
-            .width(50.dp)
-            .fillMaxHeight()
-            .shadow(2.dp, RoundedCornerShape(14.dp))
-            .clip(RoundedCornerShape(14.dp))
-            .background(White)
-            .border(1.dp, BorderGray, RoundedCornerShape(14.dp)),
-        contentAlignment = Alignment.Center
+private fun DateBadge(day: String, month: String) {
+    Column(
+            modifier =
+                    Modifier.width(48.dp)
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Gray50)
+                            .padding(vertical = 8.dp, horizontal = 6.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier.padding(vertical = 8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
+        Text(
                 text = month.uppercase(),
-                fontSize = 11.sp,
-                color = IconGray,
-                modifier = Modifier.offset(y = (-2).dp)
-            )
-            Spacer(modifier = Modifier.height(0.dp))
-            Text(text = day, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = TextDark)
-        }
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Medium,
+                color = Purple500,
+                letterSpacing = 0.5.sp
+        )
+        Text(text = day, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Gray900)
     }
 }
 
-@Composable
-private fun TagChip(text: String) {
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(50.dp))
-            .background(PrimaryPurple.copy(alpha = 0.1f))
-            .padding(horizontal = 10.dp, vertical = 5.dp)
-    ) {
-        Text(text = text, color = PrimaryPurple, fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+// Helper function untuk mendapatkan warna border berdasarkan mood
+private fun getColorForMood(mood: String): Color {
+    return when (mood.lowercase()) {
+        "happy", "senang", "excited" -> Color(0xFF4CAF50) // Green
+        "neutral", "calm", "tenang" -> Color(0xFF2196F3) // Blue
+        "sad", "sedih" -> Color(0xFF9C27B0) // Purple
+        "anxious", "cemas", "stressed" -> Color(0xFFFF9800) // Orange
+        "angry", "marah" -> Color(0xFFF44336) // Red
+        else -> Color(0xFF2196F3) // Default blue
+    }
+}
+
+// Helper function untuk mendapatkan emoji berdasarkan mood
+private fun getMoodEmoji(mood: String): String {
+    return when (mood.lowercase()) {
+        "happy", "senang", "excited" -> "😊"
+        "neutral", "calm", "tenang" -> "😐"
+        "sad", "sedih" -> "😢"
+        "anxious", "cemas", "stressed" -> "😰"
+        "angry", "marah" -> "😠"
+        else -> "😐"
     }
 }

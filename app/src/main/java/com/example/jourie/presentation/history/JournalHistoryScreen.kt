@@ -1,17 +1,9 @@
 package com.example.jourie.presentation.history
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,12 +18,11 @@ import com.example.jourie.presentation.history.components.JournalItemCard
 import com.example.jourie.presentation.history.components.JournalSearchBar
 import com.example.jourie.ui.theme.JourieTheme
 
-// Layar utama dengan nama unik
 @Composable
 fun JournalHistoryScreen(
-    navController: NavController,
-    initialDateFilter: String? = null,
-    viewModel: JournalHistoryViewModel = viewModel()
+        navController: NavController,
+        initialDateFilter: String? = null,
+        viewModel: JournalHistoryViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -43,41 +34,42 @@ fun JournalHistoryScreen(
     }
 
     JourieTheme {
-        Scaffold(
-            topBar = {
-                Column {
-                    HistoryPageHeader()
-                    Spacer(modifier = Modifier.height(12.dp))
-                    JournalSearchBar(
-                        query = state.searchQuery,
-                        onQueryChange = viewModel::onSearchQueryChange
-                    )
-                }
-            },
-            // BottomBar akan ditangani oleh Navigasi Utama di MainActivity
-        ) { innerPadding ->
+        Column(modifier = Modifier.fillMaxSize()) {
+            // Header dengan gradient card dan counter
+            HistoryPageHeader(totalEntries = state.filteredJournals.size)
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Search bar
+            JournalSearchBar(
+                    query = state.searchQuery,
+                    onQueryChange = viewModel::onSearchQueryChange
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Content area
             if (state.isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             } else if (state.filteredJournals.isNotEmpty()) {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding),
-                    contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(bottom = 120.dp, top = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     items(state.filteredJournals, key = { it.id }) { journal ->
                         JournalItemCard(
-                            entry = journal,
-                            onClick = {
-                                val encodedContent = java.net.URLEncoder.encode(journal.description, "UTF-8")
-                                navController.navigate("journal_analysis_screen/$encodedContent?journalId=${journal.id}")
-                            },
-                            onDeleteClick = {
-                                viewModel.onDeleteJournal(journal.id)
-                            }
+                                entry = journal,
+                                onClick = {
+                                    val encodedContent =
+                                            java.net.URLEncoder.encode(journal.description, "UTF-8")
+                                    navController.navigate(
+                                            "journal_analysis_screen/$encodedContent?journalId=${journal.id}"
+                                    )
+                                },
+                                onDeleteClick = { viewModel.onDeleteJournal(journal.id) }
                         )
                     }
                 }

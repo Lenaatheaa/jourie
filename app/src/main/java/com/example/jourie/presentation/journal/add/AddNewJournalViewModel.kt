@@ -35,9 +35,14 @@ class AddNewJournalViewModel(
         _state.update { it.copy(content = newContent) }
     }
 
+    fun onMoodChange(newMood: String) {
+        _state.update { it.copy(mood = newMood) }
+    }
+
     // --- DIPERBAIKI: Fungsi onSubmit sekarang menerima callback (String, String) -> Unit ---
     fun onSubmit(onJournalSubmitted: (String, String) -> Unit) {
         val content = state.value.content
+        val mood = state.value.mood.ifBlank { "Neutral" }
         if (content.isBlank()) return
 
         viewModelScope.launch {
@@ -45,7 +50,11 @@ class AddNewJournalViewModel(
 
             try {
                 val newJournal =
-                        NewJournal(content = content, dateTimestamp = System.currentTimeMillis())
+                        NewJournal(
+                            content = content, 
+                            dateTimestamp = System.currentTimeMillis(),
+                            mood = mood
+                        )
                 // Simpan ke Firestore dan dapatkan ID jurnal yang baru dibuat
                 val journalId = repository.insertJournal(newJournal)
 

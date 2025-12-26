@@ -27,11 +27,20 @@ class JournalHistoryViewModel(
             _state.update { it.copy(isLoading = true) }
             try {
                 val journals = repository.getAllJournalEntries()
+                
+                // Apply filter jika ada searchQuery yang pending dari navigation
+                val currentQuery = _state.value.searchQuery
+                val filtered = if (currentQuery.isNotBlank()) {
+                    filterUseCase(currentQuery, journals)
+                } else {
+                    journals
+                }
+                
                 _state.update {
                     it.copy(
                         isLoading = false,
                         allJournals = journals,
-                        filteredJournals = journals
+                        filteredJournals = filtered
                     )
                 }
             } catch (e: Exception) {

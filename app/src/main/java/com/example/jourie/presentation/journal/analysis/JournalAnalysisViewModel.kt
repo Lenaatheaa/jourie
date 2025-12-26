@@ -38,8 +38,21 @@ class JournalAnalysisViewModel(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, entryText = content) }
 
-            // 1. STRATEGI CACHE-FIRST: Cek DB dulu!
+            // Load mood yang dipilih user dari Firestore
             val journalId = currentJournalId
+            var userSelectedMood: String? = null
+            var journalTimestamp: Long? = null
+            if (journalId != null) {
+                try {
+                    val journal = journalRepo.getJournalById(journalId)
+                    userSelectedMood = journal?.mood
+                    journalTimestamp = journal?.dateTimestamp
+                } catch (e: Exception) {
+                    Log.e("JournalAnalysisVM", "Failed to load mood from Firestore", e)
+                }
+            }
+
+            // 1. STRATEGI CACHE-FIRST: Cek DB dulu!
             var loadedFromDb = false
 
             if (journalId != null) {
@@ -68,7 +81,9 @@ class JournalAnalysisViewModel(
                                     quoteText = existingAnalysis.quote,
                                     keywords =
                                             emptyList(), // Keywords sementara belum disimpan di DB
-                                    emotionDistribution = emotionMap
+                                    emotionDistribution = emotionMap,
+                                    userSelectedMood = userSelectedMood,
+                                    journalTimestamp = journalTimestamp
                             )
                         }
                         loadedFromDb = true
@@ -100,7 +115,9 @@ class JournalAnalysisViewModel(
                                 recommendationText = result.recommendation,
                                 quoteText = result.quote,
                                 keywords = result.keywords,
-                                emotionDistribution = result.emotionDistribution
+                                emotionDistribution = result.emotionDistribution,
+                                userSelectedMood = userSelectedMood,
+                                journalTimestamp = journalTimestamp
                         )
                     }
 

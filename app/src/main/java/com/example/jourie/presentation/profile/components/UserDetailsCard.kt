@@ -1,151 +1,170 @@
-// File: .../presentation/profile/components/UserDetailsCard.kt
 package com.example.jourie.presentation.profile.components
 
-// --- SEMUA IMPORT YANG DIPERLUKAN ---
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.jourie.R
-import com.example.jourie.ui.theme.*
-
-// --- KODE LENGKAP UNTUK USER DETAILS CARD DENGAN TOMBOL EDIT ---
+import com.example.jourie.ui.theme.Blue500
+import com.example.jourie.ui.theme.Gray400
+import com.example.jourie.ui.theme.Gray500
+import com.example.jourie.ui.theme.Gray900
+import com.example.jourie.ui.theme.Green500
+import com.example.jourie.ui.theme.JourieTheme
+import com.example.jourie.ui.theme.Orange500
+import com.example.jourie.ui.theme.Purple500
+import com.example.jourie.ui.theme.White
 
 @Composable
 fun UserDetailsCard(
-    name: String,
-    email: String,
-    phone: String,
-    dob: String,
-    onEditClick: () -> Unit // DITAMBAHKAN: Aksi untuk tombol edit
+        name: String,
+        email: String,
+        phone: String,
+        dob: String,
+        onEditClick: () -> Unit
 ) {
+    val clipboardManager = LocalClipboardManager.current
+
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(elevation = 8.dp, shape = RoundedCornerShape(10.dp)),
-        shape = RoundedCornerShape(18.dp),
-        colors = CardDefaults.cardColors(containerColor = White)
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(containerColor = White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            // Avatar dan Nama (TETAP SAMA)
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "User Avatar",
-                    modifier = Modifier
-                        .size(72.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, Color.White, CircleShape)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(text = name, fontSize = 18.sp, fontWeight = FontWeight.Bold, color = TextDark)
-            }
-            Spacer(modifier = Modifier.height(12.dp))
-            // Baris Judul "Personal Detail" dan Tombol Edit
+            // Header dengan edit button
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Personal Detail",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = TextDark
+                        text = "Personal Detail",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Gray900
                 )
-                // --- DIPERBAIKI: Icon sekarang menjadi IconButton ---
                 IconButton(onClick = onEditClick) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Details",
-                        tint = PrimaryPurple
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit",
+                            tint = Purple500,
+                            modifier = Modifier.size(22.dp)
                     )
                 }
-                // ---------------------------------------------------
             }
+
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Detail Item (TETAP SAMA)
-            DetailItem(icon = Icons.Default.Email, label = "Email", value = email)
+            // Email
+            InfoRow(
+                    icon = Icons.Default.Email,
+                    iconColor = Blue500, // Blue
+                    label = "Email",
+                    value = email,
+                    showCopy = true,
+                    onCopy = { clipboardManager.setText(AnnotatedString(email)) }
+            )
+
             Spacer(modifier = Modifier.height(16.dp))
-            DetailItem(icon = Icons.Default.Call, label = "Phone", value = phone)
+
+            // Phone
+            InfoRow(
+                    icon = Icons.Default.Phone,
+                    iconColor = Green500, // Green
+                    label = "Phone",
+                    value = phone,
+                    showCopy = true,
+                    onCopy = { clipboardManager.setText(AnnotatedString(phone)) }
+            )
+
             Spacer(modifier = Modifier.height(16.dp))
-            DetailItem(icon = Icons.Default.DateRange, label = "Date of Birth", value = dob)
+
+            // Date of Birth
+            InfoRow(
+                    icon = Icons.Default.CalendarToday,
+                    iconColor = Orange500, // Orange
+                    label = "Date of Birth",
+                    value = dob,
+                    showCopy = false
+            )
         }
     }
 }
 
-// Composable DetailItem tetap sama
 @Composable
-private fun DetailItem(icon: ImageVector, label: String, value: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = icon,
-            contentDescription = label,
-            tint = Color.White,
-            modifier = Modifier
-                .size(40.dp)
-                .background(PrimaryPurple, CircleShape)
-                .padding(8.dp)
-        )
+private fun InfoRow(
+        icon: ImageVector,
+        iconColor: Color,
+        label: String,
+        value: String,
+        showCopy: Boolean,
+        onCopy: () -> Unit = {}
+) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        // Colored icon circle
+        Box(
+                modifier = Modifier.size(48.dp).background(iconColor, CircleShape),
+                contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = White,
+                    modifier = Modifier.size(24.dp)
+            )
+        }
+
         Spacer(modifier = Modifier.width(16.dp))
-        Column {
-            Text(text = label, color = IconGray, fontSize = 12.sp)
-            Text(text = value, color = TextDark, fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
+
+        // Label and value
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = label, fontSize = 12.sp, color = Gray500)
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(text = value, fontSize = 15.sp, color = Gray900, fontWeight = FontWeight.Medium)
+        }
+
+        // Copy button
+        if (showCopy) {
+            IconButton(onClick = onCopy, modifier = Modifier.size(40.dp)) {
+                Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = "Copy",
+                        tint = Gray400,
+                        modifier = Modifier.size(20.dp)
+                )
+            }
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
 private fun UserDetailsCardPreview() {
     JourieTheme {
         UserDetailsCard(
-            name = "Jessica",
-            email = "jessica@email.com",
-            phone = "+62 123 456 7890",
-            dob = "01 January 1995",
-            onEditClick = {} // Menyediakan aksi kosong untuk preview
+                name = "Admin Aja",
+                email = "admin@gmail.com",
+                phone = "081214776579",
+                dob = "12 Dec 2000",
+                onEditClick = {}
         )
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

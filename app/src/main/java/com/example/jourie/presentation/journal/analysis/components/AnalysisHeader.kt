@@ -1,11 +1,9 @@
 package com.example.jourie.presentation.journal.analysis.components
 
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.border
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -15,74 +13,96 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.draw.shadow
-import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.Purple400
+import com.example.jourie.ui.theme.Purple500
 import com.example.jourie.ui.theme.White
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
-fun AnalysisHeader(onBackClick: () -> Unit) {
-    // Outer container provides the same horizontal inset as EntrySummaryCard
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(64.dp)
-            .padding(horizontal = 16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        // Inner pill matches card width (fills available width inside outer padding)
+fun AnalysisHeader(
+    onBackClick: () -> Unit, 
+    dominantEmotion: String = "Happy",
+    journalTimestamp: Long? = null
+) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(6.dp, RoundedCornerShape(10.dp))
-                .clip(RoundedCornerShape(10.dp))
-                .background(PrimaryPurple)
-                .padding(horizontal = 12.dp, vertical = 8.dp),
-            contentAlignment = Alignment.Center
+                modifier =
+                        Modifier.fillMaxWidth()
+                                .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
+                                .background(
+                                        Brush.horizontalGradient(
+                                                colors = listOf(Purple400, Purple500)
+                                        )
+                                )
+                                .padding(horizontal = 20.dp, vertical = 24.dp)
         ) {
-            // Center title
-            Text(
-                text = "Today",
-                color = White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.SemiBold
-            )
+                // Back Button
+                Box(
+                        modifier =
+                                Modifier.align(Alignment.CenterStart)
+                                        .size(40.dp)
+                                        .background(White.copy(alpha = 0.3f), CircleShape)
+                                        .clickable(onClick = onBackClick),
+                        contentAlignment = Alignment.Center
+                ) {
+                        Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                                tint = White,
+                                modifier = Modifier.size(20.dp)
+                        )
+                }
 
-            // Back icon on the left
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .clip(RoundedCornerShape(50.dp))
-                    .background(White.copy(alpha = 0.12f))
-                    .border(1.dp, White.copy(alpha = 0.18f), RoundedCornerShape(50.dp))
-                    .clickable(onClick = onBackClick)
-                    .padding(8.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = White,
-                    modifier = Modifier.size(16.dp)
-                )
-            }
+                // Center Content - Title and Date
+                Column(
+                        modifier = Modifier.align(Alignment.Center),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                        Text(
+                                text = "Analysis Results",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = White
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        // Display tanggal journal jika ada, fallback ke tanggal hari ini
+                        val dateFormat = SimpleDateFormat("EEEE, MMMM dd", Locale.getDefault())
+                        val displayDate = if (journalTimestamp != null) {
+                            dateFormat.format(Date(journalTimestamp))
+                        } else {
+                            dateFormat.format(Date())
+                        }
+                        Text(text = displayDate, fontSize = 14.sp, color = White.copy(alpha = 0.9f))
+                }
 
-            // Emoji + label on the right
-            Column(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(start = 8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text("😊", fontSize = 22.sp)
-                Text("Calm", color = White.copy(alpha = 0.9f), fontSize = 12.sp)
-            }
+                // Mood Emoji on the right
+                Column(
+                        modifier = Modifier.align(Alignment.CenterEnd),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                        Text(text = getEmojiForMood(dominantEmotion), fontSize = 32.sp)
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                                text = dominantEmotion,
+                                fontSize = 12.sp,
+                                color = White,
+                                fontWeight = FontWeight.Medium
+                        )
+                }
         }
-    }
 }
 
-
-
+private fun getEmojiForMood(mood: String): String {
+        return when (mood.lowercase()) {
+                "senang", "happy", "happiness" -> "😊"
+                "sedih", "sad", "sadness" -> "😢"
+                "cemas", "anxious", "anxiety", "fear" -> "😰"
+                "marah", "angry", "anger" -> "😠"
+                "tenang", "calm", "peace" -> "😌"
+                else -> "😊"
+        }
+}

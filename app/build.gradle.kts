@@ -19,7 +19,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // The third argument must be a valid Java literal, so we wrap the
         // actual key in escaped quotes to generate a String field.
-        buildConfigField("String", "GEMINI_API_KEY", "\"AIzaSyCFO1Ji3nus8xdtiiPKExA2gAl2ZKXektE\"")
+        buildConfigField("String", "GEMINI_API_KEY", "\"AIzaSyBzvUP_dQsSriTl65zSY3aWmyCjqRn-LSI\"")
     }
 
     buildTypes {

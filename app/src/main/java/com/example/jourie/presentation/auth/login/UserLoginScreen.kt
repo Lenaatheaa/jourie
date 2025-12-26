@@ -1,472 +1,415 @@
-////package com.example.jourie.presentation.auth.login
-////
-////import androidx.compose.foundation.clickable
-////import androidx.compose.foundation.layout.*
-////import androidx.compose.foundation.rememberScrollState
-////import androidx.compose.foundation.text.ClickableText
-////import androidx.compose.foundation.text.KeyboardActions
-////import androidx.compose.foundation.text.KeyboardOptions
-////import androidx.compose.foundation.verticalScroll
-////import androidx.compose.material.icons.Icons
-////import androidx.compose.material.icons.filled.*
-////import androidx.compose.material3.*
-////import androidx.compose.runtime.*
-////import androidx.compose.ui.Alignment
-////import androidx.compose.ui.Modifier
-////import androidx.compose.ui.graphics.Color
-////import androidx.compose.ui.platform.LocalFocusManager
-////import androidx.compose.ui.text.*
-////import androidx.compose.ui.text.font.FontWeight
-////import androidx.compose.ui.text.input.*
-////import androidx.compose.ui.text.style.TextAlign
-////import androidx.compose.ui.unit.dp
-////import androidx.compose.ui.unit.sp
-////import androidx.lifecycle.viewmodel.compose.viewModel
-////import com.example.jourie.presentation.auth.components.*
-////import com.example.jourie.ui.theme.PrimaryPurple
-////
-////@Composable
-////fun UserLoginScreen(
-////    onLoginSuccess: () -> Unit,
-////    onNavigateToRegister: () -> Unit,
-////    viewModel: UserLoginViewModel = viewModel()
-////) {
-////    val state by viewModel.state.collectAsState()
-////    val focusManager = LocalFocusManager.current
-////
-////    Column(
-////        modifier = Modifier
-////            .fillMaxSize()
-////            .padding(horizontal = 24.dp)
-////            .verticalScroll(rememberScrollState())
-////    ) {
-////        AuthScreenHeader(title = "Selamat Datang Kembali!", onBackClick = { /*TODO: handle back press*/ })
-////
-////        Spacer(modifier = Modifier.height(32.dp))
-////
-////        // Input Fields
-////        CustomAuthTextField(
-////            label = "Email",
-////            value = state.email,
-////            onValueChange = viewModel::onEmailChange,
-////            leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
-////            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
-////        )
-////
-////        Spacer(modifier = Modifier.height(16.dp))
-////
-////        CustomAuthTextField(
-////            label = "Kata Sandi",
-////            value = state.password,
-////            onValueChange = viewModel::onPasswordChange,
-////            leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
-////            trailingIcon = {
-////                IconButton(onClick = viewModel::onPasswordVisibilityToggle) {
-////                    Icon(
-////                        if (state.isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-////                        contentDescription = "Toggle Password Visibility"
-////                    )
-////                }
-////            },
-////            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-////            visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-////            keyboardActions = KeyboardActions(onDone = {
-////                focusManager.clearFocus()
-////                viewModel.login(onLoginSuccess)
-////            })
-////        )
-////
-////        Text(
-////            text = "Lupa kata sandi?",
-////            color = Color.Gray,
-////            fontSize = 12.sp,
-////            textAlign = TextAlign.End,
-////            modifier = Modifier
-////                .fillMaxWidth()
-////                .padding(top = 8.dp)
-////                .clickable { /*TODO: handle forgot password*/ }
-////        )
-////
-////        Spacer(modifier = Modifier.height(24.dp))
-////
-////        // Tombol Masuk
-////        PrimaryAuthButton(
-////            text = "Masuk",
-////            onClick = {
-////                focusManager.clearFocus()
-////                viewModel.login(onLoginSuccess)
-////            },
-////            isLoading = state.isLoading
-////        )
-////
-////        Spacer(modifier = Modifier.height(32.dp))
-////
-////        // Footer
-////        val annotatedString = buildAnnotatedString {
-////            withStyle(style = SpanStyle(color = Color.Gray)) {
-////                append("Belum punya akun? ")
-////            }
-////            withStyle(style = SpanStyle(color = PrimaryPurple, fontWeight = FontWeight.Bold)) {
-////                pushStringAnnotation(tag = "REGISTER", annotation = "REGISTER")
-////                append("Buat akun")
-////                pop()
-////            }
-////        }
-////
-////        ClickableText(
-////            text = annotatedString,
-////            onClick = { offset ->
-////                annotatedString.getStringAnnotations(tag = "REGISTER", start = offset, end = offset)
-////                    .firstOrNull()?.let {
-////                        onNavigateToRegister()
-////                    }
-////            },
-////            modifier = Modifier.align(Alignment.CenterHorizontally)
-////        )
-////
-////        Spacer(modifier = Modifier.height(24.dp))
-////        Divider()
-////        Spacer(modifier = Modifier.height(24.dp))
-////
-////        SocialMediaLogins()
-////
-////        Spacer(modifier = Modifier.height(24.dp))
-////    }
-////}
-//
-//// File: .../presentation/auth/login/UserLoginScreen.kt
-//package com.example.jourie.presentation.auth.login
-//
-//import androidx.compose.foundation.layout.*
-//import androidx.compose.foundation.rememberScrollState
-//import androidx.compose.foundation.text.ClickableText
-//import androidx.compose.foundation.text.KeyboardActions
-//import androidx.compose.foundation.text.KeyboardOptions
-//import androidx.compose.foundation.verticalScroll
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.filled.*
-//import androidx.compose.material3.*
-//import androidx.compose.runtime.*
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.platform.LocalFocusManager
-//import androidx.compose.ui.text.*
-//import androidx.compose.ui.text.font.FontWeight
-//import androidx.compose.ui.text.input.ImeAction
-//import androidx.compose.ui.text.input.KeyboardType
-//import androidx.compose.ui.text.input.PasswordVisualTransformation
-//import androidx.compose.ui.text.input.VisualTransformation
-//import androidx.compose.ui.text.withStyle
-//import androidx.compose.ui.tooling.preview.Preview
-//import androidx.compose.ui.unit.dp
-//import androidx.lifecycle.viewmodel.compose.viewModel
-//import com.example.jourie.presentation.auth.components.*
-//import com.example.jourie.ui.theme.JourieTheme
-//import com.example.jourie.ui.theme.PrimaryPurple
-//
-//// ---- TIDAK ADA LAGI KODE DUPLIKAT DI SINI ----
-//
-//// --- DEFINISI FUNGSI DIPERBAIKI UNTUK MENERIMA PARAMETER NAVIGASI ---
-//@Composable
-//fun UserLoginScreen(
-//    onLoginSuccess: () -> Unit,
-//    onNavigateToRegister: () -> Unit,
-//    viewModel: UserLoginViewModel = viewModel()
-//) {
-//    val state by viewModel.state.collectAsState()
-//    val focusManager = LocalFocusManager.current
-//
-//    // Efek untuk menangani keberhasilan login
-//    LaunchedEffect(key1 = state.loginSuccess) {
-//        if (state.loginSuccess) {
-//            onLoginSuccess() // Panggil navigasi jika login berhasil
-//        }
-//    }
-//
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .padding(horizontal = 24.dp)
-//            .verticalScroll(rememberScrollState())
-//    ) {
-//        AuthScreenHeader(title = "Masuk Akun", onBackClick = { /* Di halaman login, tombol kembali mungkin tidak ada aksi */ })
-//
-//        Spacer(modifier = Modifier.height(32.dp))
-//
-//        // Input Fields
-//        CustomAuthTextField(
-//            label = "Email",
-//            value = state.email,
-//            onValueChange = viewModel::onEmailChange,
-//            leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
-//        )
-//        Spacer(modifier = Modifier.height(16.dp))
-//        CustomAuthTextField(
-//            label = "Kata Sandi",
-//            value = state.password,
-//            onValueChange = viewModel::onPasswordChange,
-//            leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
-//            trailingIcon = {
-//                IconButton(onClick = viewModel::onPasswordVisibilityToggle) {
-//                    Icon(
-//                        if (state.isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-//                        contentDescription = "Toggle Password Visibility"
-//                    )
-//                }
-//            },
-//            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-//            visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-//            keyboardActions = KeyboardActions(onDone = {
-//                focusManager.clearFocus()
-//                viewModel.login()
-//            })
-//        )
-//
-//        state.error?.let {
-//            Text(
-//                text = it,
-//                color = MaterialTheme.colorScheme.error,
-//                modifier = Modifier.padding(top = 8.dp)
-//            )
-//        }
-//
-//        Spacer(modifier = Modifier.height(24.dp))
-//
-//        // Tombol Login
-//        PrimaryAuthButton(
-//            text = "Masuk",
-//            onClick = {
-//                focusManager.clearFocus()
-//                viewModel.login()
-//            },
-//            isLoading = state.isLoading
-//        )
-//
-//        Spacer(modifier = Modifier.height(24.dp))
-//        Text("ATAU", modifier = Modifier.align(Alignment.CenterHorizontally), color = Color.Gray)
-//        Spacer(modifier = Modifier.height(24.dp))
-//
-//        SocialMediaLogins(
-//            onAppleClick = { /* TODO: Aksi login Apple */ },
-//            onGoogleClick = { /* TODO: Aksi login Google */ }
-//        )
-//
-//        Spacer(modifier = Modifier.weight(1f))
-//
-//        // Footer
-//        val annotatedString = buildAnnotatedString {
-//            withStyle(style = SpanStyle(color = Color.Gray)) {
-//                append("Belum punya akun? ")
-//            }
-//            withStyle(style = SpanStyle(color = PrimaryPurple, fontWeight = FontWeight.Bold)) {
-//                pushStringAnnotation(tag = "REGISTER", annotation = "REGISTER")
-//                append("Buat akun")
-//                pop()
-//            }
-//        }
-//
-//        ClickableText(
-//            text = annotatedString,
-//            onClick = { offset ->
-//                annotatedString.getStringAnnotations(tag = "REGISTER", start = offset, end = offset)
-//                    .firstOrNull()?.let { onNavigateToRegister() } // Panggil aksi onNavigateToRegister
-//            },
-//            modifier = Modifier
-//                .align(Alignment.CenterHorizontally)
-//                .padding(bottom = 24.dp)
-//        )
-//    }
-//}
-//
-//@Preview(showSystemUi = true)
-//@Composable
-//private fun UserLoginScreenPreview() {
-//    JourieTheme {
-//        UserLoginScreen({}, {}) // Sediakan lambda kosong untuk preview
-//    }
-//}
-
-
-// File: .../presentation/auth/login/UserLoginScreen.kt
 package com.example.jourie.presentation.auth.login
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.*
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.jourie.presentation.auth.components.*
+import com.example.jourie.ui.theme.Gray200
+import com.example.jourie.ui.theme.Gray400
+import com.example.jourie.ui.theme.Gray50
+import com.example.jourie.ui.theme.Gray500
+import com.example.jourie.ui.theme.Gray900
 import com.example.jourie.ui.theme.JourieTheme
-import com.example.jourie.ui.theme.PrimaryPurple
-import com.example.jourie.ui.theme.TextDark
-
-// ---- KODE LENGKAP DAN BERSIH UNTUK LOGIN SCREEN ----
+import com.example.jourie.ui.theme.Purple400
+import com.example.jourie.ui.theme.Purple50
+import com.example.jourie.ui.theme.Purple500
+import com.example.jourie.ui.theme.White
 
 @Composable
 fun UserLoginScreen(
-    onLoginSuccess: () -> Unit,
-    onNavigateToRegister: () -> Unit,
-    viewModel: UserLoginViewModel = viewModel()
+        onLoginSuccess: () -> Unit,
+        onNavigateToRegister: () -> Unit,
+        viewModel: UserLoginViewModel = viewModel()
 ) {
-    val state by viewModel.state.collectAsState()
-    val focusManager = LocalFocusManager.current
+        val state by viewModel.state.collectAsState()
+        val focusManager = LocalFocusManager.current
 
-    LaunchedEffect(key1 = state.loginSuccess) {
-        if (state.loginSuccess) {
-            onLoginSuccess()
-        }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 32.dp)
-            .verticalScroll(rememberScrollState())
-    ) {
-        Spacer(modifier = Modifier.height(80.dp))
-
-        // --- HEADER BARU ---
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = "Sign In",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = TextDark
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "For privacy and security.",
-                fontSize = 16.sp,
-                color = Color.Gray
-            )
-        }
-        // ------------------
-
-        Spacer(modifier = Modifier.height(48.dp))
-
-        // --- INPUT FIELDS ---
-        CustomAuthTextField(
-            label = "Email address",
-            value = state.email,
-            onValueChange = viewModel::onEmailChange,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        CustomAuthTextField(
-            label = "Password",
-            value = state.password,
-            onValueChange = viewModel::onPasswordChange,
-            trailingIcon = {
-                IconButton(onClick = viewModel::onPasswordVisibilityToggle) {
-                    Icon(
-                        if (state.isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                        contentDescription = "Toggle Password Visibility"
-                    )
+        LaunchedEffect(key1 = state.loginSuccess) {
+                if (state.loginSuccess) {
+                        onLoginSuccess()
                 }
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
-            visualTransformation = if (state.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardActions = KeyboardActions(onDone = {
-                focusManager.clearFocus()
-                viewModel.login()
-            })
-        )
-
-        state.error?.let {
-            Text(
-                text = it,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(top = 8.dp)
-            )
         }
 
-        // --- TOMBOL FORGOT PASSWORD ---
-        TextButton(
-            onClick = { /* TODO: Aksi lupa password */ },
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(top = 8.dp)
+        Box(modifier = Modifier.fillMaxSize().background(Purple50)) {
+                Column(
+                        modifier =
+                                Modifier.fillMaxSize()
+                                        .verticalScroll(rememberScrollState())
+                                        .padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                        Spacer(modifier = Modifier.height(40.dp))
+
+                        // 1. Logo Placeholder
+                        Box(
+                                modifier =
+                                        Modifier.size(80.dp)
+                                                .shadow(8.dp, CircleShape)
+                                                .background(White, CircleShape),
+                                contentAlignment = Alignment.Center
+                        ) {
+                                Text(
+                                        text = "J",
+                                        fontSize = 40.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Purple500
+                                )
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        // Header Text
+                        Text(
+                                text = "Welcome Back",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Gray900
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                                text = "Sign in to continue your journey",
+                                fontSize = 14.sp,
+                                color = Gray500
+                        )
+
+                        Spacer(modifier = Modifier.height(32.dp))
+
+                        // 2. Main Login Card
+                        Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(24.dp),
+                                colors = CardDefaults.cardColors(containerColor = White),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+                        ) {
+                                Column(modifier = Modifier.padding(24.dp)) {
+
+                                        // Email Field (Floating Label)
+                                        AuthOutlinedTextField(
+                                                value = state.email,
+                                                onValueChange = viewModel::onEmailChange,
+                                                labelText = "Email",
+                                                keyboardOptions =
+                                                        KeyboardOptions(
+                                                                keyboardType = KeyboardType.Email,
+                                                                imeAction = ImeAction.Next
+                                                        ),
+                                                isError =
+                                                        state.error?.contains(
+                                                                "email",
+                                                                ignoreCase = true
+                                                        ) == true
+                                        )
+
+                                        Spacer(modifier = Modifier.height(20.dp))
+
+                                        // Password Field (Floating Label)
+                                        AuthOutlinedTextField(
+                                                value = state.password,
+                                                onValueChange = viewModel::onPasswordChange,
+                                                labelText = "Password",
+                                                trailingIcon = {
+                                                        IconButton(
+                                                                onClick =
+                                                                        viewModel::onPasswordVisibilityToggle
+                                                        ) {
+                                                                Icon(
+                                                                        imageVector =
+                                                                                if (state.isPasswordVisible
+                                                                                )
+                                                                                        Icons.Default
+                                                                                                .Visibility
+                                                                                else
+                                                                                        Icons.Default
+                                                                                                .VisibilityOff,
+                                                                        contentDescription =
+                                                                                "Toggle Password",
+                                                                        tint =
+                                                                                if (state.isPasswordVisible
+                                                                                )
+                                                                                        Purple500
+                                                                                else Gray400
+                                                                )
+                                                        }
+                                                },
+                                                visualTransformation =
+                                                        if (state.isPasswordVisible)
+                                                                VisualTransformation.None
+                                                        else PasswordVisualTransformation(),
+                                                keyboardOptions =
+                                                        KeyboardOptions(
+                                                                keyboardType =
+                                                                        KeyboardType.Password,
+                                                                imeAction = ImeAction.Done
+                                                        ),
+                                                keyboardActions =
+                                                        KeyboardActions(
+                                                                onDone = {
+                                                                        focusManager.clearFocus()
+                                                                        viewModel.login()
+                                                                }
+                                                        ),
+                                                isError =
+                                                        state.error?.contains(
+                                                                "password",
+                                                                ignoreCase = true
+                                                        ) == true ||
+                                                                state.error?.contains(
+                                                                        "sandi",
+                                                                        ignoreCase = true
+                                                                ) == true
+                                        )
+
+                                        // Error Message
+                                        state.error?.let {
+                                                Spacer(modifier = Modifier.height(8.dp))
+                                                Text(
+                                                        text = it,
+                                                        color = MaterialTheme.colorScheme.error,
+                                                        style = MaterialTheme.typography.bodySmall
+                                                )
+                                        }
+
+                                        // Forgot Password
+                                        Box(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                contentAlignment = Alignment.CenterEnd
+                                        ) {
+                                                TextButton(
+                                                        onClick = { /* TODO: Forgot Password Action */
+                                                        },
+                                                        contentPadding = PaddingValues(0.dp)
+                                                ) {
+                                                        Text(
+                                                                text = "Forgot password?",
+                                                                color = Purple500,
+                                                                fontSize = 12.sp,
+                                                                fontWeight = FontWeight.Medium
+                                                        )
+                                                }
+                                        }
+
+                                        Spacer(modifier = Modifier.height(16.dp))
+
+                                        // Login Button (Gradient)
+                                        Button(
+                                                onClick = {
+                                                        focusManager.clearFocus()
+                                                        viewModel.login()
+                                                },
+                                                modifier =
+                                                        Modifier.fillMaxWidth()
+                                                                .height(50.dp)
+                                                                .shadow(
+                                                                        4.dp,
+                                                                        RoundedCornerShape(12.dp)
+                                                                ),
+                                                colors =
+                                                        ButtonDefaults.buttonColors(
+                                                                containerColor = Color.Transparent
+                                                        ),
+                                                contentPadding = PaddingValues(),
+                                                shape = RoundedCornerShape(12.dp),
+                                                enabled = !state.isLoading
+                                        ) {
+                                                Box(
+                                                        modifier =
+                                                                Modifier.fillMaxSize()
+                                                                        .background(
+                                                                                brush =
+                                                                                        Brush.horizontalGradient(
+                                                                                                colors =
+                                                                                                        listOf(
+                                                                                                                Purple400,
+                                                                                                                Purple500
+                                                                                                        )
+                                                                                        )
+                                                                        ),
+                                                        contentAlignment = Alignment.Center
+                                                ) {
+                                                        if (state.isLoading) {
+                                                                CircularProgressIndicator(
+                                                                        color = White,
+                                                                        modifier =
+                                                                                Modifier.size(24.dp)
+                                                                )
+                                                        } else {
+                                                                Text(
+                                                                        text =
+                                                                                "Continue with Email",
+                                                                        color = White,
+                                                                        fontWeight =
+                                                                                FontWeight.Bold,
+                                                                        fontSize = 16.sp
+                                                                )
+                                                        }
+                                                }
+                                        }
+
+                                        Spacer(modifier = Modifier.height(24.dp))
+
+                                        // OR Divider
+                                        Row(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                                HorizontalDivider(
+                                                        modifier = Modifier.weight(1f),
+                                                        color = Gray200.copy(alpha = 0.5f)
+                                                )
+                                                Text(
+                                                        text = "OR",
+                                                        modifier =
+                                                                Modifier.padding(
+                                                                        horizontal = 16.dp
+                                                                ),
+                                                        color = Gray400,
+                                                        fontSize = 12.sp
+                                                )
+                                                HorizontalDivider(
+                                                        modifier = Modifier.weight(1f),
+                                                        color = Gray200.copy(alpha = 0.5f)
+                                                )
+                                        }
+
+                                        Spacer(modifier = Modifier.height(24.dp))
+
+                                        // Social Buttons
+                                        SocialLoginButton(
+                                                text = "Continue with Google",
+                                                onClick = { /* TODO */},
+                                                iconColor = Color.Red,
+                                                iconLetter = "G"
+                                        )
+
+                                        Spacer(modifier = Modifier.height(12.dp))
+
+                                        SocialLoginButton(
+                                                text = "Continue with Apple",
+                                                onClick = { /* TODO */},
+                                                iconColor = Color.Black,
+                                                iconLetter = ""
+                                        )
+                                }
+                        } // End of Card
+
+                        Spacer(modifier = Modifier.height(32.dp))
+
+                        // Footer
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = "First time? ", color = Gray500, fontSize = 14.sp)
+                                Text(
+                                        text = "Create Account",
+                                        color = Purple500,
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        textDecoration = TextDecoration.Underline,
+                                        modifier = Modifier.clickable { onNavigateToRegister() }
+                                )
+                        }
+
+                        Spacer(modifier = Modifier.height(32.dp))
+                }
+        }
+}
+
+// --- Helper Components Modified for Floating Label ---
+
+@Composable
+fun AuthOutlinedTextField(
+        value: String,
+        onValueChange: (String) -> Unit,
+        labelText: String,
+        trailingIcon: @Composable (() -> Unit)? = null,
+        visualTransformation: VisualTransformation = VisualTransformation.None,
+        keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+        keyboardActions: KeyboardActions = KeyboardActions.Default,
+        isError: Boolean = false
+) {
+        OutlinedTextField(
+                value = value,
+                onValueChange = onValueChange,
+                modifier = Modifier.fillMaxWidth(),
+                label = { Text(labelText) }, // Floating Label
+                trailingIcon = trailingIcon,
+                visualTransformation = visualTransformation,
+                keyboardOptions = keyboardOptions,
+                keyboardActions = keyboardActions,
+                isError = isError,
+                singleLine = true,
+                shape = RoundedCornerShape(12.dp),
+                colors =
+                        OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Purple500,
+                                unfocusedBorderColor = Gray200,
+                                errorBorderColor = MaterialTheme.colorScheme.error,
+                                focusedContainerColor = Gray50,
+                                unfocusedContainerColor = Gray50,
+                                focusedLabelColor = Purple500,
+                                unfocusedLabelColor = Gray400
+                        ),
+                textStyle = TextStyle(fontSize = 14.sp, color = Gray900)
+        )
+}
+
+@Composable
+fun SocialLoginButton(text: String, onClick: () -> Unit, iconColor: Color, iconLetter: String) {
+        OutlinedButton(
+                onClick = onClick,
+                modifier = Modifier.fillMaxWidth().height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                border = androidx.compose.foundation.BorderStroke(1.dp, Gray200),
+                colors = ButtonDefaults.outlinedButtonColors(containerColor = White)
         ) {
-            Text("Forgot password?")
+                Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                ) {
+                        Text(
+                                text = iconLetter,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp,
+                                color = iconColor
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                                text = text,
+                                color = Gray900,
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium
+                        )
+                }
         }
-        // ---------------------------
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Tombol Login Utama
-        PrimaryAuthButton(
-            text = "Continue with Email",
-            onClick = {
-                focusManager.clearFocus()
-                viewModel.login()
-            },
-            isLoading = state.isLoading
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-        Text("OR", modifier = Modifier.align(Alignment.CenterHorizontally), color = Color.Gray)
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Tombol Social Media
-        SocialMediaLogins(
-            onAppleClick = { /* TODO: Aksi login Apple */ },
-            onGoogleClick = { /* TODO: Aksi login Google */ }
-        )
-
-        Spacer(modifier = Modifier.height(32.dp))
-
-        // --- FOOTER BARU ---
-        Row(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 24.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text("First time? ", color = Color.Gray)
-            ClickableText(
-                text = AnnotatedString("Create Account"),
-                onClick = { onNavigateToRegister() },
-                style = TextStyle(
-                    color = PrimaryPurple,
-                    fontWeight = FontWeight.Bold,
-                    textDecoration = TextDecoration.Underline
-                )
-            )
-        }
-        // --------------------
-    }
 }
 
 @Preview(showSystemUi = true)
 @Composable
 private fun UserLoginScreenPreview() {
-    JourieTheme {
-        UserLoginScreen({}, {})
-    }
+        JourieTheme { UserLoginScreen({}, {}) }
 }

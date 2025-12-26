@@ -1,48 +1,56 @@
 package com.example.jourie.presentation.history.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.height
-import androidx.compose.ui.draw.shadow
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import com.example.jourie.ui.theme.IconGray
-import com.example.jourie.ui.theme.PrimaryPurple
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import com.example.jourie.ui.theme.Gray200
+import com.example.jourie.ui.theme.Gray400
+import com.example.jourie.ui.theme.Purple500
 import com.example.jourie.ui.theme.White
 
-// SearchBar dengan nama unik
 @Composable
-fun JournalSearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit
-) {
-    TextField(
-        value = query,
-        onValueChange = onQueryChange,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .shadow(4.dp, RoundedCornerShape(10.dp))
-            .height(52.dp),
-        placeholder = { Text("Search your journals...", color = IconGray) },
-        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search Icon", tint = PrimaryPurple) },
-        shape = RoundedCornerShape(10.dp),
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            cursorColor = Color.Black,
-            unfocusedContainerColor = White,
-            focusedContainerColor = White
+fun JournalSearchBar(query: String, onQueryChange: (String) -> Unit) {
+        OutlinedTextField(
+                value = query,
+                onValueChange = onQueryChange,
+                modifier =
+                        Modifier.fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                                .shadow(2.dp, RoundedCornerShape(12.dp))
+                                .height(56.dp),
+                placeholder = {
+                        Text("Search your journals...", color = Gray400.copy(alpha = 0.6f))
+                },
+                leadingIcon = {
+                        Icon(
+                                Icons.Default.Search,
+                                contentDescription = "Search Icon",
+                                tint = Gray400
+                        )
+                },
+                shape = RoundedCornerShape(12.dp),
+                colors =
+                        OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = White,
+                                unfocusedContainerColor = White,
+                                disabledContainerColor = White,
+                                focusedBorderColor = Purple500,
+                                unfocusedBorderColor = Gray200,
+                                cursorColor = Purple500,
+                                focusedLeadingIconColor = Purple500,
+                                unfocusedLeadingIconColor = Gray400
+                        ),
+                singleLine = true
         )
-    )
 }

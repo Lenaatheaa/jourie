@@ -6,17 +6,15 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import com.example.jourie.ui.theme.PrimaryPurple
+import com.example.jourie.ui.theme.Purple400
+import com.example.jourie.ui.theme.White
 
 @Composable
 fun AddJournalFab(onClick: () -> Unit) {
     FloatingActionButton(
-        onClick = onClick,
-        shape = CircleShape,
-        containerColor = PrimaryPurple,
-        contentColor = Color.White
-    ) {
-        Icon(Icons.Default.Add, contentDescription = "Add Journal")
-    }
+            onClick = onClick,
+            shape = CircleShape,
+            containerColor = Purple400,
+            contentColor = White
+    ) { Icon(Icons.Default.Add, contentDescription = "Add Journal") }
 }

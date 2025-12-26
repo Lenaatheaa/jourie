@@ -12,13 +12,18 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.jourie.presentation.journal.analysis.components.*
 import com.example.jourie.ui.theme.JourieTheme
+import com.example.jourie.ui.theme.Orange500
+import com.example.jourie.ui.theme.Purple400
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,10 +39,19 @@ fun JournalAnalysisScreen(
     // Mulai analisis sekali setelah argumen diterima
     LaunchedEffect(journalContent, journalId) { viewModel.startAnalysis(journalContent, journalId) }
 
+    // Prioritas: Gunakan mood yang dipilih user, fallback ke AI emotion
+    val displayMood = state.userSelectedMood 
+        ?: state.emotionDistribution.maxByOrNull { it.value }?.key 
+        ?: "Happy"
+
     Scaffold(
             topBar = {
                 // Header ditempatkan di topBar agar posisinya tetap di atas
-                AnalysisHeader(onBackClick = { navController.popBackStack() })
+                AnalysisHeader(
+                        onBackClick = { navController.popBackStack() },
+                        dominantEmotion = displayMood,
+                        journalTimestamp = state.journalTimestamp
+                )
             }
     ) { innerPadding ->
         // Tampilkan error jika ada
@@ -71,7 +85,7 @@ fun JournalAnalysisScreen(
                     contentAlignment = Alignment.Center
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    CircularProgressIndicator()
+                    CircularProgressIndicator(color = Purple400)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text("AI is analyzing your journal...")
                 }
@@ -86,19 +100,19 @@ fun JournalAnalysisScreen(
                 // 1. Ringkasan Teks Jurnal
                 item { EntrySummaryCard(entryText = state.entryText) }
 
-                // 2. Spasi kecil dengan teks "AI Analysis"
+                // 2. AI Analysis Divider
                 item {
                     Text(
-                            text = "AI Analysis",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier =
-                                    Modifier.fillMaxWidth()
-                                            .wrapContentWidth(Alignment.CenterHorizontally)
+                            text = "⭐ AI Analysis ⭐",
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Orange500,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                     )
                 }
 
-                // 3. Grafik Prediksi
+                // 3. Grafik Prediksi dengan Donut Chart
                 item {
                     PredictionChartSection(
                             emotionDistribution = state.emotionDistribution,
@@ -106,11 +120,7 @@ fun JournalAnalysisScreen(
                     )
                 }
 
-                // 4. (Emotion meter removed)
-
-                // 5. (Keyword section removed)
-
-                // 6. Kartu-kartu Insight
+                // 4. Kartu-kartu Insight (Root Cause & Recommendation)
                 item {
                     InsightCards(
                             sentimentScore = state.sentimentScore,
@@ -119,10 +129,10 @@ fun JournalAnalysisScreen(
                     )
                 }
 
-                // 7. Kutipan
+                // 5. Kutipan
                 item { QuoteSection(quoteText = state.quoteText) }
 
-                // 8. Tombol-tombol Aksi
+                // 6. Tombol-tombol Aksi
                 item {
                     AnalysisActionButtons(
                             onShare = {},
@@ -138,6 +148,9 @@ fun JournalAnalysisScreen(
                             }
                     )
                 }
+
+                // Bottom spacing
+                item { Spacer(modifier = Modifier.height(16.dp)) }
             }
         }
     }

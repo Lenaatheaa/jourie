@@ -16,60 +16,71 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-private val DarkColorScheme = darkColorScheme(
-    primary = PrimaryPurple,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
-    background = Color(0xFF1C1B1F),
-    surface = Color(0xFF1C1B1F),
-    onPrimary = Color.Black,
-    onSecondary = Color.Black,
-    onTertiary = Color.Black,
-    onBackground = Color(0xFFE6E1E5),
-    onSurface = Color(0xFFE6E1E5),
-)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 🌙 DARK COLOR SCHEME
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+private val DarkColorScheme =
+        darkColorScheme(
+                primary = Purple400, // ⭐ Main brand color
+                secondary = Purple500, // Gradient pair
+                tertiary = Pink80,
+                background = Color(0xFF1C1B1F), // Dark background
+                surface = Color(0xFF1C1B1F), // Dark surface
+                onPrimary = White, // Text on purple
+                onSecondary = White,
+                onTertiary = White,
+                onBackground = Color(0xFFE6E1E5), // Light text on dark bg
+                onSurface = Color(0xFFE6E1E5),
+        )
 
-private val LightColorScheme = lightColorScheme(
-    primary = PrimaryPurple,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-    background = Color(0xFFFFFFFF), // Latar belakang sedikit keunguan F7F2FAFF
-    surface = White,
-    onPrimary = White,
-    onSecondary = White,
-    onTertiary = White,
-    onBackground = TextDark,
-    onSurface = TextDark,
-)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// ☀️ LIGHT COLOR SCHEME (Default)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+private val LightColorScheme =
+        lightColorScheme(
+                primary = Purple400, // ⭐ Main brand color (#C084FC)
+                secondary = Purple500, // Gradient pair (#A855F7)
+                tertiary = Pink40,
+                background = White, // Clean white background
+                surface = White, // Clean white surface
+                onPrimary = White, // White text on purple buttons
+                onSecondary = White,
+                onTertiary = White,
+                onBackground = Gray900, // Dark text on white background
+                onSurface = Gray700, // Body text on white surface
+        )
 
 @Composable
 fun JourieTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // Dinonaktifkan agar warna ungu utama kita selalu aktif
-    content: @Composable () -> Unit
+        darkTheme: Boolean = isSystemInDarkTheme(),
+        dynamicColor: Boolean = false, // Dinonaktifkan agar warna ungu utama kita selalu aktif
+        content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+        val colorScheme =
+                when {
+                        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+                                val context = LocalContext.current
+                                if (darkTheme) dynamicDarkColorScheme(context)
+                                else dynamicLightColorScheme(context)
+                        }
+                        darkTheme -> DarkColorScheme
+                        else -> LightColorScheme
+                }
 
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = Color.Transparent.toArgb() // Status bar transparan
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
+        val view = LocalView.current
+        if (!view.isInEditMode) {
+                SideEffect {
+                        val window = (view.context as Activity).window
+                        window.statusBarColor = Color.Transparent.toArgb() // Status bar transparan
+                        WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
+                                !darkTheme
+                }
         }
-    }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        shapes = Shapes,
-        content = content
-    )
+        MaterialTheme(
+                colorScheme = colorScheme,
+                typography = Typography,
+                shapes = Shapes,
+                content = content
+        )
 }
