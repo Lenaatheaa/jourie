@@ -18,6 +18,7 @@ import com.example.jourie.domain.usecase.CalculateEvolutionProgressUseCase
 import com.example.jourie.domain.usecase.GetStreakDataUseCase
 import com.example.jourie.presentation.streak.components.*
 import com.example.jourie.ui.theme.JourieTheme
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun StreakScreen(
@@ -32,6 +33,14 @@ fun StreakScreen(
                 )
 ) {
     val state by viewModel.state.collectAsState()
+
+    // Detect user change and refresh data
+    val currentUserId = remember { FirebaseAuth.getInstance().currentUser?.uid }
+    LaunchedEffect(currentUserId) {
+        currentUserId?.let {
+            viewModel.refreshData()
+        }
+    }
 
     if (state.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

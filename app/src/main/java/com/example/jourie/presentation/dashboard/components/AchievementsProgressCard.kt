@@ -75,12 +75,6 @@ fun AchievementsProgressCard(progress: Map<String, Int>) {
                                 verticalArrangement = Arrangement.spacedBy(14.dp)
                         ) {
                                 AchievementItem(
-                                        icon = Icons.Default.Favorite,
-                                        iconColor = Purple400,
-                                        label = "Yesterday's Emotion Summary",
-                                        progress = 0.2f
-                                )
-                                AchievementItem(
                                         icon = Icons.Default.EmojiEvents,
                                         iconColor = Orange500,
                                         label = "Streak",

@@ -43,4 +43,9 @@ class StreakViewModel(
             }
         }
     }
+
+    // Public function to refresh data when user changes
+    fun refreshData() {
+        loadStreakData()
+    }
 }

@@ -24,14 +24,10 @@ import androidx.compose.ui.unit.sp
 import com.example.jourie.ui.theme.Purple400
 import com.example.jourie.ui.theme.Purple500
 import com.example.jourie.ui.theme.White
-import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun MilestonesHeader(badgeCount: Int, progress: Float) {
+fun MilestonesHeader(userName: String, badgeCount: Int, progress: Float) {
         val totalBadges = 11 // Total badges available
-        val userName =
-                FirebaseAuth.getInstance().currentUser?.displayName?.split(" ")?.firstOrNull()
-                        ?: "User"
 
         Card(
                 modifier = Modifier.fillMaxWidth(),

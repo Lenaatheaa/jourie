@@ -6,8 +6,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +19,7 @@ import com.example.jourie.presentation.history.components.HistoryPageHeader
 import com.example.jourie.presentation.history.components.JournalItemCard
 import com.example.jourie.presentation.history.components.JournalSearchBar
 import com.example.jourie.ui.theme.JourieTheme
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun JournalHistoryScreen(
@@ -25,6 +28,14 @@ fun JournalHistoryScreen(
         viewModel: JournalHistoryViewModel = viewModel()
 ) {
     val state by viewModel.state.collectAsState()
+
+    // Detect user change and refresh data
+    val currentUserId = remember { FirebaseAuth.getInstance().currentUser?.uid }
+    LaunchedEffect(currentUserId) {
+        currentUserId?.let {
+            viewModel.refreshData()
+        }
+    }
 
     // Jika dipanggil dengan dateFilter dari Dashboard, gunakan untuk memfilter awal
     androidx.compose.runtime.LaunchedEffect(initialDateFilter) {

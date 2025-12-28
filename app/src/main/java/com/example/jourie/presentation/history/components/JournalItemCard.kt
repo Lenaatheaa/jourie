@@ -41,12 +41,12 @@ fun JournalItemCard(entry: JournalEntry, onClick: () -> Unit, onDeleteClick: () 
             colors = CardDefaults.cardColors(containerColor = White),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(modifier = Modifier.fillMaxWidth().height(130.dp), verticalAlignment = Alignment.CenterVertically) {
             // Left colored border
             Box(
                     modifier =
                             Modifier.width(4.dp)
-                                    .height(100.dp)
+                                    .height(130.dp)
                                     .background(getColorForMood(entry.mood))
             )
 
@@ -83,7 +83,7 @@ fun JournalItemCard(entry: JournalEntry, onClick: () -> Unit, onDeleteClick: () 
                         text = entry.description,
                         fontSize = 13.sp,
                         color = Gray500,
-                        maxLines = 2,
+                        maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
                         lineHeight = 18.sp
                 )

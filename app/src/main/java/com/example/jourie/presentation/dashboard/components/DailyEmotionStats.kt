@@ -26,6 +26,17 @@ import com.example.jourie.ui.theme.White
 
 @Composable
 fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
+        // Empty state emotions with gray colors and 0%
+        val displayEmotions = if (emotions.isEmpty()) {
+                listOf(
+                        EmotionSnapshot("Sadness", 0, "0%", Gray200),
+                        EmotionSnapshot("Anger", 0, "0%", Gray200),
+                        EmotionSnapshot("Happiness", 0, "0%", Gray200)
+                )
+        } else {
+                emotions
+        }
+
         Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(20.dp),
@@ -71,7 +82,7 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
                                 verticalAlignment = Alignment.CenterVertically
                         ) {
                                 // Donut Chart
-                                EmotionDonutChart(emotions = emotions, modifier = Modifier)
+                                EmotionDonutChart(emotions = displayEmotions, modifier = Modifier)
 
                                 Spacer(modifier = Modifier.width(32.dp))
 
@@ -80,7 +91,7 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
                                         modifier = Modifier.weight(1f),
                                         verticalArrangement = Arrangement.spacedBy(10.dp)
                                 ) {
-                                        emotions.forEach { emotion ->
+                                        displayEmotions.forEach { emotion ->
                                                 Row(
                                                         verticalAlignment =
                                                                 Alignment.CenterVertically,
@@ -104,7 +115,7 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
                                                                 text = emotion.name,
                                                                 fontSize = 13.sp,
                                                                 color = Gray900,
-                                                                modifier = Modifier.weight(1f)
+                                                                modifier = Modifier.width(80.dp)
                                                         )
                                                         Text(
                                                                 text = "${emotion.percentage}%",
@@ -121,7 +132,7 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
 
                         // Horizontal bars
                         Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                                emotions.forEach { emotion ->
+                                displayEmotions.forEach { emotion ->
                                         Row(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 verticalAlignment = Alignment.CenterVertically
@@ -130,7 +141,8 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
                                                         text = emotion.name,
                                                         fontSize = 13.sp,
                                                         color = Gray500,
-                                                        modifier = Modifier.width(65.dp)
+                                                        modifier = Modifier.width(80.dp),
+                                                        maxLines = 1
                                                 )
 
                                                 Box(

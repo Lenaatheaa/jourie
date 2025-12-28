@@ -11,7 +11,7 @@ class FirebaseAuthRepository(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
-    suspend fun register(fullName: String, email: String, password: String): Result<Unit> {
+    suspend fun register(fullName: String, email: String, phone: String, dob: String, password: String): Result<Unit> {
         return try {
             val userCredential = auth.createUserWithEmailAndPassword(email, password).await()
             val uid = userCredential.user?.uid ?: throw IllegalStateException("No UID after register")
@@ -19,6 +19,8 @@ class FirebaseAuthRepository(
             val data = mapOf(
                 "fullName" to fullName,
                 "email" to email,
+                "phone" to phone.ifBlank { null },
+                "dob" to dob.ifBlank { null },
                 "createdAt" to System.currentTimeMillis()
             )
             firestore.collection("users").document(uid).set(data).await()

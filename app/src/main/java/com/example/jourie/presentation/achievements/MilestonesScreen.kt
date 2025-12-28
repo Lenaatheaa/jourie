@@ -9,8 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn // DIGANTI: Menggunakan LazyC
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,10 +24,19 @@ import com.example.jourie.presentation.achievements.components.*
 import com.example.jourie.ui.theme.Gray900
 import com.example.jourie.ui.theme.JourieTheme
 import com.example.jourie.ui.theme.White
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun MilestonesScreen(viewModel: MilestonesViewModel = viewModel()) {
     val state by viewModel.state.collectAsState()
+
+    // Detect user change and refresh data
+    val currentUserId = remember { FirebaseAuth.getInstance().currentUser?.uid }
+    LaunchedEffect(currentUserId) {
+        currentUserId?.let {
+            viewModel.refreshData()
+        }
+    }
 
     // Hapus 'Scaffold' dan 'JourieTheme' jika sudah ditangani di MainActivity
     if (state.isLoading) {
@@ -45,7 +56,11 @@ fun MilestonesScreen(viewModel: MilestonesViewModel = viewModel()) {
         ) {
             // Item 1: Header
             item {
-                MilestonesHeader(badgeCount = state.badgeCount, progress = state.progressPercent)
+                MilestonesHeader(
+                        userName = state.userName,
+                        badgeCount = state.badgeCount,
+                        progress = state.progressPercent
+                )
             }
 
             // Item 2: Judul Overview

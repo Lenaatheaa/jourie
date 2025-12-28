@@ -29,6 +29,14 @@ class UserRegisterViewModel : ViewModel() {
         _state.update { it.copy(email = email) }
     }
 
+    fun onPhoneChange(phone: String) {
+        _state.update { it.copy(phone = phone) }
+    }
+
+    fun onDobChange(dob: String) {
+        _state.update { it.copy(dob = dob) }
+    }
+
     fun onPasswordChange(password: String) {
         _state.update { it.copy(password = password) }
     }
@@ -49,6 +57,8 @@ class UserRegisterViewModel : ViewModel() {
         viewModelScope.launch {
             val fullName = _state.value.fullName
             val email = _state.value.email
+            val phone = _state.value.phone
+            val dob = _state.value.dob
             val password = _state.value.password
             val confirmPassword = _state.value.confirmPassword
 
@@ -70,7 +80,7 @@ class UserRegisterViewModel : ViewModel() {
             }
 
             _state.update { it.copy(isLoading = true, error = null) }
-            val result = repo.register(fullName, email, password)
+            val result = repo.register(fullName, email, phone, dob, password)
             if (result.isSuccess) {
                 _state.update { it.copy(isLoading = false, registerSuccess = true) }
             } else {

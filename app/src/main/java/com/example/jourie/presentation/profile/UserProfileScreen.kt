@@ -7,10 +7,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -23,13 +26,32 @@ import com.example.jourie.ui.theme.JourieTheme
 fun UserProfileScreen(navController: NavController, viewModel: UserProfileViewModel = viewModel()) {
     val state by viewModel.state.collectAsState()
     var isDarkMode by remember { mutableStateOf(false) }
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    // Refresh profile saat screen resumed (setelah kembali dari edit)
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.refreshProfile()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 
     // Observe logout state dan navigate ke login
     LaunchedEffect(state.isLoggedOut) {
         if (state.isLoggedOut) {
             viewModel.onLogoutHandled()
             navController.navigate("auth_graph") {
-                popUpTo(0) { inclusive = true }
+                popUpTo(0) { 
+                    inclusive = true
+                    saveState = false
+                }
+                launchSingleTop = true
+                restoreState = false
             }
         }
     }

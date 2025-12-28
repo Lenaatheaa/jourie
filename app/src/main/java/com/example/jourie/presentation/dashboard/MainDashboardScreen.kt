@@ -48,7 +48,13 @@ fun MainDashboardScreen(
         viewModel: MainDashboardViewModel = viewModel()
 ) {
         val state by viewModel.state.collectAsState()
-
+        // Detect user change and refresh data
+        val currentUserId = remember { FirebaseAuth.getInstance().currentUser?.uid }
+        LaunchedEffect(currentUserId) {
+                currentUserId?.let {
+                        viewModel.refreshData()
+                }
+        }
         // Tempat untuk rekomendasi AI berbasis jurnal terbaru.
         // Jika belum ada analisis AI, akan tetap null dan UI memakai data dummy dari
         // state.recommendations.

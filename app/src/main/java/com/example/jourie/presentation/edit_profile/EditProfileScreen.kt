@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jourie.presentation.components.DateOfBirthPickerField
 import com.example.jourie.presentation.profile.components.ProfileHeaderGradient
 import com.example.jourie.ui.theme.PrimaryPurple
 import com.example.jourie.ui.theme.TextDark
@@ -96,8 +97,7 @@ fun EditProfileScreen(onNavigateBack: () -> Unit, viewModel: EditProfileViewMode
                         onValueChange = viewModel::onEmailChange
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                EditProfileField(
-                        label = "Date Of Birth",
+                DateOfBirthPickerField(
                         value = state.dob,
                         onValueChange = viewModel::onDobChange
                 )

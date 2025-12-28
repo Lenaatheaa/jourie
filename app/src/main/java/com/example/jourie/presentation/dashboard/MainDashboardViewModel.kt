@@ -30,4 +30,9 @@ class MainDashboardViewModel(
             }
         }
     }
+
+    // Public function to refresh data when user changes
+    fun refreshData() {
+        loadDashboardData()
+    }
 }

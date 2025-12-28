@@ -49,6 +49,11 @@ class JournalHistoryViewModel(
         }
     }
 
+    // Public function to refresh data when user changes
+    fun refreshData() {
+        loadHistory()
+    }
+
     fun onSearchQueryChange(query: String) {
         _state.update { it.copy(searchQuery = query) }
         val filtered = filterUseCase(query, _state.value.allJournals)

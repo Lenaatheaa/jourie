@@ -22,9 +22,11 @@ class UserProfileViewModel(
         loadProfile()
     }
 
-    private fun loadProfile() {
+    private fun loadProfile(showLoading: Boolean = true) {
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
+            if (showLoading) {
+                _state.update { it.copy(isLoading = true) }
+            }
             val result = repo.getCurrentUserProfile()
             if (result.isSuccess) {
                 val profile = result.getOrNull()!!
@@ -42,6 +44,11 @@ class UserProfileViewModel(
                 _state.update { it.copy(isLoading = false) }
             }
         }
+    }
+
+    // Public function untuk refresh profile dari UI (silent refresh)
+    fun refreshProfile() {
+        loadProfile(showLoading = false)
     }
 
     // --- FUNGSI UNTUK DIALOG ---

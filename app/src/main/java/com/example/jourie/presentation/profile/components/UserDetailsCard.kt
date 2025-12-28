@@ -90,8 +90,8 @@ fun UserDetailsCard(
                     icon = Icons.Default.Phone,
                     iconColor = Green500, // Green
                     label = "Phone",
-                    value = phone,
-                    showCopy = true,
+                    value = phone.ifBlank { "Not set" },
+                    showCopy = phone.isNotBlank(),
                     onCopy = { clipboardManager.setText(AnnotatedString(phone)) }
             )
 
@@ -102,7 +102,7 @@ fun UserDetailsCard(
                     icon = Icons.Default.CalendarToday,
                     iconColor = Orange500, // Orange
                     label = "Date of Birth",
-                    value = dob,
+                    value = dob.ifBlank { "Not set" },
                     showCopy = false
             )
         }

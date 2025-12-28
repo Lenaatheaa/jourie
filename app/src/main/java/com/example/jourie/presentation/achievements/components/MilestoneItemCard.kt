@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -44,7 +45,7 @@ fun MilestoneItemCard(badge: Badge) {
     val subtitleColor = if (badge.isUnlocked) Purple600 else Gray400
 
     Card(
-            modifier = Modifier.height(140.dp),
+            modifier = Modifier.width(120.dp).height(140.dp),
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(containerColor = backgroundColor),
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -64,9 +65,9 @@ fun MilestoneItemCard(badge: Badge) {
                         contentAlignment = Alignment.Center
                 ) { Text(text = badge.icon, fontSize = 30.sp) }
             } else {
-                // Locked badge with lock icon in gray circle
+                // Locked badge with lock icon in gray rounded square
                 Box(
-                        modifier = Modifier.size(56.dp).clip(CircleShape).background(Gray500),
+                        modifier = Modifier.size(56.dp).clip(RoundedCornerShape(14.dp)).background(Gray500),
                         contentAlignment = Alignment.Center
                 ) {
                     Icon(

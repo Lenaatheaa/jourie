@@ -21,14 +21,8 @@ class MainDashboardRepository {
     suspend fun getDashboardData(): Triple<List<EmotionSnapshot>, List<JournalEntry>, List<WellnessRecommendation>> {
         delay(500) // Simulasi waktu tunggu saat mengambil data
 
-        // Data dummy untuk ringkasan emosi
-        val emotions = listOf(
-            EmotionSnapshot("Sadness", 10, "-3%", Color(0xFF4A90E2)),
-            EmotionSnapshot("Anger", 15, "-2%", Color(0xFFD0021B)),
-            EmotionSnapshot("Happiness", 12, "+1%", Color(0xFFF5A623)),
-            EmotionSnapshot("Fear", 5, "+1%", Color(0xFFBD10E0)),
-            EmotionSnapshot("Surprise", 8, "0%", Color(0xFF50E3C2))
-        )
+        // Return empty list - actual data comes from AI analysis on latest journal
+        val emotions = emptyList<EmotionSnapshot>()
 
         // Data dummy untuk jurnal terbaru (menggunakan 'JournalEntry' yang sudah ada)
         val journals = listOf(

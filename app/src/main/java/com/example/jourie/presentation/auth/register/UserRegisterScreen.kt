@@ -162,6 +162,8 @@ package com.example.jourie.presentation.auth.register
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -187,6 +189,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jourie.presentation.components.DateOfBirthPickerField
 import com.example.jourie.ui.theme.Gray200
 import com.example.jourie.ui.theme.Gray400
 import com.example.jourie.ui.theme.Gray50
@@ -293,6 +296,28 @@ fun UserRegisterScreen(
                                                                 keyboardType = KeyboardType.Email,
                                                                 imeAction = ImeAction.Next
                                                         )
+                                        )
+
+                                        Spacer(modifier = Modifier.height(16.dp))
+
+                                        // Phone Field (Optional)
+                                        RegisterOutlinedTextField(
+                                                value = state.phone,
+                                                onValueChange = viewModel::onPhoneChange,
+                                                labelText = "Phone Number (Optional)",
+                                                keyboardOptions =
+                                                        KeyboardOptions(
+                                                                keyboardType = KeyboardType.Phone,
+                                                                imeAction = ImeAction.Next
+                                                        )
+                                        )
+
+                                        Spacer(modifier = Modifier.height(16.dp))
+
+                                        // Date of Birth Field (Optional with DatePicker)
+                                        DateOfBirthPickerField(
+                                                value = state.dob,
+                                                onValueChange = viewModel::onDobChange
                                         )
 
                                         Spacer(modifier = Modifier.height(16.dp))
