@@ -97,7 +97,7 @@ private fun RecommendationCard(
                                         Icon(
                                                 imageVector =
                                                         if (recommendation.category.contains(
-                                                                        "Wellness",
+                                                                        "Recommendation",
                                                                         ignoreCase = true
                                                                 )
                                                         )
@@ -143,12 +143,12 @@ private fun WellnessRecommendationsPreview() {
                 listOf(
                         WellnessRecommendation(
                                 1,
-                                "Wellness",
+                                "Recommendation",
                                 "Sangat penting untuk diingat bahwa Anda tidak bertanggung jawab atas pilihan atau tindakan orang lain."
                         ),
                         WellnessRecommendation(
                                 2,
-                                "Meditation",
+                                "Quote",
                                 "Anda tidak bisa mengendalikan tindakan orang lain, tapi Anda selalu bisa mengendalikan reaksi Anda."
                         )
                 )

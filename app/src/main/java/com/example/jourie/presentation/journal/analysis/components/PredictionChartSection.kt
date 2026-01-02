@@ -35,16 +35,35 @@ import com.example.jourie.ui.theme.Red500
 // Color palette for emotions
 private val emotionColors =
         mapOf(
-                "Cemas" to Purple400,
-                "Sedih" to Color(0xFFF87171),
-                "Tenang" to Blue400,
+                // Positive emotions
+                "Happy" to Color(0xFFFBBF24),      // Yellow
                 "Senang" to Color(0xFFFBBF24),
-                "Anxious" to Purple400,
-                "Sad" to Color(0xFFF87171),
-                "Calm" to Blue400,
-                "Happy" to Color(0xFFFBBF24),
-                "Anger" to Red500,
-                "Marah" to Red500
+                "Excited" to Color(0xFFFB923C),    // Orange
+                "Calm" to Blue400,                  // Blue soft
+                "Tenang" to Blue400,
+                "Grateful" to Color(0xFF10B981),   // Green
+                "Joyful" to Color(0xFFF472B6),     // Pink bright
+                "Loved" to Color(0xFFFB7185),      // Pink soft
+                
+                // Negative emotions
+                "Sad" to Color(0xFFF87171),        // Red soft
+                "Sedih" to Color(0xFFF87171),
+                "Anxious" to Purple400,             // Purple
+                "Cemas" to Purple400,
+                "Angry" to Color(0xFFEF4444),      // Red bright
+                "Anger" to Color(0xFFEF4444),
+                "Marah" to Color(0xFFEF4444),
+                "Disappointed" to Color(0xFFA16207), // Brown
+                "Scared" to Color(0xFF9333EA),     // Purple dark
+                "Hopeless" to Color(0xFF6B7280),   // Gray dark
+                "Frustrated" to Color(0xFFEA580C), // Orange dark
+                "Overwhelmed" to Color(0xFF14B8A6), // Teal
+                
+                // Neutral emotions
+                "Neutral" to Color(0xFF9CA3AF),    // Gray
+                "Tired" to Color(0xFF6B7280),      // Gray dark
+                "Confused" to Color(0xFF60A5FA),   // Blue light
+                "Thoughtful" to Color(0xFF818CF8)  // Indigo
         )
 
 @Composable
@@ -125,15 +144,17 @@ private fun EmotionDonutChart(
         animatedProgress.animateTo(1f, animationSpec = tween(durationMillis = 1200))
     }
 
-    val total = emotionDistribution.values.sum()
-    val dominantEmotion = emotionDistribution.maxByOrNull { it.value }
+    // Filter only emotions with value >= 5%
+    val filteredEmotions = emotionDistribution.filter { it.value >= 0.05f }
+    val total = filteredEmotions.values.sum()
+    val dominantEmotion = filteredEmotions.maxByOrNull { it.value }
     val dominantPercentage = ((dominantEmotion?.value ?: 0f) * 100).toInt()
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         // Donut chart
         Canvas(modifier = Modifier.fillMaxSize()) {
             var startAngle = -90f
-            emotionDistribution.forEach { (emotion, value) ->
+            filteredEmotions.forEach { (emotion, value) ->
                 val sweepAngle = (value / total) * 360f
                 val color = emotionColors[emotion] ?: Color.Gray
 
@@ -172,8 +193,8 @@ private fun EmotionDonutChart(
 
 @Composable
 private fun EmotionLegend(emotionDistribution: Map<String, Float>) {
-    // Split into 2 columns
-    val emotions = emotionDistribution.toList()
+    // Filter only emotions with value >= 5% and split into 2 columns
+    val emotions = emotionDistribution.filter { it.value >= 0.05f }.toList()
     val half = (emotions.size + 1) / 2
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {

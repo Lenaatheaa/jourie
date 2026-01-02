@@ -16,26 +16,61 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jourie.data.model.EmotionSnapshot
+import com.example.jourie.ui.theme.Blue400
 import com.example.jourie.ui.theme.Gray200
 import com.example.jourie.ui.theme.Gray500
 import com.example.jourie.ui.theme.Gray900
 import com.example.jourie.ui.theme.JourieTheme
 import com.example.jourie.ui.theme.Purple100
+import com.example.jourie.ui.theme.Purple400
 import com.example.jourie.ui.theme.Purple700
 import com.example.jourie.ui.theme.White
 
+// Color palette for emotions (consistent with Analysis)
+private val emotionColors =
+        mapOf(
+                // Positive emotions
+                "Happy" to Color(0xFFFBBF24),
+                "Senang" to Color(0xFFFBBF24),
+                "Excited" to Color(0xFFFB923C),
+                "Calm" to Blue400,
+                "Tenang" to Blue400,
+                "Grateful" to Color(0xFF10B981),
+                "Joyful" to Color(0xFFF472B6),
+                "Loved" to Color(0xFFFB7185),
+                // Negative emotions
+                "Sad" to Color(0xFFF87171),
+                "Sedih" to Color(0xFFF87171),
+                "Anxious" to Purple400,
+                "Cemas" to Purple400,
+                "Angry" to Color(0xFFEF4444),
+                "Anger" to Color(0xFFEF4444),
+                "Marah" to Color(0xFFEF4444),
+                "Disappointed" to Color(0xFFA16207),
+                "Scared" to Color(0xFF9333EA),
+                "Hopeless" to Color(0xFF6B7280),
+                "Frustrated" to Color(0xFFEA580C),
+                "Overwhelmed" to Color(0xFF14B8A6),
+                // Neutral emotions
+                "Neutral" to Color(0xFF9CA3AF),
+                "Tired" to Color(0xFF6B7280),
+                "Confused" to Color(0xFF60A5FA),
+                "Thoughtful" to Color(0xFF818CF8)
+        )
+
 @Composable
 fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
-        // Empty state emotions with gray colors and 0%
-        val displayEmotions = if (emotions.isEmpty()) {
-                listOf(
-                        EmotionSnapshot("Sadness", 0, "0%", Gray200),
-                        EmotionSnapshot("Anger", 0, "0%", Gray200),
-                        EmotionSnapshot("Happiness", 0, "0%", Gray200)
-                )
-        } else {
-                emotions
-        }
+        // Filter, sort, and apply consistent colors
+        val displayEmotions = emotions
+                .filter { it.percentage >= 5 }  // Only >= 5%
+                .sortedByDescending { it.percentage }  // Highest first
+                .take(8)  // Max 8 emotions
+                .map { emotion ->
+                        // Replace color with consistent emotionColors
+                        emotion.copy(color = emotionColors[emotion.name] ?: Color.Gray)
+                }
+        
+        val hasData = displayEmotions.isNotEmpty()
 
         Card(
                 modifier = Modifier.fillMaxWidth(),
@@ -76,113 +111,75 @@ fun DailyEmotionStats(emotions: List<EmotionSnapshot>) {
 
                         Spacer(modifier = Modifier.height(20.dp))
 
-                        Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Start,
-                                verticalAlignment = Alignment.CenterVertically
+                        // Donut Chart (centered)
+                        Box(
+                                modifier = Modifier.fillMaxWidth().height(220.dp),
+                                contentAlignment = Alignment.Center
                         ) {
-                                // Donut Chart
-                                EmotionDonutChart(emotions = displayEmotions, modifier = Modifier)
+                                EmotionDonutChart(
+                                        emotions = displayEmotions,
+                                        modifier = Modifier.size(180.dp)
+                                )
+                        }
 
-                                Spacer(modifier = Modifier.width(32.dp))
+                        // Only show bars if there's data
+                        if (hasData) {
+                                Spacer(modifier = Modifier.height(28.dp))
 
-                                // Legend
-                                Column(
-                                        modifier = Modifier.weight(1f),
-                                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                                ) {
+                                // Horizontal bars
+                                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                                         displayEmotions.forEach { emotion ->
                                                 Row(
-                                                        verticalAlignment =
-                                                                Alignment.CenterVertically,
-                                                        horizontalArrangement =
-                                                                Arrangement.spacedBy(6.dp)
+                                                        modifier = Modifier.fillMaxWidth(),
+                                                        verticalAlignment = Alignment.CenterVertically
                                                 ) {
-                                                        Box(
-                                                                modifier =
-                                                                        Modifier.size(10.dp)
-                                                                                .clip(
-                                                                                        androidx.compose
-                                                                                                .foundation
-                                                                                                .shape
-                                                                                                .CircleShape
-                                                                                )
-                                                                                .background(
-                                                                                        emotion.color
-                                                                                )
-                                                        )
                                                         Text(
                                                                 text = emotion.name,
                                                                 fontSize = 13.sp,
-                                                                color = Gray900,
-                                                                modifier = Modifier.width(80.dp)
+                                                                color = Gray500,
+                                                                modifier = Modifier.width(80.dp),
+                                                                maxLines = 1
                                                         )
-                                                        Text(
-                                                                text = "${emotion.percentage}%",
-                                                                fontSize = 13.sp,
-                                                                fontWeight = FontWeight.SemiBold,
-                                                                color = Gray900
-                                                        )
-                                                }
-                                        }
-                                }
-                        }
 
-                        Spacer(modifier = Modifier.height(28.dp))
-
-                        // Horizontal bars
-                        Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                                displayEmotions.forEach { emotion ->
-                                        Row(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                                Text(
-                                                        text = emotion.name,
-                                                        fontSize = 13.sp,
-                                                        color = Gray500,
-                                                        modifier = Modifier.width(80.dp),
-                                                        maxLines = 1
-                                                )
-
-                                                Box(
-                                                        modifier =
-                                                                Modifier.weight(1f)
-                                                                        .height(10.dp)
-                                                                        .clip(
-                                                                                RoundedCornerShape(
-                                                                                        5.dp
-                                                                                )
-                                                                        )
-                                                                        .background(Gray200)
-                                                ) {
                                                         Box(
                                                                 modifier =
-                                                                        Modifier.fillMaxHeight()
-                                                                                .fillMaxWidth(
-                                                                                        emotion.percentage /
-                                                                                                100f
-                                                                                )
+                                                                        Modifier.weight(1f)
+                                                                                .height(10.dp)
                                                                                 .clip(
                                                                                         RoundedCornerShape(
                                                                                                 5.dp
                                                                                         )
                                                                                 )
-                                                                                .background(
-                                                                                        emotion.color
-                                                                                )
+                                                                                .background(Gray200)
+                                                        ) {
+                                                                Box(
+                                                                        modifier =
+                                                                                Modifier.fillMaxHeight()
+                                                                                        .fillMaxWidth(
+                                                                                                emotion.percentage /
+                                                                                                        100f
+                                                                                        )
+                                                                                        .clip(
+                                                                                                RoundedCornerShape(
+                                                                                                        5.dp
+                                                                                                )
+                                                                                        )
+                                                                                        .background(
+                                                                                                emotion.color
+                                                                                        )
+                                                                )
+                                                        }
+
+                                                        Spacer(modifier = Modifier.width(12.dp))
+
+                                                        Text(
+                                                                text = "${emotion.percentage}%",
+                                                                fontSize = 13.sp,
+                                                                fontWeight = FontWeight.SemiBold,
+                                                                color = Gray900,
+                                                                modifier = Modifier.width(35.dp)
                                                         )
                                                 }
-
-                                                Spacer(modifier = Modifier.width(12.dp))
-
-                                                Text(
-                                                        text = "${emotion.percentage}%",
-                                                        fontSize = 13.sp,
-                                                        fontWeight = FontWeight.SemiBold,
-                                                        color = Gray900,
-                                                        modifier = Modifier.width(35.dp)
-                                                )
                                         }
                                 }
                         }

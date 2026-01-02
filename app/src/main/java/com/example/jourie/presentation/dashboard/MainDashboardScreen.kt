@@ -134,12 +134,12 @@ fun MainDashboardScreen(
                                 listOf(
                                         WellnessRecommendation(
                                                 id = 1,
-                                                category = "Wellness",
+                                                category = "Recommendation",
                                                 title = wellnessTitle
                                         ),
                                         WellnessRecommendation(
                                                 id = 2,
-                                                category = "Meditation",
+                                                category = "Quote",
                                                 title = meditationTitle
                                         )
                                 )

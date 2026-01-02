@@ -32,8 +32,8 @@ class MainDashboardRepository {
 
         // Data dummy untuk rekomendasi
         val recommendations = listOf(
-            WellnessRecommendation(1, "Wellness", "Meditation guide"),
-            WellnessRecommendation(2, "Meditation for Beginners", "Calm your mind")
+            WellnessRecommendation(1, "Recommendation", "No recommendation yet. Start journaling to get personalized insights!"),
+            WellnessRecommendation(2, "Quote", "No quote available yet. Keep writing to receive inspiring quotes!")
         )
 
         // Mengembalikan semua data sekaligus menggunakan 'Triple'

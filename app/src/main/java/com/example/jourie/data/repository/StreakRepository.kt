@@ -113,7 +113,8 @@ class StreakRepository(
 
         // Hitung level pet berdasarkan panjang streak dan konfigurasi timeline
         val newPetLevel = calculatePetLevel(newStreak)
-        val newHighestLevelAchieved = max(highestEvolutionLevelAchieved, newPetLevel)
+        // Reset evolution level sesuai dengan current pet level (tidak pakai max lagi)
+        val newHighestLevelAchieved = newPetLevel
 
         val data = mapOf(
             "currentDayStreak" to newStreak,

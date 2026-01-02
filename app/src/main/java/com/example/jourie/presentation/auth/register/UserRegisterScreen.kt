@@ -160,6 +160,7 @@
 
 package com.example.jourie.presentation.auth.register
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -181,6 +182,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
@@ -228,7 +230,7 @@ fun UserRegisterScreen(
                 ) {
                         Spacer(modifier = Modifier.height(40.dp))
 
-                        // 1. Logo Placeholder
+                        // 1. Logo
                         Box(
                                 modifier =
                                         Modifier.size(80.dp)
@@ -236,11 +238,12 @@ fun UserRegisterScreen(
                                                 .background(White, CircleShape),
                                 contentAlignment = Alignment.Center
                         ) {
-                                Text(
-                                        text = "J",
-                                        fontSize = 40.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = Purple500
+                                Image(
+                                        painter = painterResource(id = com.example.jourie.R.drawable.jourielogo1),
+                                        contentDescription = "Jourie Logo",
+                                        modifier = Modifier
+                                                .size(50.dp)
+                                                .offset(x = (-2).dp, y = (-2).dp)
                                 )
                         }
 
@@ -511,8 +514,7 @@ fun UserRegisterScreen(
                                         RegisterSocialButton(
                                                 text = "Sign up with Google",
                                                 onClick = { /* TODO */},
-                                                iconColor = Color.Red,
-                                                iconLetter = "G"
+                                                iconDrawable = com.example.jourie.R.drawable.google1
                                         )
                                 }
                         }
@@ -579,7 +581,7 @@ fun RegisterOutlinedTextField(
 }
 
 @Composable
-fun RegisterSocialButton(text: String, onClick: () -> Unit, iconColor: Color, iconLetter: String) {
+fun RegisterSocialButton(text: String, onClick: () -> Unit, iconDrawable: Int?) {
         OutlinedButton(
                 onClick = onClick,
                 modifier = Modifier.fillMaxWidth().height(50.dp),
@@ -591,13 +593,14 @@ fun RegisterSocialButton(text: String, onClick: () -> Unit, iconColor: Color, ic
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center
                 ) {
-                        Text(
-                                text = iconLetter,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
-                                color = iconColor
-                        )
-                        Spacer(modifier = Modifier.width(12.dp))
+                        iconDrawable?.let {
+                                Image(
+                                        painter = painterResource(id = it),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(24.dp)
+                                )
+                                Spacer(modifier = Modifier.width(12.dp))
+                        }
                         Text(
                                 text = text,
                                 color = Gray900,

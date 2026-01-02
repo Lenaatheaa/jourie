@@ -59,12 +59,26 @@ fun EmotionDonutChart(emotions: List<EmotionSnapshot>, modifier: Modifier = Modi
 
                     startAngle += sweepAngle
                 }
+
+                // Draw remaining percentage with light gray
+                if (totalPercentage < 100) {
+                    val remainingSweep = ((100 - totalPercentage) / 100f) * 360f
+                    drawArc(
+                            color = com.example.jourie.ui.theme.Gray200,
+                            startAngle = startAngle,
+                            sweepAngle = remainingSweep,
+                            useCenter = false,
+                            topLeft = Offset(center.x - radius, center.y - radius),
+                            size = Size(radius * 2, radius * 2),
+                            style = Stroke(width = strokeWidth, cap = StrokeCap.Butt)
+                    )
+                }
             }
         }
 
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
-                    text = if (isEmpty) "0%" else "100%",
+                    text = if (isEmpty) "0%" else "${totalPercentage}%",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = Black,

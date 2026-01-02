@@ -176,14 +176,26 @@ fun FloatingBottomNavigationBar(
                                 NavigationBarItem(
                                         selected = isSelected,
                                         onClick = {
-                                                navController.navigate(item.route) {
-                                                        popUpTo(
-                                                                navController.graph
-                                                                        .findStartDestination()
-                                                                        .id
-                                                        ) { saveState = true }
-                                                        launchSingleTop = true
-                                                        restoreState = true
+                                                // Strategi: Home/Dashboard clear back stack untuk fresh start
+                                                // Tab lain restore state untuk better UX
+                                                if (item.route == Routes.DASHBOARD) {
+                                                        navController.navigate(item.route) {
+                                                                popUpTo(navController.graph.findStartDestination().id) {
+                                                                        inclusive = false
+                                                                }
+                                                                launchSingleTop = true
+                                                                // Tidak ada restoreState untuk Dashboard
+                                                        }
+                                                } else {
+                                                        navController.navigate(item.route) {
+                                                                popUpTo(
+                                                                        navController.graph
+                                                                                .findStartDestination()
+                                                                                .id
+                                                                ) { saveState = true }
+                                                                launchSingleTop = true
+                                                                restoreState = true
+                                                        }
                                                 }
                                         },
                                         icon = {
