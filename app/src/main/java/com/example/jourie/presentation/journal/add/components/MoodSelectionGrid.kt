@@ -70,10 +70,7 @@ fun MoodSelectionGrid(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp),
                         contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
-                        modifier =
-                                Modifier.height(
-                                        280.dp
-                                ) // Height diperbesar dengan padding untuk spacing
+                        modifier = Modifier.height(200.dp) // Tampilkan 2 baris, sisanya scroll
                 ) {
                         items(moods) { mood ->
                                 MoodCard(
@@ -114,16 +111,11 @@ private fun MoodCard(emoji: String, label: String, isSelected: Boolean, onClick:
                                 containerColor =
                                         if (isSelected) Purple500.copy(alpha = 0.1f) else White
                         ),
-                elevation =
-                        CardDefaults.cardElevation(
-                                defaultElevation = 0.dp
-                        )
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
                 Column(
-                        modifier = Modifier
-                                .fillMaxSize()
-                                .background(Color.Transparent)
-                                .padding(12.dp),
+                        modifier =
+                                Modifier.fillMaxSize().background(Color.Transparent).padding(12.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center
                 ) {

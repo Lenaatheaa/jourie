@@ -61,8 +61,8 @@ fun RecentStreakDaysSection() {
                         Spacer(modifier = Modifier.height(20.dp))
 
                         Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                                horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
                                 val days = listOf("M", "T", "W", "T", "F", "S", "S")
                                 val calendar = Calendar.getInstance()
@@ -85,7 +85,7 @@ fun RecentStreakDaysSection() {
                                         ) {
                                                 Box(
                                                         modifier =
-                                                                Modifier.size(46.dp)
+                                                                Modifier.size(36.dp)
                                                                         .clip(
                                                                                 RoundedCornerShape(
                                                                                         16.dp
@@ -94,8 +94,12 @@ fun RecentStreakDaysSection() {
                                                                         .background(
                                                                                 Color.White.copy(
                                                                                         alpha =
-                                                                                                if (index == activeIndex) 0.4f
-                                                                                                else 0.25f
+                                                                                                if (index ==
+                                                                                                                activeIndex
+                                                                                                )
+                                                                                                        0.4f
+                                                                                                else
+                                                                                                        0.25f
                                                                                 )
                                                                         ),
                                                         contentAlignment = Alignment.Center

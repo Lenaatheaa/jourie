@@ -34,14 +34,18 @@ fun AddNewJournalScreen(
                 keyboardController?.show()
         }
 
-        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+        Column(
+                modifier =
+                        Modifier.fillMaxSize()
+                                .statusBarsPadding()
+        ) {
                 // Header
                 ScreenHeader(
                         currentDate = state.currentDate,
                         onBackClick = { navController.popBackStack() }
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 // Mood Selection Grid
                 MoodSelectionGrid(
@@ -50,14 +54,14 @@ fun AddNewJournalScreen(
                         modifier = Modifier.padding(horizontal = 16.dp)
                 )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-                // Content Input Field
+                // Content Input Field - Dynamic height with weight
                 Box(
                         modifier =
-                                Modifier.padding(horizontal = 16.dp)
+                                Modifier.weight(1f)
+                                        .padding(horizontal = 16.dp)
                                         .shadow(elevation = 4.dp, shape = RoundedCornerShape(20.dp))
-                                        .height(280.dp)
                 ) {
                         Card(
                                 modifier = Modifier.fillMaxSize(),
@@ -73,17 +77,14 @@ fun AddNewJournalScreen(
                         }
                 }
 
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-                // Action Buttons
-                Column(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                        MediaActionButtons()
-                        SaveEntryButton(onClick = { viewModel.onSubmit(onJournalSubmitted) })
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
+                // Action Button - Stick to bottom near navigation bar
+                SaveEntryButton(
+                        onClick = { viewModel.onSubmit(onJournalSubmitted) },
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                
+                Spacer(modifier = Modifier.navigationBarsPadding().padding(bottom = 8.dp))
         }
 }

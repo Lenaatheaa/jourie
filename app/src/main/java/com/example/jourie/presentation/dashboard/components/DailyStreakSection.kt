@@ -72,8 +72,8 @@ fun DailyStreakSection(streakCount: Int) {
                         }
                         Spacer(modifier = Modifier.height(28.dp))
                         Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                                horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
                                 val days = listOf("M", "T", "W", "T", "F", "S", "S")
                                 // Highlight hari sesuai hari sistem saat ini (Senin = M, dst.)
@@ -97,7 +97,7 @@ fun DailyStreakSection(streakCount: Int) {
                                         ) {
                                                 Box(
                                                         modifier =
-                                                                Modifier.size(46.dp)
+                                                                Modifier.size(36.dp)
                                                                         .clip(
                                                                                 RoundedCornerShape(
                                                                                         16.dp
@@ -106,8 +106,12 @@ fun DailyStreakSection(streakCount: Int) {
                                                                         .background(
                                                                                 Color.White.copy(
                                                                                         alpha =
-                                                                                                if (index == activeIndex) 0.4f
-                                                                                                else 0.25f
+                                                                                                if (index ==
+                                                                                                                activeIndex
+                                                                                                )
+                                                                                                        0.4f
+                                                                                                else
+                                                                                                        0.25f
                                                                                 )
                                                                         ),
                                                         contentAlignment = Alignment.Center

@@ -6,6 +6,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -38,8 +42,21 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
+                // Keep splash screen visible for 1 second
+                var keepSplashScreen = true
+                installSplashScreen().apply {
+                        setKeepOnScreenCondition { keepSplashScreen }
+                }
+                
                 super.onCreate(savedInstanceState)
                 enableEdgeToEdge()
+                
+                // Delay 1 second before dismissing splash
+                lifecycleScope.launch {
+                        delay(1000) // 1 second
+                        keepSplashScreen = false
+                }
+                
                 setContent { JourieTheme { JourieRoot() } }
         }
 }
@@ -54,9 +71,7 @@ fun JourieRoot() {
         val currentDestination = navBackStackEntry?.destination
 
         // Cek apakah user sudah login untuk menentukan start destination
-        val isLoggedIn = remember { 
-                FirebaseAuth.getInstance().currentUser != null 
-        }
+        val isLoggedIn = remember { FirebaseAuth.getInstance().currentUser != null }
         val startDestination = if (isLoggedIn) "main_graph" else "auth_graph"
 
         // Logic Navbar: Hanya muncul di 5 halaman utama, SAMA SEPERTI FAB
@@ -109,7 +124,9 @@ fun JourieRoot() {
                 if (shouldShowBottomBar) {
                         FloatingBottomNavigationBar(
                                 navController = navController,
-                                modifier = Modifier.align(Alignment.BottomCenter)
+                                modifier =
+                                        Modifier.align(Alignment.BottomCenter)
+                                                .navigationBarsPadding()
                         )
                 }
 
@@ -119,10 +136,8 @@ fun JourieRoot() {
                                 onClick = { navController.navigate(Routes.ADD_JOURNAL) },
                                 modifier =
                                         Modifier.align(Alignment.BottomEnd)
-                                                .padding(
-                                                        end = 16.dp,
-                                                        bottom = 96.dp
-                                                ) // Naikkan posisi jadi 96.dp agar ada jarak
+                                                .padding(end = 16.dp, bottom = 94.dp)
+                                                .navigationBarsPadding()
                         )
                 }
         }
@@ -149,7 +164,7 @@ fun FloatingBottomNavigationBar(
                 modifier =
                         modifier // Gunakan modifier dari parent Box
                                 .fillMaxWidth()
-                                .padding(horizontal = 12.dp, vertical = 8.dp)
+                                .padding(horizontal = 12.dp, vertical = 12.dp)
                                 .height(70.dp)
                                 .shadow(
                                         elevation = 8.dp,
@@ -176,15 +191,19 @@ fun FloatingBottomNavigationBar(
                                 NavigationBarItem(
                                         selected = isSelected,
                                         onClick = {
-                                                // Strategi: Home/Dashboard clear back stack untuk fresh start
+                                                // Strategi: Home/Dashboard clear back stack untuk
+                                                // fresh start
                                                 // Tab lain restore state untuk better UX
                                                 if (item.route == Routes.DASHBOARD) {
                                                         navController.navigate(item.route) {
-                                                                popUpTo(navController.graph.findStartDestination().id) {
-                                                                        inclusive = false
-                                                                }
+                                                                popUpTo(
+                                                                        navController.graph
+                                                                                .findStartDestination()
+                                                                                .id
+                                                                ) { inclusive = false }
                                                                 launchSingleTop = true
-                                                                // Tidak ada restoreState untuk Dashboard
+                                                                // Tidak ada restoreState untuk
+                                                                // Dashboard
                                                         }
                                                 } else {
                                                         navController.navigate(item.route) {

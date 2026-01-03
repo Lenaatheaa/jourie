@@ -32,7 +32,9 @@ fun ContentInputField(
                         value = content,
                         onValueChange = onContentChange,
                         modifier =
-                                Modifier.fillMaxWidth().weight(1f).focusRequester(focusRequester),
+                                Modifier.fillMaxWidth()
+                                        .fillMaxHeight()
+                                        .focusRequester(focusRequester),
                         placeholder = {
                                 Text(
                                         text = "How are you feeling today? ✨",

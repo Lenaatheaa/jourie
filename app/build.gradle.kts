@@ -58,6 +58,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation("io.coil-kt:coil-gif:2.6.0")
+    
+    // Splash Screen API
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
     // Firebase BoM to align versions
     implementation(platform("com.google.firebase:firebase-bom:33.2.0"))

@@ -36,11 +36,7 @@ fun StreakScreen(
 
     // Detect user change and refresh data
     val currentUserId = remember { FirebaseAuth.getInstance().currentUser?.uid }
-    LaunchedEffect(currentUserId) {
-        currentUserId?.let {
-            viewModel.refreshData()
-        }
-    }
+    LaunchedEffect(currentUserId) { currentUserId?.let { viewModel.refreshData() } }
 
     if (state.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -52,6 +48,7 @@ fun StreakScreen(
         Column(
                 modifier =
                         Modifier.fillMaxSize()
+                                .statusBarsPadding()
                                 // Padding dari Scaffold sudah tidak ada, jadi kita tambahkan
                                 // padding manual
                                 .verticalScroll(rememberScrollState())
