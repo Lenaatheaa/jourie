@@ -38,7 +38,6 @@ fun HistoryPageHeader(totalEntries: Int = 0) {
                                         )
                                         .padding(horizontal = 20.dp, vertical = 32.dp)
                 ) {
-                        // Left side: Icon, Title, Subtitle
                         Row(
                                 modifier = Modifier.align(Alignment.CenterStart),
                                 verticalAlignment = Alignment.CenterVertically

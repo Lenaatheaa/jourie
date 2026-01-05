@@ -40,6 +40,15 @@ import com.example.jourie.ui.theme.Purple500
 import com.example.jourie.ui.theme.White
 import com.google.firebase.auth.FirebaseAuth
 
+/**
+ * MainActivity - Entry point aplikasi Jourie
+ *
+ * Anggota Kelompok:
+ * - Dhavindra Rizky Raditya Aji (23523113)
+ * - Haidar Aji Saputra (23523157)
+ * - Iryana Salsabillah (23523057)
+ * - Genta Gede Saputra (23523224)
+ */
 class MainActivity : ComponentActivity() {
         override fun onCreate(savedInstanceState: Bundle?) {
                 // Keep splash screen visible for 1 second
@@ -75,7 +84,6 @@ fun JourieRoot() {
         val startDestination = if (isLoggedIn) "main_graph" else "auth_graph"
 
         // Logic Navbar: Hanya muncul di 5 halaman utama, SAMA SEPERTI FAB
-        // Kita gunakan list rute yang diizinkan untuk navbar
         val mainRoutes =
                 listOf(
                         Routes.DASHBOARD,
@@ -86,11 +94,6 @@ fun JourieRoot() {
                 )
 
         val currentRoute = currentDestination?.route
-
-        // Navbar hanya muncul jika rute saat ini ada di daftar mainRoutes
-        // Kita perlu handle potential query params atau argument di route,
-        // tapi usually 'route' property includes them.
-        // For simpler exact matching check:
         val shouldShowBottomBar =
                 mainRoutes.any { route -> currentRoute?.startsWith(route) == true }
 
@@ -113,7 +116,6 @@ fun JourieRoot() {
                                         Modifier.fillMaxSize()
                                                 .padding(top = innerPadding.calculateTopPadding())
                                 // PENTING: Tidak ada bottom padding agar konten tembus ke bawah
-                                // navbar
                                 ) {
                                 authNavGraph(navController)
                                 mainNavGraph(navController)
@@ -146,7 +148,7 @@ fun JourieRoot() {
 @Composable
 fun FloatingBottomNavigationBar(
         navController: NavController,
-        modifier: Modifier = Modifier // Terima modifier untuk positioning
+        modifier: Modifier = Modifier
 ) {
         val navItems =
                 listOf(
@@ -162,7 +164,7 @@ fun FloatingBottomNavigationBar(
 
         Surface(
                 modifier =
-                        modifier // Gunakan modifier dari parent Box
+                        modifier 
                                 .fillMaxWidth()
                                 .padding(horizontal = 12.dp, vertical = 12.dp)
                                 .height(70.dp)
@@ -180,9 +182,6 @@ fun FloatingBottomNavigationBar(
                         verticalAlignment = Alignment.CenterVertically
                 ) {
                         navItems.forEach { item ->
-                                // PERBAIKAN: Gunakan startsWith agar rute dengan query params
-                                // (seperti history?...)
-                                // tetap match
                                 val isSelected =
                                         currentDestination?.hierarchy?.any { destination ->
                                                 destination.route?.startsWith(item.route) == true
@@ -191,9 +190,6 @@ fun FloatingBottomNavigationBar(
                                 NavigationBarItem(
                                         selected = isSelected,
                                         onClick = {
-                                                // Strategi: Home/Dashboard clear back stack untuk
-                                                // fresh start
-                                                // Tab lain restore state untuk better UX
                                                 if (item.route == Routes.DASHBOARD) {
                                                         navController.navigate(item.route) {
                                                                 popUpTo(
@@ -202,8 +198,6 @@ fun FloatingBottomNavigationBar(
                                                                                 .id
                                                                 ) { inclusive = false }
                                                                 launchSingleTop = true
-                                                                // Tidak ada restoreState untuk
-                                                                // Dashboard
                                                         }
                                                 } else {
                                                         navController.navigate(item.route) {
@@ -242,7 +236,7 @@ fun FloatingBottomNavigationBar(
 @Composable
 fun AddJournalFAB(
         onClick: () -> Unit,
-        modifier: Modifier = Modifier // Terima modifier untuk positioning
+        modifier: Modifier = Modifier 
 ) {
         var isRotated by remember { mutableStateOf(false) }
 
@@ -259,7 +253,7 @@ fun AddJournalFAB(
                         onClick()
                 },
                 modifier =
-                        modifier // Gunakan modifier dari parent Box
+                        modifier 
                                 .size(60.dp)
                                 .shadow(12.dp, RoundedCornerShape(20.dp))
                                 .background(

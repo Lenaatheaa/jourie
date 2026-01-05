@@ -151,11 +151,24 @@ private fun getColorForMood(mood: String): Color {
 // Helper function untuk mendapatkan emoji berdasarkan mood
 private fun getMoodEmoji(mood: String): String {
     return when (mood.lowercase()) {
-        "happy", "senang", "excited" -> "😊"
-        "neutral", "calm", "tenang" -> "😐"
-        "sad", "sedih" -> "😢"
-        "anxious", "cemas", "stressed" -> "😰"
-        "angry", "marah" -> "😠"
-        else -> "😐"
+        "happy" -> "😊"
+        "neutral" -> "😐"
+        "anxious" -> "😰"
+        "sad" -> "😢"
+        "excited" -> "🤩"
+        "calm" -> "😌"
+        "angry" -> "😠"
+        "disappointed" -> "😔"
+        "grateful" -> "🙏"
+        "tired" -> "😴"
+        "confused" -> "😕"
+        "loved" -> "🤗"
+        "scared" -> "😱"
+        "joyful" -> "🥳"
+        "hopeless" -> "😞"
+        "frustrated" -> "😤"
+        "thoughtful" -> "🤔"
+        "overwhelmed" -> "😩"
+        else -> "😐" // Default fallback
     }
 }

@@ -136,16 +136,7 @@ fun JournalAnalysisScreen(
                 item {
                     AnalysisActionButtons(
                             onShare = {},
-                            onDownload = {},
-                            onSave = {
-                                viewModel.saveAnalysis()
-                                android.widget.Toast.makeText(
-                                                context,
-                                                "Analysis saved to history!",
-                                                android.widget.Toast.LENGTH_SHORT
-                                        )
-                                        .show()
-                            }
+                            onDownload = {}
                     )
                 }
 

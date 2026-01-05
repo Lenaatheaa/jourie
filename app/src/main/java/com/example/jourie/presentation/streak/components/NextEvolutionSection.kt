@@ -42,14 +42,13 @@ fun NextEvolutionSection(
                             .background(White)
                             .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
-    ) { // --- DIPERBAIKI: Mengganti Text emoji dengan Image untuk PNG ---
+    ) { 
         Image(
-                // GANTI NAMA FILE PNG ANDA DI SINI
-                painter = painterResource(id = R.drawable.ccp), // Contoh: ic_crown_placeholder.png
+                painter = painterResource(id = R.drawable.ccp), 
                 contentDescription = "Next Evolution Icon",
-                modifier = Modifier.size(40.dp) // Sesuaikan ukuran gambar
+                modifier = Modifier.size(40.dp) 
         )
-        // -------------------------------------------------------------
+      
 
         Spacer(modifier = Modifier.width(12.dp))
         Column(modifier = Modifier.weight(1f)) {

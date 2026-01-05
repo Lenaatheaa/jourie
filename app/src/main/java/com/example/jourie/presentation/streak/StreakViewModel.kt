@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// Jika menggunakan Hilt, tambahkan @HiltViewModel dan @Inject constructor
 class StreakViewModel(
     private val getStreakDataUseCase: GetStreakDataUseCase,
     private val calculateEvolutionProgressUseCase: CalculateEvolutionProgressUseCase

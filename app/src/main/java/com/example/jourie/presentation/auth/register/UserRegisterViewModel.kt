@@ -10,13 +10,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// --- DIPERBAIKI: Mengimpor UserRegisterState dari filenya sendiri ---
 import com.example.jourie.presentation.auth.register.UserRegisterState
 
-// ---- TIDAK ADA LAGI DEFINISI DATA CLASS DI SINI ----
-
 class UserRegisterViewModel : ViewModel() {
-    // Baris ini sekarang tidak akan error karena UserRegisterState sudah diimpor
     private val _state = MutableStateFlow(UserRegisterState())
     val state = _state.asStateFlow()
     private val repo = FirebaseAuthRepository()

@@ -68,7 +68,10 @@ fun NavGraphBuilder.mainNavGraph(navController: NavHostController) {
                         // MENYERTAKAN JOURNAL ID DALAM NAVIGASI
                         navController.navigate(
                                 "${Routes.JOURNAL_ANALYSIS}/$encodedContent?journalId=$journalId"
-                        )
+                        ) {
+                            // Clear Add Journal from stack - langsung ke Dashboard saat back
+                            popUpTo(Routes.ADD_JOURNAL) { inclusive = true }
+                        }
                     }
             )
         }

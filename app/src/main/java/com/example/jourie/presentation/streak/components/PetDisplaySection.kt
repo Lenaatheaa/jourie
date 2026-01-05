@@ -17,10 +17,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.ImageLoader
-import coil.compose.AsyncImage // <-- DITAMBAHKAN
+import coil.compose.AsyncImage 
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
-import com.example.jourie.R // <-- DITAMBAHKAN
+import com.example.jourie.R 
 import com.example.jourie.ui.theme.Gray200
 import com.example.jourie.ui.theme.Gray900
 import com.example.jourie.ui.theme.JourieTheme
@@ -60,9 +60,8 @@ fun PetDisplaySection(level: Int) {
                     model = R.drawable.capybara_walk,
                     contentDescription = "Evolving Pet GIF",
                     imageLoader = imageLoader,
-                    modifier = Modifier.size(150.dp) // Sesuaikan ukuran GIF agar pas
+                    modifier = Modifier.size(150.dp) 
             )
-            // -------------------------------------------------------------
 
             Spacer(modifier = Modifier.height(16.dp))
 

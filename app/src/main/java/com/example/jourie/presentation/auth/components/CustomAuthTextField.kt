@@ -28,7 +28,6 @@ fun CustomAuthTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    // --- DIPERBAIKI: Tambahkan parameter keyboardActions di sini ---
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
     Column(modifier = modifier) {

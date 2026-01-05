@@ -49,15 +49,13 @@ fun StreakScreen(
                 modifier =
                         Modifier.fillMaxSize()
                                 .statusBarsPadding()
-                                // Padding dari Scaffold sudah tidak ada, jadi kita tambahkan
-                                // padding manual
                                 .verticalScroll(rememberScrollState())
                                 .padding(
                                         start = 16.dp,
                                         end = 16.dp,
                                         top = 16.dp,
                                         bottom = 120.dp
-                                ), // Extra padding bottom
+                                ), 
                 verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             StreakHeader(streakDays = data.currentDayStreak)
@@ -78,7 +76,6 @@ fun StreakScreen(
     }
 }
 
-// Factory ViewModel tetap tidak berubah, ini sudah benar
 class StreakViewModelFactory(
         private val getStreakDataUseCase: GetStreakDataUseCase,
         private val calculateEvolutionProgressUseCase: CalculateEvolutionProgressUseCase

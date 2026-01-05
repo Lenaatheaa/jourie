@@ -3,9 +3,9 @@ package com.example.jourie.presentation.journal.analysis.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -14,28 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.example.jourie.ui.theme.Purple500
 
 @Composable
-fun AnalysisActionButtons(onShare: () -> Unit, onDownload: () -> Unit, onSave: () -> Unit) {
+fun AnalysisActionButtons(onShare: () -> Unit, onDownload: () -> Unit) {
         Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-                // Save All Insights Button (Primary)
-                Button(
-                        onClick = onSave,
-                        modifier = Modifier.fillMaxWidth().height(52.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Purple500),
-                        shape = RoundedCornerShape(16.dp)
-                ) {
-                        Icon(
-                                imageVector = Icons.Default.Save,
-                                contentDescription = "Save",
-                                modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Save All Insights", style = MaterialTheme.typography.bodyLarge)
-                }
-
-                // Download and Share Buttons (Secondary)
+                // Download and Share Buttons
                 Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -79,6 +63,19 @@ fun AnalysisActionButtons(onShare: () -> Unit, onDownload: () -> Unit, onSave: (
                                 Spacer(modifier = Modifier.width(8.dp))
                                 Text("Share")
                         }
+                }
+
+                // Auto-save confirmation text
+                Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                ) {
+                        Text(
+                                text = "✓ Analysis saved automatically",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.primary
+                        )
                 }
         }
 }

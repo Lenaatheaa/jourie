@@ -70,8 +70,6 @@ class AddNewJournalViewModel(
             } catch (e: Exception) {
                 Log.e("AddNewJournalVM", "Failed to submit journal", e)
                 _state.update { it.copy(isLoading = false) }
-                // Untuk sekarang kita hanya menghentikan loading; UI tidak akan crash.
-                // Nanti bisa ditambah state.error untuk menampilkan pesan ke user.
             }
         }
     }

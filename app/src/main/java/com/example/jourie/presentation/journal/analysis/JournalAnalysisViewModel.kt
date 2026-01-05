@@ -122,6 +122,19 @@ class JournalAnalysisViewModel(
                     }
 
                     Log.d("JournalAnalysisVM", "State updated from API result.")
+                    
+                    // AUTO-SAVE: Simpan hasil AI analysis ke Firestore setelah sukses
+                    if (journalId != null) {
+                        Log.d("JournalAnalysisVM", "Auto-saving analysis to Firestore...")
+                        saveAnalysisToFirestore(
+                            journalId = journalId,
+                            emotionDistribution = result.emotionDistribution,
+                            predictionText = result.prediction,
+                            rootCauseText = result.rootCause,
+                            recommendationText = result.recommendation,
+                            quoteText = result.quote
+                        )
+                    }
                 } catch (e: Exception) {
                     Log.e("JournalAnalysisVM", "Gemini analysis failed", e)
                     _state.update { it.copy(isLoading = false, error = e.message) }
@@ -129,54 +142,46 @@ class JournalAnalysisViewModel(
             }
         }
     }
+    
+    /** Auto-save analysis to Firestore after AI processing */
+    private suspend fun saveAnalysisToFirestore(
+        journalId: String,
+        emotionDistribution: Map<String, Float>,
+        predictionText: String,
+        rootCauseText: String,
+        recommendationText: String,
+        quoteText: String
+    ) {
+        try {
+            // 1. Save Main Analysis Data
+            val dominantEmotion = emotionDistribution.maxByOrNull { it.value }?.key ?: "Neutral"
 
-    /** Menyimpan hasil analisis ke Firestore */
-    fun saveAnalysis() {
-        val journalId = currentJournalId
-        if (journalId == null) {
-            Log.e("JournalAnalysisVM", "Cannot save: Journal ID is null")
-            return
-        }
+            val analysisData =
+                    NewJournalRepository.AiAnalysisData(
+                            dominantEmotion = dominantEmotion,
+                            predictionSummary = predictionText,
+                            quote = quoteText,
+                            recommendation = recommendationText,
+                            rootCause = rootCauseText
+                    )
 
-        viewModelScope.launch {
-            try {
-                // Konversi data state ke format repository
-                val currentState = _state.value
+            // 2. Save Emotion Scores
+            val emotionScores =
+                    emotionDistribution.map { (emotion, value) ->
+                        NewJournalRepository.EmotionScoreData(
+                                emotionName = emotion,
+                                score = (value * 100).toInt(),
+                                colorHex = getColorForEmotion(emotion),
+                                comparisonTrend = 0
+                        )
+                    }
 
-                // 1. Save Main Analysis Data
-                val dominantEmotion =
-                        currentState.emotionDistribution.maxByOrNull { it.value }?.key ?: "Neutral"
+            journalRepo.saveAiAnalysis(journalId, analysisData)
+            journalRepo.saveEmotionScores(journalId, emotionScores)
 
-                val analysisData =
-                        NewJournalRepository.AiAnalysisData(
-                                dominantEmotion = dominantEmotion,
-                                predictionSummary = currentState.predictionText,
-                                quote = currentState.quoteText,
-                                recommendation = currentState.recommendationText,
-                                rootCause = currentState.rootCauseText
-                                // note: keywords belum disupport di repo, kita skip dulu atau
-                                // tambah nanti
-                                )
-
-                // 2. Save Emotion Scores
-                // Mapping simple colors based on emotion name (bisa diperbagus nanti)
-                val emotionScores =
-                        currentState.emotionDistribution.map { (emotion, value) ->
-                            NewJournalRepository.EmotionScoreData(
-                                    emotionName = emotion,
-                                    score = (value * 100).toInt(), // Convert 0.4 -> 40
-                                    colorHex = getColorForEmotion(emotion),
-                                    comparisonTrend = 0 // Default 0 dulu
-                            )
-                        }
-
-                journalRepo.saveAiAnalysis(journalId, analysisData)
-                journalRepo.saveEmotionScores(journalId, emotionScores)
-
-                Log.d("JournalAnalysisVM", "Analysis saved successfully for journalId: $journalId")
-            } catch (e: Exception) {
-                Log.e("JournalAnalysisVM", "Failed to save analysis", e)
-            }
+            Log.d("JournalAnalysisVM", "Auto-save completed successfully for journalId: $journalId")
+        } catch (e: Exception) {
+            Log.e("JournalAnalysisVM", "Auto-save failed", e)
         }
     }
 

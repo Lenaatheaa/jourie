@@ -56,16 +56,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.jourie.presentation.auth.login.UserLoginScreen
 import com.example.jourie.presentation.auth.register.UserRegisterScreen
-
-// --- DIPERBAIKI: Menambahkan import untuk object Routes ---
 import com.example.jourie.navigation.Routes
-// --------------------------------------------------------
+
 
 // Ini adalah "sub-grafik" untuk autentikasi
 fun NavGraphBuilder.authNavGraph(navController: NavController) {
     // 'navigation' membungkus beberapa layar menjadi satu grafik bernama "auth_graph"
     navigation(
-        // Baris ini sekarang tidak akan error karena Routes sudah diimpor
         startDestination = Routes.LOGIN,
         route = "auth_graph" // Nama untuk grup navigasi ini
     ) {
@@ -73,7 +70,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavController) {
             UserLoginScreen(
                 onLoginSuccess = {
                     navController.navigate("main_graph") {
-                        // Hapus grafik auth dari back stack
+
                         popUpTo("auth_graph") { inclusive = true }
                     }
                 },

@@ -1,11 +1,9 @@
 // File: .../presentation/achievements/MilestonesScreen.kt
 
 package com.example.jourie.presentation.achievements
-
-// biasa
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn // DIGANTI: Menggunakan LazyColumn, bukan Column
+import androidx.compose.foundation.lazy.LazyColumn 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,8 +42,6 @@ fun MilestonesScreen(viewModel: MilestonesViewModel = viewModel()) {
             CircularProgressIndicator()
         }
     } else {
-        // DIPERBAIKI: Menggunakan LazyColumn untuk menata semua komponen.
-        // Ini adalah cara yang benar untuk performa dan layout yang kompleks.
         LazyColumn(
                 modifier = Modifier.fillMaxSize().background(White),
                 contentPadding =
